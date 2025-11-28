@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnviroTri MeshGrid | Connected Climate Infrastructure</title>
+
+    <!-- Fonts: Space Grotesk (Headings) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Rajdhani:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1. DESIGN SYSTEM & VARIABLES --- */
+        :root {
+            /* Palette */
+            --bg-dark: #05090f;
+            --bg-dark-secondary: #0b121d;
+            --bg-card: rgba(19, 28, 42, 0.6);
+            /* Glassy */
+            --bg-card-hover: rgba(26, 37, 56, 0.8);
+
+            /* Accents */
+            --accent-primary: #00F5A0;
+            /* Bright Green */
+            --accent-secondary: #00D8FF;
+            /* Cyan */
+            --accent-tertiary: #5e81ff;
+            /* Soft Blue */
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+
+            /* Typography */
+            --font-head: 'Rajdhani', sans-serif;
+            --font-body: 'Inter', sans-serif;
+
+            /* Effects */
+            --glow-primary: 0 0 20px rgba(0, 245, 160, 0.3);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+            --container-width: 1240px;
+        }
+
+        /* --- 2. GLOBAL RESET & BASE --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Grid Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -2;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            animation: gridMove 100s linear infinite;
+        }
+
+        /* Central Glow Spot */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 80vh;
+            background: radial-gradient(circle, rgba(0, 216, 255, 0.04), transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes gridMove {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 50px 50px;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-fast);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: var(--font-head);
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Utilities */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--text-main) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        /* Animation Classes (handled by JS) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- 3. NAVIGATION BAR --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+            background: rgba(5, 9, 15, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: var(--glass-border);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-head);
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-main);
+        }
+
+        .logo i {
+            color: var(--accent-primary);
+            filter: drop-shadow(0 0 5px rgba(0, 245, 160, 0.5));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            position: relative;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-primary);
+            transition: width 0.3s ease, left 0.3s ease;
+            transform: translateX(-50%);
+            box-shadow: 0 0 8px var(--accent-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .module-pills {
+            display: flex;
+            gap: 10px;
+        }
+
+        .pill-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: var(--font-head);
+            padding: 8px 16px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            transition: var(--transition-fast);
+        }
+
+        .pill-btn i {
+            font-size: 0.9rem;
+        }
+
+        .pill-btn:hover {
+            color: var(--bg-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .pill-btn.awd:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px rgba(0, 245, 160, 0.4);
+        }
+
+        .pill-btn.ecycle:hover {
+            background: var(--accent-secondary);
+            border-color: var(--accent-secondary);
+            box-shadow: 0 0 15px rgba(0, 216, 255, 0.4);
+        }
+
+        .pill-btn.hydro:hover {
+            background: var(--accent-tertiary);
+            border-color: var(--accent-tertiary);
+            box-shadow: 0 0 15px rgba(94, 129, 255, 0.4);
+        }
+
+        /* --- 4. HERO SECTION --- */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            position: relative;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(0, 245, 160, 0.1);
+            border: 1px solid rgba(0, 245, 160, 0.2);
+            color: var(--accent-primary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 3.75rem;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+
+        .hero-sub {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 540px;
+            font-weight: 300;
+        }
+
+        .cta-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-main {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, var(--accent-primary), #00c48c);
+            color: var(--bg-dark);
+            font-weight: 700;
+            font-family: var(--font-head);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 245, 160, 0.25);
+            transition: var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 30px rgba(0, 245, 160, 0.5);
+        }
+
+        .btn-main::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(rgba(255, 255, 255, 0.2), transparent);
+            transform: rotate(45deg) translate(-100%, -100%);
+            transition: 0.5s;
+        }
+
+        .btn-main:hover::after {
+            transform: rotate(45deg) translate(100%, 100%);
+        }
+
+        .quick-links-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .quick-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* System Status Card */
+        .status-card {
+            background: rgba(19, 28, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: var(--glass-border);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .status-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 245, 160, 0.05);
+        }
+
+        .stat-grid {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-block h3 {
+            font-size: 2.5rem;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .stat-block p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-block i {
+            color: var(--accent-secondary);
+            margin-bottom: 5px;
+            font-size: 1.2rem;
+        }
+
+        .system-live {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--accent-primary);
+            font-weight: 500;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(0, 245, 160, 0.7);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 245, 160, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(0, 245, 160, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 245, 160, 0);
+            }
+        }
+
+        /* --- 5. THE THREE PILLARS (CLICKABLE CARDS) --- */
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        /* The Card is now an Anchor Tag */
+        .pillar-card {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            /* Removes link underline */
+            color: inherit;
+            /* Keeps text color correct */
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: var(--glass-border);
+            border-radius: 12px;
+            padding: 32px;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        /* Top Border Accents */
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            transition: 0.3s;
+        }
+
+        .pillar-card.awd::before {
+            background: var(--accent-primary);
+            box-shadow: 0 0 10px var(--accent-primary);
+        }
+
+        .pillar-card.ecycle::before {
+            background: var(--accent-secondary);
+            box-shadow: 0 0 10px var(--accent-secondary);
+        }
+
+        .pillar-card.hydro::before {
+            background: var(--accent-tertiary);
+            box-shadow: 0 0 10px var(--accent-tertiary);
+        }
+
+        /* Hover Effects for Entire Card */
+        .pillar-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            background: var(--bg-card-hover);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .pillar-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+
+        .chip {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            transition: 0.3s;
+        }
+
+        .pillar-card:hover .chip {
+            color: var(--text-main);
+            text-shadow: 0 0 5px currentColor;
+        }
+
+        .pillar-icon {
+            font-size: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .awd .pillar-icon {
+            color: var(--accent-primary);
+        }
+
+        .ecycle .pillar-icon {
+            color: var(--accent-secondary);
+        }
+
+        .hydro .pillar-icon {
+            color: var(--accent-tertiary);
+        }
+
+        .pillar-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+
+        .pillar-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            flex-grow: 1;
+            margin-bottom: 24px;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .features-list i {
+            color: var(--accent-primary);
+            font-size: 0.8rem;
+        }
+
+        /* Inner Button Visual (now a SPAN, not a nested link) */
+        .card-btn-visual {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition-fast);
+            color: var(--text-main);
+        }
+
+        .card-btn-visual i {
+            transition: 0.3s;
+        }
+
+        /* When card is hovered, light up the button */
+        .pillar-card:hover .card-btn-visual {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--accent-primary);
+        }
+
+        .pillar-card:hover .card-btn-visual i {
+            transform: translateX(5px);
+        }
+
+        /* --- 6. CONNECTED SECTION --- */
+        .conn-layout {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+        }
+
+        .conn-text {
+            flex: 1;
+        }
+
+        .conn-text h2 {
+            font-size: 2.25rem;
+            margin-bottom: 24px;
+        }
+
+        .conn-text p {
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .conn-text strong {
+            color: var(--text-main);
+        }
+
+        .conn-visual {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            min-height: 350px;
+        }
+
+        .mesh-diagram {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .node {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(11, 18, 29, 0.9);
+            border: 2px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            z-index: 2;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transition: 0.3s;
+        }
+
+        .node:hover {
+            transform: scale(1.1);
+        }
+
+        .n-water {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-color: var(--accent-tertiary);
+            color: var(--accent-tertiary);
+        }
+
+        .n-ewaste {
+            bottom: 20px;
+            left: 0;
+            border-color: var(--accent-secondary);
+            color: var(--accent-secondary);
+        }
+
+        .n-agri {
+            bottom: 20px;
+            right: 0;
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .node i {
+            filter: drop-shadow(0 0 5px currentColor);
+        }
+
+        /* Connecting Lines */
+        .link-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform-origin: left center;
+            z-index: 1;
+        }
+
+        .l1 {
+            width: 180px;
+            top: 55px;
+            left: 60px;
+            transform: rotate(120deg);
+        }
+
+        .l2-fix {
+            width: 180px;
+            top: 55px;
+            right: 55px;
+            transform: rotate(-120deg);
+            transform-origin: right center;
+        }
+
+        .l3 {
+            width: 180px;
+            bottom: 60px;
+            left: 70px;
+        }
+
+        .center-label {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            background: var(--bg-dark);
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 3;
+        }
+
+        /* --- 7. IMPACT DASHBOARD --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 24px 20px;
+            text-align: center;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+
+        .metric-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px rgba(0, 245, 160, 0.1);
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .metric-icon {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .metric-card:hover .metric-icon {
+            color: var(--text-main);
+        }
+
+        .metric-val {
+            font-family: var(--font-head);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* --- 8. ENGAGE SECTION --- */
+        .engage-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .engage-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+            border-left: 3px solid var(--text-muted);
+            padding: 30px;
+            transition: var(--transition-fast);
+        }
+
+        .engage-card:hover {
+            border-left-color: var(--accent-primary);
+            background: linear-gradient(180deg, rgba(0, 245, 160, 0.05) 0%, transparent 100%);
+            transform: translateX(5px);
+        }
+
+        .engage-head {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .engage-head i {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .engage-card:hover .engage-head i {
+            color: var(--accent-primary);
+        }
+
+        .engage-list li {
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .engage-list i {
+            font-size: 0.7rem;
+            margin-right: 8px;
+            opacity: 0.5;
+        }
+
+        .center-cta {
+            text-align: center;
+        }
+
+        .btn-outline {
+            padding: 12px 28px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-main);
+            font-weight: 600;
+            font-family: var(--font-head);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- 9. FOOTER --- */
+        footer {
+            background: #020406;
+            padding: 60px 0 30px;
+            border-top: 1px solid transparent;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            opacity: 0.3;
+        }
+
+        .foot-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .foot-brand h4 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .foot-brand p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .foot-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .foot-links a {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .foot-links a:hover {
+            color: var(--accent-primary);
+            text-shadow: 0 0 10px rgba(0, 245, 160, 0.5);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .social-icons a:hover {
+            color: var(--text-main);
+        }
+
+        .copy {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #444;
+        }
+
+        /* --- RESPONSIVE BREAKPOINTS --- */
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 40px;
+            }
+
+            .hero-label,
+            .btn-group,
+            .quick-links-group {
+                justify-content: center;
+            }
+
+            .hero-sub {
+                margin: 0 auto 40px;
+            }
+
+            .pillars-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .conn-layout {
+                flex-direction: column;
+            }
+
+            .engage-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .logo span {
+                font-size: 1rem;
+            }
+
+            .status-card {
+                padding: 20px;
+            }
+
+            .stat-block h3 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. Navigation Bar -->
+    <nav>
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-circle-nodes"></i>
+                <span>EnviroTri MeshGrid</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="#hero">Overview</a>
+                <a href="#pillars">The Three Pillars</a>
+                <a href="#connectivity">Connected</a>
+                <a href="#impact">Impact</a>
+                <a href="#engage">Get Involved</a>
+            </div>
+
+            <div class="module-pills">
+                <a href="awd.html" class="pill-btn awd">
+                    <i class="fa-solid fa-wheat-awn"></i> AWD
+                </a>
+                <a href="ecycle.html" class="pill-btn ecycle">
+                    <i class="fa-solid fa-microchip"></i> eCycle
+                </a>
+                <a href="hydro.html" class="pill-btn hydro">
+                    <i class="fa-solid fa-droplet"></i> Hydro
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. Hero Section -->
+    <section id="hero" class="container">
+        <div class="hero-grid">
+            <div class="hero-text reveal">
+                <div class="hero-label">SYSTEM OF SYSTEMS • WATER • E-WASTE • RICE FIELDS</div>
+                <h1>
+                    <span class="text-gradient">Connected Climate Infrastructure</span><br>
+                    for Water, E-Waste & Rice Farming
+                </h1>
+                <p class="hero-sub">
+                    EnviroTri MeshGrid is a unified IoT network that tackles three crises at once: polluted industrial
+                    water, unsafe electronic waste, and high-emission rice farming.
+                    Instead of treating them as separate problems, EnviroTri MeshGrid links them into one circular,
+                    data-driven system.
+                </p>
+                <div class="cta-wrapper">
+                    <div class="btn-group">
+                        <a href="#pillars" class="btn-main">Explore the Three Systems</a>
+                    </div>
+                    <div class="quick-links-group">
+                        <span class="quick-label">Go to Live Modules:</span>
+                        <a href="awd.html" class="pill-btn awd" title="AWD System"><i
+                                class="fa-solid fa-wheat-awn"></i></a>
+                        <a href="ecycle.html" class="pill-btn ecycle" title="eCycle Factory"><i
+                                class="fa-solid fa-microchip"></i></a>
+                        <a href="hydro.html" class="pill-btn hydro" title="HydroLoop"><i
+                                class="fa-solid fa-droplet"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-card reveal" style="transition-delay: 0.2s;">
+                <div class="status-card">
+                    <div class="stat-grid">
+                        <div class="stat-block">
+                            <i class="fa-solid fa-network-wired"></i>
+                            <h3>3</h3>
+                            <p>Integrated Systems</p>
+                        </div>
+                        <div class="stat-block" style="text-align: right;">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <h3>IoT</h3>
+                            <p>Water • E-Waste • Rice</p>
+                        </div>
+                    </div>
+                    <div class="stat-grid" style="border: none; padding: 0; margin: 0; align-items: center;">
+                        <div class="stat-block">
+                            <p style="color: var(--text-main); margin-bottom: 5px;">System Status</p>
+                            <div class="system-live">
+                                <div class="pulse-dot"></div>
+                                Online & Logging Data
+                            </div>
+                        </div>
+                        <div class="stat-block" style="text-align: right;">
+                            <p style="text-transform: none; color: var(--text-muted); font-size: 0.75rem;">
+                                <i class="fa-solid fa-location-dot" style="font-size: 0.8rem; margin-right: 5px;"></i>
+                                Built for Bangladesh, Ready for the World
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. The Three Pillars (Clickable Cards) -->
+    <section id="pillars" class="section-padding">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>The Three Pillars of EnviroTri MeshGrid</h2>
+                <p>Three specialized subsystems working in harmony to solve distinct environmental challenges.</p>
+            </div>
+
+            <div class="pillars-grid">
+
+                <!-- Card 1: AWD (Now a full Anchor tag) -->
+                <a href="awd.html" class="pillar-card awd reveal" style="transition-delay: 0.1s;">
+                    <div class="pillar-head">
+                        <span class="chip">PILLAR 01</span>
+                        <i class="fa-solid fa-wheat-awn pillar-icon"></i>
+                    </div>
+                    <h3>AWD: Precision Rice Irrigation</h3>
+                    <p>AWD-Mesh is a smart irrigation network for rice paddies. It uses water-level sensors, LoRa
+                        communication, and weather data to schedule Alternate Wetting and Drying (AWD), cutting methane
+                        emissions and saving water while protecting yields.</p>
+                    <ul class="features-list">
+                        <li><i class="fa-solid fa-check"></i> LoRa-connected field and canal sensors</li>
+                        <li><i class="fa-solid fa-check"></i> Village-wide shared irrigation schedules</li>
+                        <li><i class="fa-solid fa-check"></i> Reduces water use and methane emissions</li>
+                    </ul>
+                    <!-- Visual Button (span) -->
+                    <span class="card-btn-visual">
+                        Open AWD Module <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </a>
+
+                <!-- Card 2: eCycle (Now a full Anchor tag) -->
+                <a href="ecycle.html" class="pillar-card ecycle reveal" style="transition-delay: 0.2s;">
+                    <div class="pillar-head">
+                        <span class="chip">PILLAR 02</span>
+                        <i class="fa-solid fa-microchip pillar-icon"></i>
+                    </div>
+                    <h3>eCycle Micro-Factory</h3>
+                    <p>The eCycle Micro-Factory recovers usable components from e-waste PCBs. AI vision, controlled
+                        heating, and gentle robotics depopulate boards, test parts, and feed them back into local repair
+                        and IoT projects instead of landfills and smelters.</p>
+                    <ul class="features-list">
+                        <li><i class="fa-solid fa-check"></i> AI identifies chips and components</li>
+                        <li><i class="fa-solid fa-check"></i> Robotic depopulation and sorting</li>
+                        <li><i class="fa-solid fa-check"></i> Supplies parts for sensors and controllers</li>
+                    </ul>
+                    <span class="card-btn-visual">
+                        Open eCycle Module <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </a>
+
+                <!-- Card 3: Hydro (Now a full Anchor tag) -->
+                <a href="hydro.html" class="pillar-card hydro reveal" style="transition-delay: 0.3s;">
+                    <div class="pillar-head">
+                        <span class="chip">PILLAR 03</span>
+                        <i class="fa-solid fa-droplet pillar-icon"></i>
+                    </div>
+                    <h3>HydroLoop: Wastewater to Potable Water</h3>
+                    <p>HydroLoop combines Mag-Chito dye removal, smart filtration, and arsenic polishing to turn textile
+                        wastewater into safe drinking water. Sensors track color, turbidity, pH, and more to keep every
+                        litre accountable.</p>
+                    <ul class="features-list">
+                        <li><i class="fa-solid fa-check"></i> Mag-Chito adsorption for dyes and organics</li>
+                        <li><i class="fa-solid fa-check"></i> Membrane filtration + UV + light chlorination</li>
+                        <li><i class="fa-solid fa-check"></i> Arsenic filter for safe, drinkable output</li>
+                    </ul>
+                    <span class="card-btn-visual">
+                        Open Hydro Module <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Why These Three Are Connected -->
+    <section id="connectivity" class="section-padding" style="background: rgba(0,0,0,0.2);">
+        <div class="container conn-layout">
+            <div class="conn-text reveal">
+                <h2 class="text-gradient">Why These Three Are Connected</h2>
+                <p>
+                    <strong>Water Crisis:</strong> textile factories pollute rivers and over-pump groundwater;
+                    communities face arsenic and scarcity.
+                </p>
+                <p>
+                    <strong>E-Waste Crisis:</strong> discarded electronics from those same regions leak heavy metals and
+                    destroy reusable parts.
+                </p>
+                <p>
+                    <strong>Agriculture & Climate Crisis:</strong> rice paddies emit methane and consume huge volumes of
+                    irrigation water.
+                </p>
+                <p style="margin-top: 30px; border-left: 3px solid var(--accent-primary); padding-left: 20px;">
+                    EnviroTri MeshGrid links them: Treated water from <strong>HydroLoop</strong> can support communities
+                    and farms. Recovered components from <strong>eCycle</strong> can power the sensors and controllers
+                    of AWD and HydroLoop. Smarter irrigation through <strong>AWD</strong> reduces withdrawals from the
+                    same stressed aquifers and canals affected by factories.
+                </p>
+            </div>
+
+            <div class="conn-visual reveal" style="transition-delay: 0.2s;">
+                <div class="mesh-diagram">
+                    <div class="link-line l1"></div>
+                    <div class="link-line l2-fix"></div>
+                    <div class="link-line l3"></div>
+                    <div class="center-label">DATA & RESOURCES</div>
+                    <div class="node n-water"><i class="fa-solid fa-droplet"></i></div>
+                    <div class="node n-ewaste"><i class="fa-solid fa-microchip"></i></div>
+                    <div class="node n-agri"><i class="fa-solid fa-wheat-awn"></i></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Impact Dashboard -->
+    <section id="impact" class="section-padding">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>From Data to Impact</h2>
+                <p>EnviroTri MeshGrid is designed to track environmental gains in real time, turning every sensor
+                    reading into proof of progress.</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="metric-card reveal">
+                    <i class="fa-solid fa-droplet metric-icon"></i>
+                    <span class="metric-val" data-target="85000">0</span>
+                    <span class="metric-label">Water Recycled (L)</span>
+                </div>
+                <div class="metric-card reveal" style="transition-delay: 0.1s;">
+                    <i class="fa-solid fa-circuit-board metric-icon"></i>
+                    <span class="metric-val" data-target="1250">0</span>
+                    <span class="metric-label">E-Waste PCBs Processed</span>
+                </div>
+                <div class="metric-card reveal" style="transition-delay: 0.2s;">
+                    <i class="fa-solid fa-map-location-dot metric-icon"></i>
+                    <span class="metric-val" data-target="3">0</span>
+                    <span class="metric-label">Rice Fields Using AWD-Mesh (Villages)</span>
+                </div>
+                <div class="metric-card reveal" style="transition-delay: 0.3s;">
+                    <i class="fa-solid fa-arrow-trend-down metric-icon"></i>
+                    <span class="metric-val">-48%</span>
+                    <span class="metric-label">Estimated Methane Reduction</span>
+                </div>
+                <div class="metric-card reveal" style="transition-delay: 0.4s;">
+                    <i class="fa-solid fa-shield-halved metric-icon"></i>
+                    <span class="metric-val" data-target="12000">0</span>
+                    <span class="metric-label">Arsenic-Safe Litres Delivered</span>
+                </div>
+                <div class="metric-card reveal" style="transition-delay: 0.5s;">
+                    <i class="fa-solid fa-recycle metric-icon"></i>
+                    <span class="metric-val" data-target="840">0</span>
+                    <span class="metric-label">Components Reused in IoT Nodes</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Engage Section -->
+    <section id="engage" class="section-padding" style="background: rgba(11, 18, 29, 0.5);">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Built for Real Communities, Ready for Real Deployment</h2>
+            </div>
+            <div class="engage-grid">
+                <div class="engage-card reveal">
+                    <div class="engage-head">
+                        <i class="fa-solid fa-users"></i>
+                        <h3>For Communities & Farmers</h3>
+                    </div>
+                    <ul class="engage-list">
+                        <li><i class="fa-solid fa-caret-right"></i> Cleaner water and healthier fields</li>
+                        <li><i class="fa-solid fa-caret-right"></i> Simple SMS and dashboard interfaces</li>
+                    </ul>
+                </div>
+                <div class="engage-card reveal" style="transition-delay: 0.1s;">
+                    <div class="engage-head">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <h3>For Schools & Universities</h3>
+                    </div>
+                    <ul class="engage-list">
+                        <li><i class="fa-solid fa-caret-right"></i> Hands-on IoT, AI, and environmental science</li>
+                        <li><i class="fa-solid fa-caret-right"></i> Modular hardware and open documentation</li>
+                    </ul>
+                </div>
+                <div class="engage-card reveal" style="transition-delay: 0.2s;">
+                    <div class="engage-head">
+                        <i class="fa-solid fa-landmark"></i>
+                        <h3>For Policy Makers & NGOs</h3>
+                    </div>
+                    <ul class="engage-list">
+                        <li><i class="fa-solid fa-caret-right"></i> Data to support water and climate programs</li>
+                        <li><i class="fa-solid fa-caret-right"></i> Scalable pilots for entire industrial-agricultural
+                            belts</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="center-cta reveal">
+                <a href="#pillars" class="btn-main" style="margin-right: 20px;">View System Details</a>
+                <a href="mailto:contact@envirotri.com" class="btn-outline">Contact / Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Footer -->
+    <footer>
+        <div class="container foot-content">
+            <div class="foot-brand">
+                <div class="logo">
+                    <i class="fa-solid fa-circle-nodes"></i>
+                    EnviroTri MeshGrid
+                </div>
+                <p style="margin-top: 10px;">EnviroTri MeshGrid • A connected mesh for water, e-waste, and rice futures.
+                </p>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-github"></i></a>
+                    <a href="#"><i class="fa-solid fa-book"></i></a>
+                    <a href="#"><i class="fa-solid fa-globe"></i></a>
+                </div>
+            </div>
+            <div class="foot-links">
+                <a href="#">Home</a>
+                <a href="awd.html">AWD System</a>
+                <a href="ecycle.html">eCycle Factory</a>
+                <a href="hydro.html">HydroLoop</a>
+                <a href="#">GitHub / Docs</a>
+            </div>
+        </div>
+        <div class="copy">
+            &copy; 2025 EnviroTri MeshGrid Project.
+        </div>
+    </footer>
+
+    <!-- JavaScript for Animations -->
+    <script>
+        // Scroll Reveal Animation
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 150;
+            revealElements.forEach((reveal) => {
+                const elementTop = reveal.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                }
+            });
+        };
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // Number Counting Animation
+        const counters = document.querySelectorAll('.metric-val[data-target]');
+        let hasCounted = false;
+        const startCounters = () => {
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const duration = 2000;
+                const increment = target / (duration / 16);
+                let current = 0;
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.innerText = Math.ceil(current).toLocaleString() + (target > 10000 ? ' L' : (target === 840 ? '' : (target === 3 ? '' : '+')));
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        let suffix = '';
+                        if (target === 85000 || target === 12000) suffix = ' L';
+                        else if (target === 1250) suffix = '+';
+                        counter.innerText = target.toLocaleString() + suffix;
+                    }
+                };
+                updateCounter();
+            });
+        };
+
+        const impactSection = document.querySelector('#impact');
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !hasCounted) {
+                startCounters();
+                hasCounted = true;
+            }
+        }, { threshold: 0.5 });
+        observer.observe(impactSection);
+    </script>
+</body>
+
+</html>

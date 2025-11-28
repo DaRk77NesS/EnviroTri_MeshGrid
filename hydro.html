@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HydroLoop Hybrid | Advanced Water Reclamation</title>
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* --- 1. CORE VARIABLES --- */
+        :root {
+            --bg-body: #0f172a;
+            --bg-glass: rgba(30, 41, 59, 0.7);
+            --bg-glass-strong: rgba(15, 23, 42, 0.95);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+
+            /* Colors */
+            --primary: #06b6d4;
+            /* Cyan */
+            --primary-glow: rgba(6, 182, 212, 0.5);
+            --secondary: #a855f7;
+            /* Purple */
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.5);
+
+            /* Dimensions */
+            --main-sidebar-width: 260px;
+            --collapsed-width: 80px;
+            --radius: 16px;
+            --transition: cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+        }
+
+        /* --- 2. GLOBAL RESET --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- 3. MAIN SIDEBAR (HydroLoop) --- */
+        aside.main-nav {
+            width: var(--main-sidebar-width);
+            height: 100vh;
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid var(--border-glass);
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            transition: width 0.4s ease;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        aside.main-nav.collapsed {
+            width: var(--collapsed-width);
+        }
+
+        aside.main-nav.collapsed .brand-text,
+        aside.main-nav.collapsed .nav-text,
+        aside.main-nav.collapsed .system-status-mini {
+            opacity: 0;
+            pointer-events: none;
+            display: none;
+        }
+
+        aside.main-nav.collapsed .nav-item {
+            justify-content: center;
+        }
+
+        aside.main-nav.collapsed .brand {
+            justify-content: center;
+        }
+
+        .brand {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            height: 40px;
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border-glass);
+            color: var(--text-muted);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--primary);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.1);
+        }
+
+        .system-status-mini {
+            margin-top: auto;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid var(--border-glass);
+        }
+
+        /* --- 4. MAIN CONTENT AREA --- */
+        main.page-content {
+            margin-left: var(--main-sidebar-width);
+            width: calc(100% - var(--main-sidebar-width));
+            padding: 0;
+            position: relative;
+            transition: margin-left 0.4s ease, width 0.4s ease;
+        }
+
+        main.page-content.expanded {
+            margin-left: var(--collapsed-width);
+            width: calc(100% - var(--collapsed-width));
+        }
+
+        section {
+            padding: 5rem 4rem;
+            border-bottom: 1px solid var(--border-glass);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.lead {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 800px;
+            margin-bottom: 2rem;
+        }
+
+        /* --- Hero --- */
+        #hero {
+            min-height: 90vh;
+            background: radial-gradient(circle at 60% 50%, rgba(6, 182, 212, 0.05), transparent 60%);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .hero-title span {
+            color: var(--primary);
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-glass);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-glass);
+            border-color: var(--text-main);
+        }
+
+        /* --- CRISIS SECTION (Redesigned) --- */
+        #problem {
+            background: linear-gradient(to bottom, #0f172a, rgba(239, 68, 68, 0.05));
+        }
+
+        .crisis-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .crisis-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .crisis-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--danger);
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.1);
+        }
+
+        .crisis-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--danger);
+        }
+
+        .crisis-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--danger);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .crisis-stat {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            margin: 10px 0;
+        }
+
+        .crisis-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* --- IMPACT SECTION (Redesigned) --- */
+        .impact-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .impact-visual {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .impact-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .impact-item {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            padding: 1.5rem;
+            border-radius: 14px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .impact-item:hover {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .impact-val {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--success);
+            margin-bottom: 5px;
+        }
+
+        .impact-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- TECHNOLOGY --- */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tech-card {
+            background: var(--bg-glass-strong);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: 0.3s;
+        }
+
+        .tech-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .tech-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-glass);
+            padding-bottom: 10px;
+        }
+
+        .tech-icon {
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+
+        .tech-title {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .tech-list {
+            list-style: none;
+        }
+
+        .tech-list li {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .tech-list li::before {
+            content: "▹";
+            color: var(--primary);
+        }
+
+        .iot-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* --- AQUAPURE WRAPPER --- */
+        #dashboard-section {
+            background: rgba(0, 0, 0, 0.2);
+            display: block;
+            min-height: auto;
+        }
+
+        .aquapure-container {
+            margin-top: 2rem;
+            width: 100%;
+            background: #0f172a;
+            border-radius: 20px;
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            box-shadow: 0 0 40px rgba(6, 182, 212, 0.15);
+            overflow: hidden;
+            display: flex;
+            position: relative;
+            min-height: 800px;
+        }
+
+        /* AquaPure Sidebar - REFINED */
+        .ap-sidebar {
+            width: 260px;
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--border-glass);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            transition: width 0.4s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        /* COLLAPSED STATE FIXES */
+        .ap-sidebar.collapsed {
+            width: 80px;
+            padding: 2rem 1rem;
+        }
+
+        /* Strictly hide text elements when collapsed */
+        .ap-sidebar.collapsed .ap-text,
+        .ap-sidebar.collapsed .health-details,
+        .ap-sidebar.collapsed .uv-details,
+        .ap-sidebar.collapsed .brand-title {
+            display: none !important;
+            opacity: 0;
+        }
+
+        .ap-sidebar.collapsed .ap-brand {
+            justify-content: center;
+        }
+
+        .ap-sidebar.collapsed .uv-btn {
+            justify-content: center;
+            padding: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+        }
+
+        .ap-brand {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .health-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-glass);
+            margin-bottom: 2rem;
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--success);
+        }
+
+        .ap-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .ap-item {
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .ap-item:hover,
+        .ap-item.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .uv-btn {
+            margin-top: auto;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-glass);
+            padding: 1rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .uv-btn.active {
+            border-color: var(--secondary);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+            color: white;
+        }
+
+        .uv-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .uv-btn.active .uv-icon {
+            background: var(--secondary);
+            box-shadow: 0 0 10px var(--secondary);
+        }
+
+        /* AquaPure Content */
+        .ap-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: radial-gradient(circle at 90% 10%, rgba(6, 182, 212, 0.05), transparent);
+            position: relative;
+        }
+
+        .ap-header {
+            height: 70px;
+            border-bottom: 1px solid var(--border-glass);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .ap-scroll {
+            padding: 2rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .ap-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .ap-card {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 160px;
+            transition: 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .ap-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .ap-card.alert {
+            border-color: var(--danger);
+            box-shadow: 0 0 20px var(--danger-glow);
+            animation: shake 0.5s;
+        }
+
+        .ap-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .ap-val {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .ap-unit {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .span-2 {
+            grid-column: span 2;
+        }
+
+        /* Mag-Chito Specifics */
+        .mag-chito-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 10px;
+        }
+
+        .gauge-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, var(--primary) 94%, rgba(255, 255, 255, 0.1) 94%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .gauge-circle::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #1e293b;
+            border-radius: 50%;
+        }
+
+        .gauge-val {
+            position: absolute;
+            z-index: 2;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .regen-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .regen-badge.active {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .regen-badge.cycle {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+            animation: pulse 1s infinite;
+        }
+
+
+        /* Floating Action Button */
+        .fab-cont {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 20;
+        }
+
+        .fab {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            transition: 0.3s;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+        }
+
+        .fab.stop {
+            background: var(--danger);
+            box-shadow: 0 0 20px var(--danger-glow);
+        }
+
+        .fab.restart {
+            background: var(--success);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        /* Modals & Toasts */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-box {
+            background: var(--bg-body);
+            border: 1px solid var(--border-glass);
+            width: 90%;
+            max-width: 600px;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .toast-area {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .toast {
+            background: rgba(15, 23, 42, 0.95);
+            border-left: 4px solid var(--primary);
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            transform: translateX(120%);
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.critical {
+            border-color: var(--danger);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+
+            100% {
+                box-shadow: 0 0 0 20px rgba(16, 185, 129, 0);
+            }
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .tech-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .iot-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .crisis-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            aside.main-nav {
+                width: 80px;
+                padding: 1.5rem 0.5rem;
+            }
+
+            aside.main-nav .nav-text,
+            aside.main-nav .brand-text {
+                display: none;
+            }
+
+            main.page-content {
+                margin-left: 80px;
+                width: calc(100% - 80px);
+            }
+
+            .ap-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .ap-sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            aside.main-nav {
+                display: none;
+            }
+
+            main.page-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .impact-showcase {
+                grid-template-columns: 1fr;
+            }
+
+            .span-2 {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- MAIN HYDROLOOP SIDEBAR -->
+    <aside class="main-nav" id="mainSidebar">
+        <div class="brand">
+            <i class="fa-solid fa-droplet"></i>
+            <span class="brand-text">HydroLoop</span>
+            <button class="toggle-btn" onclick="toggleMainSidebar()" style="margin-left: auto;"><i
+                    class="fa-solid fa-bars"></i></button>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="#hero" class="nav-item active"><i class="fa-solid fa-house"></i> <span
+                    class="nav-text">Overview</span></a>
+            <a href="#problem" class="nav-item"><i class="fa-solid fa-triangle-exclamation"></i> <span
+                    class="nav-text">The Crisis</span></a>
+            <a href="#technology" class="nav-item"><i class="fa-solid fa-microchip"></i> <span class="nav-text">System
+                    Specs</span></a>
+            <a href="#dashboard-section" class="nav-item"><i class="fa-solid fa-desktop"></i> <span
+                    class="nav-text">AquaPure OS</span></a>
+            <a href="#impact" class="nav-item"><i class="fa-solid fa-earth-asia"></i> <span
+                    class="nav-text">Impact</span></a>
+        </nav>
+
+        <div class="system-status-mini">
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px;">Pilot Connectivity</div>
+            <div style="color: var(--success); font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                <div
+                    style="width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success);">
+                </div>
+                Data Live
+            </div>
+        </div>
+    </aside>
+
+    <main class="page-content" id="mainContent">
+
+        <!-- HERO -->
+        <section id="hero">
+            <div class="hero-content">
+                <div class="hero-badge"><i class="fa-solid fa-leaf"></i> Sustainable Innovation</div>
+                <h1 class="hero-title">Wastewater to <br><span>Potable Water</span></h1>
+                <p class="lead">
+                    A hybrid recycling revolution utilizing Mag-Chito loops, IoT-driven filtration, and smart automation
+                    to recover 85% of industrial effluent.
+                </p>
+                <div style="display:flex; gap:1rem; margin-top:2rem;">
+                    <a href="#dashboard-section" class="btn btn-primary"><i class="fa-solid fa-play"></i> Launch
+                        AquaPure Interface</a>
+                    <a href="#technology" class="btn btn-outline">View Specs</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROBLEM (REDESIGNED) -->
+        <section id="problem">
+            <h2>The Silent Crisis</h2>
+            <p class="lead" style="margin-bottom:3rem;">Industrial discharge and groundwater contamination are creating
+                an irreversible ecological disaster.</p>
+
+            <div class="crisis-grid">
+                <!-- Card 1 -->
+                <div class="crisis-card">
+                    <div class="crisis-icon"><i class="fa-solid fa-skull-crossbones"></i></div>
+                    <h3 style="color:#f87171;">Arsenic Poisoning</h3>
+                    <div class="crisis-stat">57M+</div>
+                    <div class="crisis-desc">People daily exposed to arsenic levels above WHO limits (0.01 mg/L),
+                        leading to severe long-term health degradation.</div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="crisis-card" style="border-color: rgba(245, 158, 11, 0.2);">
+                    <div class="crisis-icon" style="color:var(--warning); background: rgba(245, 158, 11, 0.1);"><i
+                            class="fa-solid fa-water"></i></div>
+                    <h3 style="color:#fbbf24;">Effluent Waste</h3>
+                    <div class="crisis-stat">349M m³</div>
+                    <div class="crisis-desc">Untreated wastewater dumped annually by the textile sector alone,
+                        destroying river biodiversity and agricultural lands.</div>
+                    <style>
+                        .crisis-card:nth-child(2)::before {
+                            background: var(--warning);
+                        }
+                    </style>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="crisis-card" style="border-color: rgba(168, 85, 247, 0.2);">
+                    <div class="crisis-icon" style="color:var(--secondary); background: rgba(168, 85, 247, 0.1);"><i
+                            class="fa-solid fa-coins"></i></div>
+                    <h3 style="color:#c084fc;">Economic Loss</h3>
+                    <div class="crisis-stat">$1.2B</div>
+                    <div class="crisis-desc">Annual loss in potential water recovery value. Industries pay high tariffs
+                        for freshwater while dumping reusable assets.</div>
+                    <style>
+                        .crisis-card:nth-child(3)::before {
+                            background: var(--secondary);
+                        }
+                    </style>
+                </div>
+            </div>
+        </section>
+
+        <!-- TECHNOLOGY -->
+        <section id="technology">
+            <h2>System Architecture</h2>
+            <p class="lead">A complete breakdown of our 3-stage filtration hardware and IoT intelligence layer.</p>
+
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem 0;">1. Core Treatment Hardware</h3>
+            <div class="tech-grid">
+                <!-- Mag-Chito -->
+                <div class="tech-card">
+                    <div class="tech-header">
+                        <i class="fa-solid fa-magnet tech-icon"></i>
+                        <span class="tech-title">Mag-Chito Loop</span>
+                    </div>
+                    <ul class="tech-list">
+                        <li>Raw wastewater collection tank</li>
+                        <li>Magnetic chitosan bead column</li>
+                        <li>Electrocoagulation reactor (Iron/Al plates)</li>
+                        <li>DC Power Supply / Rectifier</li>
+                        <li>Recirculation & Sludge pumps</li>
+                    </ul>
+                </div>
+
+                <!-- DetergentLoop -->
+                <div class="tech-card">
+                    <div class="tech-header">
+                        <i class="fa-solid fa-soap tech-icon"></i>
+                        <span class="tech-title">DetergentLoop</span>
+                    </div>
+                    <ul class="tech-list">
+                        <li>Ultrafiltration (UF) Module</li>
+                        <li>Activated Carbon Column</li>
+                        <li>UV-C Disinfection Chamber (254nm)</li>
+                        <li>Peristaltic Chlorine Dosing Pump</li>
+                        <li>Permeate Collection Tank</li>
+                    </ul>
+                </div>
+
+                <!-- Arsenic Filter -->
+                <div class="tech-card">
+                    <div class="tech-header">
+                        <i class="fa-solid fa-filter tech-icon"></i>
+                        <span class="tech-title">Arsenic Polishing</span>
+                    </div>
+                    <ul class="tech-list">
+                        <li>Composite Iron Matrix (CIM) Layer</li>
+                        <li>Fine Sand & Brick Chip Media</li>
+                        <li>Potable Water Storage Tank</li>
+                        <li>Gravity-fed Flow Control</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 style="color: var(--secondary); margin: 2rem 0 1rem 0;">2. IoT Sensor & Control Layer</h3>
+            <div class="iot-grid">
+                <div class="tech-card">
+                    <div class="tech-header">
+                        <i class="fa-solid fa-wifi tech-icon"></i>
+                        <span class="tech-title">Sensors & Telemetry</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <ul class="tech-list">
+                            <li><strong>Water Quality:</strong> pH Probes, Turbidity Sensors, TDS/Conductivity Modules,
+                                ORP/Chlorine Sensors.</li>
+                            <li><strong>Flow & Level:</strong> Hall-effect Flow Meters (YF-S201), Ultrasonic Level
+                                Sensors, Pressure Transducers (ΔP).</li>
+                        </ul>
+                        <ul class="tech-list">
+                            <li><strong>System Health:</strong> Current Sensors (Energy), UV Intensity Monitor, DS18B20
+                                Temp Sensors.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-header">
+                        <i class="fa-solid fa-gears tech-icon"></i>
+                        <span class="tech-title">Actuators</span>
+                    </div>
+                    <ul class="tech-list">
+                        <li>Solenoid Valves (Flow routing)</li>
+                        <li>DC Pumps (Feed/Regen)</li>
+                        <li>UV Relay / SSR Control</li>
+                        <li>Dosing Pump MOSFET Drivers</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 style="color: var(--success); margin: 2rem 0 1rem 0;">3. Digital Stack</h3>
+            <div class="tech-card" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+                <div><strong>Controllers:</strong> ESP32 / NodeMCU (Wi-Fi), Raspberry Pi Edge Gateway</div>
+                <div><strong>Protocol:</strong> MQTT (Telemetry), HTTP REST (Commands)</div>
+                <div><strong>Backend:</strong> Node-RED / InfluxDB</div>
+            </div>
+        </section>
+
+        <!-- AQUAPURE INTEGRATION -->
+        <section id="dashboard-section">
+            <div>
+                <h2>AquaPure Pilot Interface</h2>
+                <p style="color: var(--text-muted);">Real-time monitoring and control of Treatment Unit #4.</p>
+            </div>
+
+            <div class="aquapure-container">
+                <!-- Sidebar (Refined for collapse) -->
+                <aside class="ap-sidebar" id="apSidebar">
+                    <div class="ap-brand">
+                        <div class="brand-title" style="display:flex;align-items:center;gap:10px;"><i
+                                class="fa-solid fa-water"></i> AquaPure</div>
+                        <button class="toggle-btn" onclick="toggleApSidebar()"><i class="fa-solid fa-bars"></i></button>
+                    </div>
+
+                    <div class="health-card">
+                        <div class="status-row">
+                            <div class="dot" id="apDot"></div>
+                            <span class="ap-text" id="apStatus">System Healthy</span>
+                        </div>
+                        <div class="health-details" style="font-size:0.75rem; color:var(--text-muted); margin-top:5px;">
+                            Uptime: 14d 03h</div>
+                    </div>
+
+                    <nav class="ap-nav">
+                        <div class="ap-item active"><i class="fa-solid fa-chart-line"></i> <span
+                                class="ap-text">Dashboard</span></div>
+                        <div class="ap-item" onclick="showToast('Config Restricted','warning')"><i
+                                class="fa-solid fa-sliders"></i> <span class="ap-text">Config</span></div>
+                        <div class="ap-item" onclick="showDrill('System Logs','logs')"><i
+                                class="fa-solid fa-file-code"></i> <span class="ap-text">Logs</span></div>
+                    </nav>
+
+                    <button class="uv-btn" id="uvBtn" onclick="toggleUV()">
+                        <div class="uv-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                        <div class="uv-details">
+                            <div>UV Matrix</div>
+                            <div style="font-size:0.75rem;" id="uvState">OFF</div>
+                        </div>
+                    </button>
+                </aside>
+
+                <!-- Content -->
+                <div class="ap-main">
+                    <header class="ap-header">
+                        <h3>Unit #4 Monitor</h3>
+                        <div style="display:flex;gap:10px;">
+                            <button class="toggle-btn" onclick="showToast('Notifications empty','normal')"><i
+                                    class="fa-solid fa-bell"></i></button>
+                            <button class="toggle-btn" onclick="showToast('Settings Locked','warning')"><i
+                                    class="fa-solid fa-gear"></i></button>
+                        </div>
+                    </header>
+
+                    <div class="ap-scroll">
+                        <div class="ap-grid">
+
+                            <!-- NEW MAG-CHITO CARD -->
+                            <div class="ap-card span-2" onclick="showDrill('Adsorption Efficiency','mag')">
+                                <div class="ap-head"><span>Mag-Chito Intelligence</span> <i class="fa-solid fa-magnet"
+                                        style="color:var(--primary)"></i></div>
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <div>
+                                        <div class="ap-unit">Adsorption Efficiency</div>
+                                        <div class="mag-chito-status">
+                                            <div class="gauge-circle" id="magGauge">
+                                                <span class="gauge-val" id="magEff">94%</span>
+                                            </div>
+                                            <div>
+                                                <div style="font-size:1.5rem; font-weight:700; color:white;">Cycle #84
+                                                </div>
+                                                <div id="regenStatus" class="regen-badge active">Status: Active</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="text-align:right;">
+                                        <div class="ap-unit">Next Regen In</div>
+                                        <div class="ap-val" style="font-size:1.4rem;">04h 12m</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Flow -->
+                            <div class="ap-card span-2" onclick="showDrill('Flow Analysis','flow')">
+                                <div class="ap-head"><span>Flow Rate</span> <span
+                                        style="color:var(--success)">Stable</span></div>
+                                <div style="display:flex; gap:2rem;">
+                                    <div>
+                                        <div class="ap-val" id="d-fin" style="color:#06b6d4">52.4</div>
+                                        <div class="ap-unit">Inlet (L/min)</div>
+                                    </div>
+                                    <div style="border-left:1px solid var(--border-glass); padding-left:2rem;">
+                                        <div class="ap-val" id="d-fout" style="color:#10b981">49.8</div>
+                                        <div class="ap-unit">Outlet (L/min)</div>
+                                    </div>
+                                </div>
+                                <div style="height:80px; width:100%; margin-top:1rem;"><canvas id="cFlow"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Total -->
+                            <div class="ap-card" onclick="showDrill('Total Yield','total')">
+                                <div class="ap-head"><span>Total Yield</span></div>
+                                <div class="ap-val" id="d-total">12,450</div>
+                                <div class="ap-unit">Liters Purified</div>
+                                <div style="height:40px; margin-top:auto;"><canvas id="cSpark"></canvas></div>
+                            </div>
+
+                            <!-- Recyclable -->
+                            <div class="ap-card" onclick="showDrill('Capacity','recyclable')">
+                                <div class="ap-head"><span>Capacity</span></div>
+                                <div class="ap-val">2,840</div>
+                                <div class="ap-unit">m³ / Month</div>
+                                <div style="margin-top:auto; font-size:0.8rem; color:var(--text-muted);">Projection: On
+                                    Target</div>
+                            </div>
+
+                            <!-- Arsenic -->
+                            <div class="ap-card" id="cardArs" onclick="showDrill('Arsenic','arsenic')">
+                                <div class="ap-head"><span>Arsenic</span></div>
+                                <div class="ap-val" id="d-ars">0.004</div>
+                                <div class="ap-unit">mg/L (Max 0.01)</div>
+                                <div
+                                    style="width:100%; height:6px; background:rgba(255,255,255,0.1); border-radius:3px; margin-top:15px;">
+                                    <div id="barArs"
+                                        style="width:40%; height:100%; background:var(--success); border-radius:3px; transition:0.3s;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Turbidity -->
+                            <div class="ap-card" onclick="showDrill('Turbidity','turbidity')">
+                                <div class="ap-head"><span>Turbidity</span></div>
+                                <div class="ap-val">1.2</div>
+                                <div class="ap-unit">NTU</div>
+                            </div>
+
+                            <!-- pH -->
+                            <div class="ap-card" onclick="showDrill('pH Level','ph')">
+                                <div class="ap-head"><span>pH Level</span></div>
+                                <div class="ap-val" id="d-ph">7.4</div>
+                                <div class="ap-unit">Optimal</div>
+                                <div
+                                    style="width:100%; height:6px; background:linear-gradient(90deg, #ef4444, #10b981, #ef4444); margin-top:15px; position:relative; border-radius:3px;">
+                                    <div id="markPh"
+                                        style="position:absolute; left:50%; top:-3px; width:4px; height:12px; background:white;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Minerals -->
+                            <div class="ap-card span-2" onclick="showDrill('Minerals','minerals')">
+                                <div class="ap-head"><span>Mineral Dosing</span></div>
+                                <div style="height:100px; width:100%;"><canvas id="cMin"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAB -->
+                    <div class="fab-cont">
+                        <button class="fab stop" id="fabMain" onclick="handleFab()">
+                            <i class="fa-solid fa-power-off"></i>
+                        </button>
+                    </div>
+
+                    <!-- Toasts -->
+                    <div class="toast-area" id="toastArea"></div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- IMPACT (REDESIGNED) -->
+        <section id="impact">
+            <h2>Global Impact</h2>
+            <p class="lead">Transforming the water landscape through measurable, data-driven outcomes.</p>
+
+            <div class="impact-showcase">
+                <div class="impact-list">
+                    <div class="impact-item">
+                        <div class="impact-val">85%</div>
+                        <div class="impact-label">Water Recovery</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-val">Zero</div>
+                        <div class="impact-label">Chemical Sludge</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-val">-60%</div>
+                        <div class="impact-label">Operational Cost</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-val">99.9%</div>
+                        <div class="impact-label">Arsenic Removal</div>
+                    </div>
+                </div>
+
+                <div class="impact-visual">
+                    <div style="position:absolute; top:20px; right:20px; color:var(--primary); font-size:2rem;"><i
+                            class="fa-solid fa-earth-americas"></i></div>
+                    <h3 style="margin-bottom:1rem; color:white;">Ecosystem Restoration</h3>
+                    <p style="color:var(--text-muted); margin-bottom:1.5rem; line-height:1.6;">
+                        By closing the loop on industrial water usage, HydroLoop significantly reduces the strain on
+                        freshwater aquifers. Our hybrid Mag-Chito system prevents toxic dyes and heavy metals from
+                        entering local river systems, allowing aquatic life to regenerate.
+                    </p>
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <div
+                            style="flex:1; height:8px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden;">
+                            <div
+                                style="width:75%; height:100%; background:linear-gradient(90deg, var(--primary), var(--secondary));">
+                            </div>
+                        </div>
+                        <span style="font-weight:700; color:white;">75% Goal Reached</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div
+                style="text-align:center; padding:3rem; border-top:1px solid var(--border-glass); color:var(--text-muted);">
+                &copy; 2025 HydroLoop | Advanced Water Intelligence
+            </div>
+        </footer>
+    </main>
+
+    <!-- MODALS -->
+    <!-- Drill -->
+    <div class="modal-overlay" id="modalDrill">
+        <div class="modal-box">
+            <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                <h3 id="drillTitle">Analysis</h3>
+                <button onclick="closeModals()"
+                    style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <div style="height:300px; width:100%;"><canvas id="cDrill"></canvas></div>
+        </div>
+    </div>
+    <!-- Stop -->
+    <div class="modal-overlay" id="modalStop">
+        <div class="modal-box" style="border-color:var(--danger); box-shadow:0 0 30px rgba(239,68,68,0.2);">
+            <h2 style="color:var(--danger);">EMERGENCY STOP</h2>
+            <p style="margin:1rem 0;">Are you sure you want to halt the process? Pumps will stop immediately.</p>
+            <div style="display:flex; justify-content:flex-end; gap:10px;">
+                <button onclick="closeModals()" class="btn btn-outline">Cancel</button>
+                <button onclick="confirmStop()" class="btn btn-primary"
+                    style="background:var(--danger); border:none;">STOP SYSTEM</button>
+            </div>
+        </div>
+    </div>
+    <!-- Restart -->
+    <div class="modal-overlay" id="modalRestart">
+        <div class="modal-box" style="border-color:var(--success); box-shadow:0 0 30px rgba(16,185,129,0.2);">
+            <h2 style="color:var(--success);">SYSTEM RESTART</h2>
+            <p style="margin:1rem 0;">Re-initialize sensors and start feed pumps?</p>
+            <div style="display:flex; justify-content:flex-end; gap:10px;">
+                <button onclick="closeModals()" class="btn btn-outline">Cancel</button>
+                <button onclick="confirmRestart()" class="btn btn-primary"
+                    style="background:var(--success); border:none; color:white;">RESTART</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIC -->
+    <script>
+        // Sidebar Toggles
+        function toggleMainSidebar() {
+            document.getElementById('mainSidebar').classList.toggle('collapsed');
+            document.getElementById('mainContent').classList.toggle('expanded');
+        }
+        function toggleApSidebar() {
+            document.getElementById('apSidebar').classList.toggle('collapsed');
+        }
+
+        // State & Logic
+        const state = { running: true, uv: false, regen: false };
+
+        function toggleUV() {
+            if (!state.running) return;
+            state.uv = !state.uv;
+            const btn = document.getElementById('uvBtn');
+            const txt = document.getElementById('uvState');
+            if (state.uv) {
+                btn.classList.add('active'); txt.innerText = "ACTIVE"; showToast("UV Matrix Online", "normal");
+            } else {
+                btn.classList.remove('active'); txt.innerText = "OFF";
+            }
+        }
+
+        function handleFab() {
+            if (state.running) openModal('modalStop');
+            else openModal('modalRestart');
+        }
+
+        function confirmStop() {
+            closeModals();
+            state.running = false;
+            document.querySelector('.ap-main').style.filter = "grayscale(100%)";
+            document.getElementById('apStatus').innerText = "SYSTEM STOPPED";
+            document.getElementById('apStatus').style.color = "var(--danger)";
+            document.getElementById('apDot').style.background = "var(--danger)";
+            const fab = document.getElementById('fabMain');
+            fab.className = "fab restart";
+            fab.innerHTML = '<i class="fa-solid fa-play"></i>';
+            showToast("System Halted", "critical");
+        }
+
+        function confirmRestart() {
+            closeModals();
+            state.running = true;
+            document.querySelector('.ap-main').style.filter = "none";
+            document.getElementById('apStatus').innerText = "System Healthy";
+            document.getElementById('apStatus').style.color = "var(--text-main)";
+            document.getElementById('apDot').style.background = "var(--success)";
+            const fab = document.getElementById('fabMain');
+            fab.className = "fab stop";
+            fab.innerHTML = '<i class="fa-solid fa-power-off"></i>';
+            showToast("System Restarted", "normal");
+        }
+
+        // Modals & Toasts
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); }
+
+        function showToast(msg, type) {
+            const area = document.getElementById('toastArea');
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            el.innerHTML = `<i class="fa-solid fa-info-circle"></i> ${msg}`;
+            area.appendChild(el);
+            setTimeout(() => el.classList.add('show'), 10);
+            setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3000);
+        }
+
+        // Charts
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
+        Chart.defaults.font.family = 'Inter';
+
+        const cFlow = new Chart(document.getElementById('cFlow'), {
+            type: 'line', data: { labels: Array(15).fill(''), datasets: [{ data: Array(15).fill(50), borderColor: '#06b6d4', tension: 0.4, borderWidth: 2, pointRadius: 0 }, { data: Array(15).fill(48), borderColor: '#10b981', tension: 0.4, borderWidth: 2, pointRadius: 0 }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { display: false } }
+        });
+
+        const cSpark = new Chart(document.getElementById('cSpark'), {
+            type: 'line', data: { labels: [1, 2, 3, 4, 5], datasets: [{ data: [10, 12, 15, 14, 18], borderColor: '#06b6d4', fill: true, backgroundColor: 'rgba(6,182,212,0.1)', pointRadius: 0 }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { display: false } }
+        });
+
+        const cMin = new Chart(document.getElementById('cMin'), {
+            type: 'bar', data: { labels: ['Ca', 'Mg', 'K'], datasets: [{ data: [12, 8, 5], backgroundColor: ['#3b82f6', '#8b5cf6', '#ec4899'], borderRadius: 4 }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+        });
+
+        let cDrill = new Chart(document.getElementById('cDrill'), {
+            type: 'line', data: { labels: [], datasets: [] }, options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        function showDrill(title, type) {
+            openModal('modalDrill');
+            document.getElementById('drillTitle').innerText = title;
+            // Mock Drill Data
+            const labels = ['10:00', '10:15', '10:30', '10:45', '11:00'];
+            let d, c;
+            if (type == 'flow') { d = [50, 52, 51, 53, 52]; c = '#06b6d4'; }
+            else if (type == 'arsenic') { d = [0.003, 0.004, 0.003, 0.005, 0.004]; c = '#ef4444'; }
+            else if (type == 'mag') { d = [98, 96, 95, 94, 94]; c = '#f59e0b'; }
+            else { d = [10, 20, 15, 25, 30]; c = '#a855f7'; }
+            cDrill.data.labels = labels;
+            cDrill.data.datasets = [{ label: title, data: d, borderColor: c, backgroundColor: c + '20', fill: true }];
+            cDrill.update();
+        }
+
+        // Simulation Loop
+        let magEff = 94.5;
+        let regenCount = 0;
+
+        setInterval(() => {
+            if (!state.running) return;
+
+            // Flow Logic
+            const fin = (50 + Math.random() * 5).toFixed(1);
+            const fout = (fin * 0.98).toFixed(1);
+            document.getElementById('d-fin').innerText = fin;
+            document.getElementById('d-fout').innerText = fout;
+            cFlow.data.datasets[0].data.push(fin); cFlow.data.datasets[0].data.shift();
+            cFlow.data.datasets[1].data.push(fout); cFlow.data.datasets[1].data.shift();
+            cFlow.update();
+
+            // Mag-Chito Logic
+            regenCount++;
+            if (regenCount > 20) {
+                // Trigger quick fake regen cycle
+                document.getElementById('regenStatus').className = "regen-badge cycle";
+                document.getElementById('regenStatus').innerText = "Regenerating...";
+                magEff = 99.9; // Reset
+                if (regenCount > 25) {
+                    regenCount = 0;
+                    document.getElementById('regenStatus').className = "regen-badge active";
+                    document.getElementById('regenStatus').innerText = "Status: Active";
+                    showToast("Mag-Chito Regeneration Complete", "success");
+                }
+            } else {
+                // Slowly degrade efficiency
+                magEff -= 0.05;
+            }
+
+            const effDisplay = magEff.toFixed(1) + "%";
+            document.getElementById('magEff').innerText = effDisplay;
+            // Update Gauge Gradient
+            document.getElementById('magGauge').style.background = `conic-gradient(var(--primary) 0%, var(--primary) ${magEff}%, rgba(255,255,255,0.1) ${magEff}%)`;
+
+
+            // Total Logic
+            let t = parseInt(document.getElementById('d-total').innerText.replace(',', ''));
+            t += 2; document.getElementById('d-total').innerText = t.toLocaleString();
+
+            // Ars Logic
+            let ars = (0.003 + Math.random() * 0.002).toFixed(3);
+            if (Math.random() > 0.98) ars = 0.012;
+            document.getElementById('d-ars').innerText = ars;
+            const bar = document.getElementById('barArs');
+            bar.style.width = (ars / 0.015) * 100 + '%';
+            if (ars > 0.01) { bar.style.background = 'var(--danger)'; document.getElementById('cardArs').classList.add('alert'); showToast("Arsenic Spike", "critical"); }
+            else { bar.style.background = 'var(--success)'; document.getElementById('cardArs').classList.remove('alert'); }
+
+            // pH Logic
+            let ph = (7.2 + (Math.random() * 0.4 - 0.2)).toFixed(1);
+            document.getElementById('d-ph').innerText = ph;
+            document.getElementById('markPh').style.left = ((ph - 6) / 3) * 100 + '%';
+
+        }, 2000);
+    </script>
+</body>
+
+</html>

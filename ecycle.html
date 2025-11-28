@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eCycle Micro-Factory Components</title>
+
+    <!-- Tailwind CSS for rapid, modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Config for Tailwind Colors/Fonts -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0f172a',      // Slate 900
+                            surface: '#1e293b',   // Slate 800
+                            accent: '#10b981',    // Emerald 500
+                            accentHover: '#059669',
+                            text: '#f8fafc',      // Slate 50
+                            muted: '#94a3b8'      // Slate 400
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        tech: ['Orbitron', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar for tech feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+
+        .hero-pattern {
+            background-image: radial-gradient(#334155 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Animations */
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-brand-dark text-brand-text font-sans antialiased">
+
+    <!-- ================= NAVIGATION ================= -->
+    <nav class="fixed w-full z-50 bg-brand-dark/95 backdrop-blur border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 cursor-pointer" onclick="navigate('home')">
+                    <span class="font-tech text-xl text-brand-accent tracking-wider">
+                        <i class="fa-solid fa-microchip"></i> eCycle <span class="text-white">Micro-Factory</span>
+                    </span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" onclick="navigate('home')"
+                            class="hover:text-brand-accent px-3 py-2 rounded-md font-medium transition">Home</a>
+                        <a href="#shop" onclick="navigate('shop')"
+                            class="hover:text-brand-accent px-3 py-2 rounded-md font-medium transition">Shop
+                            Components</a>
+                        <a href="#about" onclick="navigate('about')"
+                            class="hover:text-brand-accent px-3 py-2 rounded-md font-medium transition">The
+                            Technology</a>
+                        <a href="#contact" onclick="navigate('contact')"
+                            class="hover:text-brand-accent px-3 py-2 rounded-md font-medium transition">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Cart Button -->
+                <div class="relative cursor-pointer hover:text-brand-accent transition" onclick="toggleCart()">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="cart-count"
+                        class="absolute -top-2 -right-2 bg-brand-accent text-brand-dark text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </div>
+
+                <!-- Mobile Menu Button (Simplified for demo) -->
+                <div class="md:hidden ml-4">
+                    <button onclick="alert('Please use desktop view for full menu or scroll down.')"
+                        class="text-gray-400 hover:text-white">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main id="main-content" class="pt-16 min-h-screen">
+
+        <!-- === HOME SECTION === -->
+        <section id="home-section" class="block">
+            <div class="relative bg-brand-dark overflow-hidden hero-pattern">
+                <div class="max-w-7xl mx-auto">
+                    <div
+                        class="relative z-10 pb-8 bg-brand-dark sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32 bg-opacity-90 lg:bg-opacity-100">
+                        <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+                            <div class="sm:text-center lg:text-left animate-fade-in">
+                                <h1
+                                    class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl font-tech">
+                                    <span class="block xl:inline">Tested Components</span>
+                                    <span class="block text-brand-accent xl:inline">Recovered by AI</span>
+                                </h1>
+                                <p
+                                    class="mt-3 text-base text-gray-400 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                                    The eCycle Micro-Factory automatically identifies, desolders, and tests high-quality
+                                    components from e-waste PCBs. Reliable, sustainable, and ready for your next
+                                    project.
+                                </p>
+                                <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                                    <div class="rounded-md shadow">
+                                        <button onclick="navigate('shop')"
+                                            class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-brand-dark bg-brand-accent hover:bg-brand-accentHover md:py-4 md:text-lg transition">
+                                            Shop Components
+                                        </button>
+                                    </div>
+                                    <div class="mt-3 sm:mt-0 sm:ml-3">
+                                        <button onclick="navigate('about')"
+                                            class="w-full flex items-center justify-center px-8 py-3 border border-gray-600 text-base font-medium rounded-md text-brand-text bg-brand-surface hover:bg-gray-700 md:py-4 md:text-lg transition">
+                                            How It Works
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+                <!-- Abstract tech background visual -->
+                <div
+                    class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-brand-surface flex items-center justify-center overflow-hidden">
+                    <i class="fa-solid fa-microchip text-[15rem] text-brand-dark drop-shadow-lg opacity-50"></i>
+                    <div class="absolute inset-0 bg-gradient-to-r from-brand-dark to-transparent"></div>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="py-12 bg-brand-surface">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        <div class="p-6 bg-brand-dark rounded-lg border border-gray-800">
+                            <i class="fa-solid fa-recycle text-4xl text-brand-accent mb-4"></i>
+                            <h3 class="text-xl font-bold mb-2">Circular Economy</h3>
+                            <p class="text-gray-400">Stopping e-waste from entering landfills by giving functional chips
+                                a second life.</p>
+                        </div>
+                        <div class="p-6 bg-brand-dark rounded-lg border border-gray-800">
+                            <i class="fa-solid fa-robot text-4xl text-brand-accent mb-4"></i>
+                            <h3 class="text-xl font-bold mb-2">AI Recovered</h3>
+                            <p class="text-gray-400">Our compact factory uses computer vision to inspect and precision
+                                robotics to harvest parts.</p>
+                        </div>
+                        <div class="p-6 bg-brand-dark rounded-lg border border-gray-800">
+                            <i class="fa-solid fa-check-circle text-4xl text-brand-accent mb-4"></i>
+                            <h3 class="text-xl font-bold mb-2">Tested & Guaranteed</h3>
+                            <p class="text-gray-400">Every component is electrically tested before listing. Quality you
+                                can trust.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- === SHOP SECTION === -->
+        <section id="shop-section" class="hidden py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-8 text-center">
+                <h2 class="text-3xl font-tech font-bold text-white">Component Catalog</h2>
+                <p class="text-brand-muted mt-2">Genuine recycled parts. Tested. Stock varies daily.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Sidebar Filters -->
+                <aside class="w-full md:w-1/4 bg-brand-surface p-4 rounded-lg border border-gray-700 h-fit">
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Search</label>
+                        <input type="text" id="search-input" placeholder="Part # (e.g., LM358)"
+                            class="w-full bg-brand-dark border border-gray-600 rounded p-2 text-white focus:outline-none focus:border-brand-accent">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Sort By</label>
+                        <select id="sort-select"
+                            class="w-full bg-brand-dark border border-gray-600 rounded p-2 text-white focus:outline-none">
+                            <option value="default">Default</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="name">Name (A-Z)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Category</label>
+                        <ul id="category-list" class="space-y-2">
+                            <!-- Categories injected by JS -->
+                        </ul>
+                    </div>
+                </aside>
+
+                <!-- Product Grid -->
+                <div class="w-full md:w-3/4">
+                    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Products injected by JS -->
+                    </div>
+                    <div id="no-results" class="hidden text-center py-10 text-gray-400">
+                        <i class="fa-solid fa-search text-4xl mb-3"></i>
+                        <p>No components found matching your criteria.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- === ABOUT SECTION === -->
+        <section id="about-section" class="hidden py-12 bg-brand-surface">
+            <div class="max-w-4xl mx-auto px-4">
+                <h2 class="text-3xl font-tech font-bold mb-6 text-brand-accent">Inside The Micro-Factory</h2>
+
+                <div class="space-y-6 text-gray-300 text-lg leading-relaxed">
+                    <p>
+                        The <strong>eCycle Micro-Factory</strong> is a revolutionary, containerized system designed to
+                        tackle the global e-waste crisis. Instead of shredding circuit boards for raw metals—a process
+                        that destroys high-value engineered components—our system carefully disassembles them.
+                    </p>
+                    <div
+                        class="my-8 rounded-lg overflow-hidden border border-gray-700 bg-brand-dark h-64 flex items-center justify-center relative">
+                        <!-- Placeholder for schematic/video -->
+                        <div class="text-center">
+                            <i class="fa-solid fa-microscope text-6xl text-brand-muted opacity-50 mb-2"></i>
+                            <p class="text-sm text-gray-500">AI Visual Scanning & Desoldering Process</p>
+                        </div>
+                    </div>
+                    <p>
+                        <strong>How it works:</strong>
+                    <ol class="list-decimal pl-6 space-y-2 mt-2">
+                        <li><span class="text-white font-bold">Scan:</span> Computer vision identifies valuable chips on
+                            scrap PCBs.</li>
+                        <li><span class="text-white font-bold">Desolder:</span> Precision localized heating removes the
+                            part without thermal damage.</li>
+                        <li><span class="text-white font-bold">Clean:</span> Pins are cleaned and re-tinned
+                            automatically.</li>
+                        <li><span class="text-white font-bold">Test:</span> The component is placed in a test jig to
+                            verify voltage, capacitance, or logic functions.</li>
+                    </ol>
+                    </p>
+                    <p>
+                        By buying from us, you support a future where electronics are designed for longevity and reuse,
+                        not obsolescence.
+                    </p>
+                </div>
+            </div>
+            <!-- === START NEW TECHNICAL SPECS SECTION === -->
+            <div class="mt-16 pt-10 border-t border-gray-700 animate-fade-in">
+
+                <h3 class="text-3xl font-tech font-bold text-white mb-8 text-center">
+                    Technical <span class="text-brand-accent">Specifications</span>
+                </h3>
+
+                <!-- Tech Specs Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+
+                    <!-- Hardware Column -->
+                    <div
+                        class="bg-brand-dark p-6 rounded-xl border border-gray-700 shadow-lg hover:border-brand-accent transition duration-300">
+                        <div class="flex items-center mb-6">
+                            <div class="p-3 bg-brand-surface rounded-lg text-brand-accent mr-4">
+                                <i class="fa-solid fa-server text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white font-tech">Hardware Components</h4>
+                        </div>
+
+                        <ul class="space-y-6">
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-eye text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Vision
+                                        System</strong>
+                                    <span class="text-gray-400 text-sm">High-resolution camera (e.g., 12MP USB camera)
+                                        with LED lighting for scanning PCBs up to 30cm x 30cm.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-fire-burner text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Heating
+                                        Module</strong>
+                                    <span class="text-gray-400 text-sm">Infrared or hot-air station (controlled to
+                                        150-250°C) to melt solder without damaging parts.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-robot text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Robotic
+                                        Arm</strong>
+                                    <span class="text-gray-400 text-sm">Affordable 4-6 DOF arm (e.g., based on Arduino
+                                        or Raspberry Pi) with vacuum/suction grippers for gentle removal.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-filter text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Sorting
+                                        System</strong>
+                                    <span class="text-gray-400 text-sm">Conveyor or vibrating trays with sensors (e.g.,
+                                        weight, size) to categorize parts into 10-20 bins.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-bolt text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Testing
+                                        Station</strong>
+                                    <span class="text-gray-400 text-sm">Multimeter integration for basic checks
+                                        (continuity, voltage); optional add-ons for JTAG or functional testing.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-box text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Enclosure</strong>
+                                    <span class="text-gray-400 text-sm">Ventilated safety case with fume extraction to
+                                        handle minor emissions.</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Software Column -->
+                    <div
+                        class="bg-brand-dark p-6 rounded-xl border border-gray-700 shadow-lg hover:border-brand-accent transition duration-300 h-fit">
+                        <div class="flex items-center mb-6">
+                            <div class="p-3 bg-brand-surface rounded-lg text-brand-accent mr-4">
+                                <i class="fa-solid fa-code text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white font-tech">Software Stack</h4>
+                        </div>
+
+                        <ul class="space-y-6">
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-brain text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong class="text-brand-accent block text-sm font-tech uppercase tracking-wide">AI
+                                        Model</strong>
+                                    <span class="text-gray-400 text-sm">Pre-trained on datasets like OpenCV for
+                                        component detection; user-trainable for custom PCBs.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-terminal text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Control
+                                        Software</strong>
+                                    <span class="text-gray-400 text-sm">Python-based GUI on a Raspberry Pi or mini-PC,
+                                        handling workflow from scan to marketplace upload.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-store text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Marketplace
+                                        Backend</strong>
+                                    <span class="text-gray-400 text-sm">Web app (e.g., using Flask/Django) with API for
+                                        listings, payments, and shipping integration.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-shield-halved text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Data
+                                        Security</strong>
+                                    <span class="text-gray-400 text-sm">Encrypted uploads; optional NFT-style
+                                        certification for part authenticity.</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <!-- Decorative Element -->
+                        <div
+                            class="mt-8 p-4 bg-gray-900 rounded border border-gray-800 flex justify-between items-center opacity-75">
+                            <div class="text-xs text-gray-500 font-mono">
+                                > SYSTEM STATUS: <span class="text-green-500">ONLINE</span><br>
+                                > AI CONFIDENCE: <span class="text-green-500">98.4%</span>
+                            </div>
+                            <i class="fa-solid fa-wifi text-brand-muted"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workflow Section -->
+                <div class="relative">
+                    <h3 class="text-3xl font-tech font-bold text-white mb-10 text-center">
+                        Operational <span class="text-brand-accent">Workflow</span>
+                    </h3>
+
+                    <!-- Timeline Container -->
+                    <div class="border-l-2 border-brand-accent/30 ml-4 md:ml-10 space-y-10 pl-6 md:pl-10 pb-4">
+
+                        <!-- Step 1 -->
+                        <div class="relative">
+                            <span
+                                class="absolute -left-[3rem] md:-left-[3.6rem] bg-brand-dark border-2 border-brand-accent text-brand-accent w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">1</span>
+                            <h5 class="text-white font-bold text-lg mb-1">Input</h5>
+                            <p class="text-gray-400 text-sm">User loads PCB into the machine fixture.</p>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="relative">
+                            <span
+                                class="absolute -left-[3rem] md:-left-[3.6rem] bg-brand-dark border-2 border-brand-accent text-brand-accent w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">2</span>
+                            <h5 class="text-white font-bold text-lg mb-1">Scanning</h5>
+                            <p class="text-gray-400 text-sm">AI identifies components (e.g., ICs, capacitors) and maps
+                                their positions via coordinate system.</p>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="relative">
+                            <span
+                                class="absolute -left-[3rem] md:-left-[3.6rem] bg-brand-dark border-2 border-brand-accent text-brand-accent w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">3</span>
+                            <h5 class="text-white font-bold text-lg mb-1">Depopulation</h5>
+                            <p class="text-gray-400 text-sm">Targeted heating loosens solder; robotic arm removes parts
+                                sequentially without thermal stress.</p>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="relative">
+                            <span
+                                class="absolute -left-[3rem] md:-left-[3.6rem] bg-brand-dark border-2 border-brand-accent text-brand-accent w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">4</span>
+                            <h5 class="text-white font-bold text-lg mb-1">Sorting</h5>
+                            <p class="text-gray-400 text-sm">Parts drop into categorized trays (bins 1-20) based on
+                                real-time AI classification.</p>
+                        </div>
+
+                        <!-- Step 5 -->
+                        <div class="relative">
+                            <span
+                                class="absolute -left-[3rem] md:-left-[3.6rem] bg-brand-dark border-2 border-brand-accent text-brand-accent w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">5</span>
+                            <h5 class="text-white font-bold text-lg mb-1">Testing</h5>
+                            <p class="text-gray-400 text-sm">Quick electrical tests performed; failed parts routed to
+                                metal recovery bin, valid parts certified.</p>
+                        </div>
+
+                        <!-- Step 6 -->
+                        <div class="relative">
+                            <span
+                                class="absolute -left-[3rem] md:-left-[3.6rem] bg-brand-dark border-2 border-brand-accent text-brand-accent w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">6</span>
+                            <h5 class="text-white font-bold text-lg mb-1">Cataloging & Upload</h5>
+                            <p class="text-gray-400 text-sm">Photos, specs, and test results auto-generated; QR label
+                                printed. Parts listed to marketplace with dynamic pricing (50-70% off MSRP).</p>
+                        </div>
+
+                        <!-- Step 7 -->
+                        <div class="relative">
+                            <span
+                                class="absolute -left-[3rem] md:-left-[3.6rem] bg-brand-surface border-2 border-gray-600 text-gray-500 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm"><i
+                                    class="fa-solid fa-check"></i></span>
+                            <h5 class="text-white font-bold text-lg mb-1">Output</h5>
+                            <p class="text-gray-400 text-sm">Bare PCB ejected for optional copper/gold extraction.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- === END NEW SECTION === -->
+        </section>
+
+        <!-- === CONTACT SECTION === -->
+        <section id="contact-section" class="hidden py-12">
+            <div class="max-w-3xl mx-auto px-4">
+                <h2 class="text-3xl font-tech font-bold mb-8 text-center">Contact Us</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-brand-surface p-6 rounded-lg border border-gray-700">
+                        <h3 class="text-xl font-bold mb-4 text-brand-accent">Get in Touch</h3>
+                        <p class="text-gray-400 mb-4">Have bulk e-waste to donate or need specific parts?</p>
+                        <ul class="space-y-3 text-gray-300">
+                            <li><i class="fa-solid fa-envelope mr-2"></i> hello@ecyclemicrofactory.com</li>
+                            <li><i class="fa-solid fa-location-dot mr-2"></i> Tech Hub, Eco District, BD</li>
+                            <li><i class="fa-solid fa-phone mr-2"></i> +1 (555) 012-3456</li>
+                        </ul>
+                    </div>
+                    <form onsubmit="event.preventDefault(); alert('Message sent! We will reply shortly.');"
+                        class="space-y-4">
+                        <input type="text" placeholder="Your Name"
+                            class="w-full bg-brand-surface border border-gray-600 p-3 rounded text-white focus:border-brand-accent outline-none"
+                            required>
+                        <input type="email" placeholder="Your Email"
+                            class="w-full bg-brand-surface border border-gray-600 p-3 rounded text-white focus:border-brand-accent outline-none"
+                            required>
+                        <textarea rows="4" placeholder="Message"
+                            class="w-full bg-brand-surface border border-gray-600 p-3 rounded text-white focus:border-brand-accent outline-none"
+                            required></textarea>
+                        <button type="submit"
+                            class="w-full bg-brand-accent text-brand-dark font-bold py-3 rounded hover:bg-brand-accentHover transition">Send
+                            Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-brand-surface border-t border-gray-800 py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0 text-center md:text-left">
+                <span class="font-tech text-lg text-brand-accent">eCycle Micro-Factory</span>
+                <p class="text-gray-500 text-sm mt-1">Recovering the future, one chip at a time.</p>
+            </div>
+            <div class="flex space-x-6 text-gray-400">
+                <a href="#" class="hover:text-white"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="hover:text-white"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="hover:text-white"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+        <div class="text-center text-gray-600 text-xs mt-8">
+            &copy; 2025 eCycle Micro-Factory. All Rights Reserved. <br>
+            <span class="text-brand-accent/50">Project for Sustainability & Innovation.</span>
+        </div>
+    </footer>
+
+    <!-- ================= MODALS & OVERLAYS ================= -->
+
+    <!-- Product Detail Modal -->
+    <div id="product-modal" class="fixed inset-0 z-[60] hidden overflow-y-auto" aria-labelledby="modal-title"
+        role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background Overlay -->
+            <div class="fixed inset-0 bg-black bg-opacity-75 transition-opacity" aria-hidden="true"
+                onclick="closeModal()"></div>
+
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div
+                class="relative inline-block align-bottom bg-brand-surface rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-gray-700">
+                <div class="bg-brand-surface px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div
+                            class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-brand-dark sm:mx-0 sm:h-10 sm:w-10 text-brand-accent border border-brand-accent">
+                            <i class="fa-solid fa-microchip"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-white font-tech" id="modal-title">Product Name
+                            </h3>
+                            <div class="mt-1">
+                                <span id="modal-category"
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-700 text-gray-300">Category</span>
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-accent/20 text-brand-accent border border-brand-accent/50 ml-2">Recovered
+                                    & Tested</span>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-sm text-gray-400" id="modal-desc">Description goes here.</p>
+                                <div class="mt-4 bg-brand-dark p-3 rounded border border-gray-700">
+                                    <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wide">Technical Specs
+                                    </h4>
+                                    <ul id="modal-specs" class="mt-2 text-sm text-gray-400 list-disc list-inside">
+                                        <!-- Specs populated by JS -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="bg-brand-dark/50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse justify-between items-center border-t border-gray-700">
+                    <div class="flex items-center space-x-4 mb-3 sm:mb-0">
+                        <span id="modal-price" class="text-xl font-bold text-white">$0.00</span>
+                        <button type="button" id="modal-add-btn"
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brand-accent text-base font-medium text-brand-dark hover:bg-brand-accentHover focus:outline-none sm:w-auto sm:text-sm">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <button type="button" onclick="closeModal()"
+                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-600 shadow-sm px-4 py-2 bg-transparent text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar/Modal -->
+    <div id="cart-overlay" class="fixed inset-0 overflow-hidden z-[70] hidden">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute inset-0 bg-gray-900 bg-opacity-75 transition-opacity" onclick="toggleCart()"></div>
+            <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex">
+                <div class="w-screen max-w-md">
+                    <div class="h-full flex flex-col bg-brand-surface shadow-xl border-l border-gray-700">
+                        <div class="flex-1 py-6 overflow-y-auto px-4 sm:px-6">
+                            <div class="flex items-start justify-between">
+                                <h2 class="text-lg font-medium text-white font-tech">Your Cart</h2>
+                                <div class="ml-3 h-7 flex items-center">
+                                    <button type="button" class="-m-2 p-2 text-gray-400 hover:text-white"
+                                        onclick="toggleCart()">
+                                        <span class="sr-only">Close panel</span>
+                                        <i class="fa-solid fa-xmark text-xl"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mt-8">
+                                <div class="flow-root">
+                                    <ul id="cart-items" role="list" class="-my-6 divide-y divide-gray-700">
+                                        <!-- Cart items injected here -->
+                                        <li id="empty-cart-msg" class="py-6 text-center text-gray-500">
+                                            Your cart is empty.
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-gray-700 py-6 px-4 sm:px-6 bg-brand-dark">
+                            <div class="flex justify-between text-base font-medium text-white">
+                                <p>Subtotal</p>
+                                <p id="cart-total">$0.00</p>
+                            </div>
+                            <p class="mt-0.5 text-sm text-gray-400">Shipping calculated at checkout.</p>
+                            <div class="mt-6">
+                                <a href="#" onclick="checkout()"
+                                    class="flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-brand-dark bg-brand-accent hover:bg-brand-accentHover">Checkout</a>
+                            </div>
+                            <div class="mt-6 flex justify-center text-sm text-center text-gray-400">
+                                <p>
+                                    or <button type="button"
+                                        class="text-brand-accent font-medium hover:text-brand-accentHover"
+                                        onclick="toggleCart()">Continue Shopping<span aria-hidden="true">
+                                            &rarr;</span></button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // --- DATA SECTION: Product Catalog ---
+        // Prices converted to BDT (Approx Rate: 1 USD = 120 BDT)
+        const products = [
+            // MOSFETs
+            { id: 101, name: 'AO3400', category: 'MOSFET', price: 18, description: 'N-Channel Enhancement Mode Field Effect Transistor.', specs: ['30V Drain-Source', '5.8A Continuous Current', 'SOT-23 Package'] },
+            { id: 102, name: 'AO3401', category: 'MOSFET', price: 18, description: 'P-Channel Enhancement Mode Field Effect Transistor.', specs: ['30V Drain-Source', '4.2A Continuous Current', 'SOT-23 Package'] },
+            { id: 103, name: 'SI2302', category: 'MOSFET', price: 14, description: 'N-Channel MOSFET, logic level.', specs: ['20V', '2.8A', 'SOT-23'] },
+            { id: 104, name: 'SI2308', category: 'MOSFET', price: 17, description: 'N-Channel MOSFET.', specs: ['60V', '2A', 'SOT-23'] },
+            { id: 105, name: '8205A', category: 'MOSFET', price: 24, description: 'Dual N-Channel MOSFET commonly used in battery protection.', specs: ['20V', '6A', 'TSSOP-8'] },
+            { id: 106, name: 'IRF540N', category: 'MOSFET', price: 102, description: 'Power MOSFET for high current switching.', specs: ['100V', '33A', 'TO-220'] },
+            { id: 107, name: 'P75N02', category: 'MOSFET', price: 108, description: 'N-Channel Power MOSFET.', specs: ['25V', '75A', 'TO-220'] },
+            { id: 108, name: 'IRF9540', category: 'MOSFET', price: 114, description: 'P-Channel Power MOSFET.', specs: ['100V', '23A', 'TO-220'] },
+
+            // Power/Charging ICs
+            { id: 201, name: 'BQ24725', category: 'Power IC', price: 300, description: 'SMBus Battery Charge Controller.', specs: ['1-4 Cells', 'NMOS Driver', 'VQFN-20'] },
+            { id: 202, name: 'BQ24610', category: 'Power IC', price: 360, description: 'Standalone Li-Ion Battery Charger.', specs: ['Sync Switched-Mode', '600kHz', 'VQFN-24'] },
+            { id: 203, name: 'TPS51125', category: 'Power IC', price: 216, description: 'Dual Synchronous Step-Down Controller.', specs: ['Notebook Power', '3.3V/5V LDO', 'QFN-24'] },
+            { id: 204, name: 'ISL88739', category: 'Power IC', price: 540, description: 'Hybrid Power Boost Battery Charger.', specs: ['USB-PD Support', 'QFN-32'] },
+            { id: 205, name: 'MAX8731', category: 'Power IC', price: 264, description: 'SMBus Level 2 Battery Charger.', specs: ['Laptop Charging', '28-QSOP'] },
+            { id: 206, name: 'RT8206', category: 'Power IC', price: 180, description: 'High Efficiency Main Power Supply Controller.', specs: ['Dual Buck', 'QFN-32'] },
+            { id: 207, name: 'OZ8555', category: 'Power IC', price: 144, description: 'Battery Management Unit.', specs: ['O2Micro', 'QFN Package'] },
+
+            // Audio Amp IC
+            { id: 301, name: 'PAM8403', category: 'Audio Amp', price: 60, description: 'Filterless Class-D Stereo Audio Amplifier.', specs: ['3W Output', '5V Supply', 'SOP-16'] },
+            { id: 302, name: '8002A', category: 'Audio Amp', price: 42, description: '3W Audio Power Amplifier.', specs: ['Class AB', 'SOP-8'] },
+            { id: 303, name: '8002B', category: 'Audio Amp', price: 42, description: 'Bridge Audio Power Amplifier.', specs: ['3W', 'SOP-8'] },
+            { id: 304, name: 'TPA3110', category: 'Audio Amp', price: 132, description: '15W Filter-Free Class-D Stereo Amp.', specs: ['15W/Ch', 'SpeakerGuard', 'TSSOP-28'] },
+            { id: 305, name: 'AW8738', category: 'Audio Amp', price: 108, description: 'High Efficiency Class K Audio Amp.', specs: ['Mobile Audio', 'CSP'] },
+            { id: 306, name: 'TFA9882', category: 'Audio Amp', price: 180, description: 'Smart Audio Amplifier.', specs: ['Class-D', 'High Fidelity'] },
+
+            // Voltage Regulator
+            { id: 401, name: 'AMS1117-3.3', category: 'Regulator', price: 12, description: 'Low Dropout Voltage Regulator.', specs: ['3.3V Fixed', '1A Current', 'SOT-223'] },
+            { id: 402, name: 'AMS1117-5.0', category: 'Regulator', price: 12, description: 'Low Dropout Voltage Regulator.', specs: ['5.0V Fixed', '1A Current', 'SOT-223'] },
+            { id: 403, name: 'AP2112', category: 'Regulator', price: 30, description: 'CMOS LDO Regulator.', specs: ['3.3V', '600mA', 'SOT-23-5'] },
+            { id: 404, name: 'RT9013', category: 'Regulator', price: 24, description: 'Low Noise LDO.', specs: ['500mA', 'Portable Devices', 'SOT-23'] },
+            { id: 405, name: 'MIC5219', category: 'Regulator', price: 36, description: 'Peak Output LDO Regulator.', specs: ['500mA Peak', 'Tiny Package'] },
+
+            // Tantalum Capacitor
+            { id: 501, name: '100µF 16V', category: 'Capacitor', price: 48, description: 'SMD Tantalum Capacitor.', specs: ['100µF', '16V', 'Case Type C/D'] },
+            { id: 502, name: '220µF 10V', category: 'Capacitor', price: 54, description: 'High Capacitance Tantalum.', specs: ['220µF', '10V', 'Low ESR'] },
+            { id: 503, name: '470µF 6.3V', category: 'Capacitor', price: 60, description: 'High Capacitance Tantalum.', specs: ['470µF', '6.3V', 'Polymer Option'] },
+            { id: 504, name: '330µF 6.3V', category: 'Capacitor', price: 54, description: 'SMD Tantalum Capacitor.', specs: ['330µF', '6.3V'] },
+
+            // SMD Diode
+            { id: 601, name: 'SS34', category: 'Diode', price: 10, description: 'Schottky Barrier Rectifier.', specs: ['3A', '40V', 'SMA/SMB'] },
+            { id: 602, name: 'SS14', category: 'Diode', price: 7, description: 'Schottky Rectifier.', specs: ['1A', '40V', 'SMA'] },
+            { id: 603, name: 'M7', category: 'Diode', price: 6, description: 'General Purpose Rectifier (1N4007 equivalent).', specs: ['1A', '1000V', 'SMA'] },
+            { id: 604, name: 'S1M', category: 'Diode', price: 7, description: 'Surface Mount Rectifier.', specs: ['1A', '1000V', 'SMA'] },
+
+            // Crystal Oscillator
+            { id: 701, name: '16.000 MHz', category: 'Crystal', price: 24, description: 'Quartz Crystal Resonator.', specs: ['16MHz', 'SMD 3225/5032'] },
+            { id: 702, name: '12.000 MHz', category: 'Crystal', price: 24, description: 'Quartz Crystal Resonator.', specs: ['12MHz', 'SMD'] },
+            { id: 703, name: '8.000 MHz', category: 'Crystal', price: 24, description: 'Quartz Crystal Resonator.', specs: ['8MHz', 'SMD'] },
+            { id: 704, name: '25.000 MHz', category: 'Crystal', price: 24, description: 'Quartz Crystal Resonator.', specs: ['25MHz', 'Network Clocks'] },
+            { id: 705, name: '32.768 kHz', category: 'Crystal', price: 18, description: 'RTC Crystal.', specs: ['32.768kHz', 'Timekeeping'] },
+
+            // Optocoupler
+            { id: 801, name: 'PC817', category: 'Optocoupler', price: 12, description: 'General Purpose Photocoupler.', specs: ['4-pin', 'DIP/SMD', 'High Isolation'] },
+
+            // Small IC
+            { id: 901, name: 'LM358', category: 'Small IC', price: 18, description: 'Dual Operational Amplifier.', specs: ['Low Power', '3V-32V', 'SOP-8'] },
+            { id: 902, name: 'NE555', category: 'Small IC', price: 18, description: 'Precision Timer.', specs: ['Oscillator/Pulse Gen', 'SOP-8'] },
+            { id: 903, name: 'ULN2003', category: 'Small IC', price: 30, description: 'Darlington Transistor Array.', specs: ['50V', '500mA', 'SOP-16'] },
+            { id: 904, name: '24C02', category: 'Small IC', price: 14, description: 'EEPROM Memory.', specs: ['2K bit', 'I2C', 'SOP-8'] },
+            { id: 905, name: '74HC595', category: 'Small IC', price: 24, description: '8-bit Shift Register.', specs: ['Serial-In/Parallel-Out', 'SOP-16'] },
+
+            // Inductor/Coil
+            { id: 1001, name: '2.2µH', category: 'Inductor', price: 36, description: 'SMD Power Inductor.', specs: ['2.2µH', 'Shielded', 'High Current'] },
+            { id: 1002, name: '4.7µH', category: 'Inductor', price: 36, description: 'SMD Power Inductor.', specs: ['4.7µH', 'Shielded'] },
+            { id: 1003, name: '10µH', category: 'Inductor', price: 36, description: 'SMD Power Inductor.', specs: ['10µH', 'Shielded'] },
+            { id: 1004, name: '22µH', category: 'Inductor', price: 42, description: 'SMD Power Inductor.', specs: ['22µH', 'Shielded'] },
+
+            // Fuse
+            { id: 1101, name: 'Fuse 0402', category: 'Fuse', price: 6, description: 'SMD Chip Fuse.', specs: ['1A-5A Range', 'Fast Acting', '0402 Package'] },
+            { id: 1102, name: 'PPTC', category: 'Fuse', price: 18, description: 'Resettable Fuse.', specs: ['1A-10A', 'Polyfuse', 'SMD'] },
+
+            // Phone specific
+            { id: 1201, name: 'LP2992', category: 'Phone IC', price: 72, description: 'Micropower LDO.', specs: ['Backlight Power', 'Low Noise'] },
+            { id: 1202, name: 'AW9364', category: 'Phone IC', price: 96, description: 'White LED Driver.', specs: ['Backlight Driver', 'Charge Pump'] },
+            { id: 1203, name: 'SY7068', category: 'Phone IC', price: 84, description: 'Boost Converter.', specs: ['Power Mgmt', 'SOT-23-6'] },
+            { id: 1204, name: 'BQ25895', category: 'Phone IC', price: 336, description: 'Switch-Mode Battery Charge & System Power Path.', specs: ['Fast Charge', 'I2C'] },
+            { id: 1205, name: 'BQ25601', category: 'Phone IC', price: 300, description: 'Single Cell Charger.', specs: ['3A', 'Boost Mode'] },
+            { id: 1206, name: 'ETA9742', category: 'Phone IC', price: 144, description: 'Power Bank IC.', specs: ['Li-Ion Charging', '5V Boost'] }
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let cart = []; // Array of {product, quantity}
+        let currentCategory = 'All';
+        let searchQuery = '';
+        let sortOption = 'default';
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            renderProducts();
+
+            // Event Listeners for Filters
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase();
+                renderProducts();
+            });
+
+            document.getElementById('sort-select').addEventListener('change', (e) => {
+                sortOption = e.target.value;
+                renderProducts();
+            });
+        });
+
+        // --- NAVIGATION LOGIC ---
+        function navigate(sectionId) {
+            // Hide all sections
+            document.getElementById('home-section').classList.add('hidden');
+            document.getElementById('shop-section').classList.add('hidden');
+            document.getElementById('about-section').classList.add('hidden');
+            document.getElementById('contact-section').classList.add('hidden');
+
+            // Show selected
+            document.getElementById(`${sectionId}-section`).classList.remove('hidden');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // --- RENDER FUNCTIONS ---
+
+        function renderCategories() {
+            const categories = ['All', ...new Set(products.map(p => p.category))].sort();
+            const container = document.getElementById('category-list');
+
+            container.innerHTML = categories.map(cat => `
+            <li>
+                <button 
+                    onclick="setCategory('${cat}')" 
+                    class="w-full text-left px-3 py-2 rounded text-sm transition ${currentCategory === cat ? 'bg-brand-accent text-brand-dark font-bold' : 'text-gray-400 hover:text-white hover:bg-gray-700'}"
+                >
+                    ${cat}
+                </button>
+            </li>
+        `).join('');
+        }
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            renderCategories(); // Re-render to update active style
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            const noResults = document.getElementById('no-results');
+
+            // 1. Filter
+            let filtered = products.filter(p => {
+                const matchCat = currentCategory === 'All' || p.category === currentCategory;
+                const matchSearch = p.name.toLowerCase().includes(searchQuery) ||
+                    p.description.toLowerCase().includes(searchQuery);
+                return matchCat && matchSearch;
+            });
+
+            // 2. Sort
+            if (sortOption === 'price-low') filtered.sort((a, b) => a.price - b.price);
+            if (sortOption === 'price-high') filtered.sort((a, b) => b.price - a.price);
+            if (sortOption === 'name') filtered.sort((a, b) => a.name.localeCompare(b.name));
+
+            // 3. Render
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                grid.innerHTML = filtered.map(product => `
+                <div class="bg-brand-surface rounded-lg shadow-md hover:shadow-xl hover:border-brand-accent border border-gray-700 transition flex flex-col overflow-hidden group">
+                    <div class="h-32 bg-gray-900 flex items-center justify-center relative">
+                         <!-- Placeholder Image Generator -->
+                        <i class="fa-solid fa-microchip text-5xl text-gray-700 group-hover:text-brand-accent transition"></i>
+                        <div class="absolute top-2 right-2">
+                            <span class="bg-brand-accent/10 text-brand-accent text-xs font-bold px-2 py-1 rounded border border-brand-accent/20">Tested</span>
+                        </div>
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col">
+                        <div class="text-xs text-brand-muted mb-1">${product.category}</div>
+                        <h3 class="text-lg font-bold text-white mb-1 cursor-pointer hover:text-brand-accent" onclick="openProductModal(${product.id})">${product.name}</h3>
+                        <p class="text-sm text-gray-400 mb-4 line-clamp-2">${product.description}</p>
+                        
+                        <div class="mt-auto flex items-center justify-between">
+                            <span class="text-lg font-bold text-white">৳${product.price}</span>
+                            <button onclick="addToCart(${product.id})" class="bg-brand-dark border border-gray-600 hover:bg-brand-accent hover:text-brand-dark hover:border-brand-accent text-white px-3 py-1.5 rounded text-sm transition">
+                                Add <i class="fa-solid fa-plus ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            }
+        }
+
+        // --- CART LOGIC ---
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.product.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ product, quantity: 1 });
+            }
+
+            updateCartUI();
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.product.id !== productId);
+            updateCartUI();
+        }
+
+        function updateQuantity(productId, change) {
+            const item = cart.find(i => i.product.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) removeFromCart(productId);
+                else updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            // Update badge
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').innerText = count;
+
+            // Render list
+            const cartList = document.getElementById('cart-items');
+            const emptyMsg = document.getElementById('empty-cart-msg');
+            const totalEl = document.getElementById('cart-total');
+
+            if (cart.length === 0) {
+                cartList.innerHTML = '';
+                cartList.appendChild(emptyMsg);
+                emptyMsg.classList.remove('hidden');
+                totalEl.innerText = '৳0';
+                return;
+            }
+
+            emptyMsg.classList.add('hidden');
+            let total = 0;
+
+            cartList.innerHTML = cart.map(item => {
+                const itemTotal = item.product.price * item.quantity;
+                total += itemTotal;
+                return `
+                <li class="flex py-6">
+                    <div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-600 bg-gray-800 flex items-center justify-center">
+                         <i class="fa-solid fa-microchip text-2xl text-gray-500"></i>
+                    </div>
+                    <div class="ml-4 flex flex-1 flex-col">
+                        <div>
+                            <div class="flex justify-between text-base font-medium text-white">
+                                <h3>${item.product.name}</h3>
+                                <p class="ml-4">৳${itemTotal}</p>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-400">${item.product.category}</p>
+                        </div>
+                        <div class="flex flex-1 items-end justify-between text-sm">
+                            <div class="flex items-center space-x-2 text-gray-300">
+                                <button onclick="updateQuantity(${item.product.id}, -1)" class="px-2 hover:text-white">-</button>
+                                <span>${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.product.id}, 1)" class="px-2 hover:text-white">+</button>
+                            </div>
+                            <button type="button" onclick="removeFromCart(${item.product.id})" class="font-medium text-red-400 hover:text-red-300">Remove</button>
+                        </div>
+                    </div>
+                </li>
+            `;
+            }).join('');
+
+            totalEl.innerText = '৳' + total;
+        }
+
+        function toggleCart() {
+            const overlay = document.getElementById('cart-overlay');
+            overlay.classList.toggle('hidden');
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert("Your cart is empty.");
+                return;
+            }
+            // Mock checkout
+            alert(`Thank you for your order! \nTotal: ${document.getElementById('cart-total').innerText}\n\nSince this is a demo, no charge was made. Your components would be packed and shipped from the Micro-Factory.`);
+            cart = [];
+            updateCartUI();
+            toggleCart();
+        }
+
+        // --- MODAL LOGIC ---
+
+        function openProductModal(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            document.getElementById('modal-title').innerText = product.name;
+            document.getElementById('modal-category').innerText = product.category;
+            document.getElementById('modal-desc').innerText = product.description;
+            document.getElementById('modal-price').innerText = `৳${product.price}`;
+
+            const specsContainer = document.getElementById('modal-specs');
+            specsContainer.innerHTML = product.specs.map(s => `<li>${s}</li>`).join('');
+
+            // Configure Add button
+            const btn = document.getElementById('modal-add-btn');
+            btn.onclick = function () {
+                addToCart(product.id);
+                closeModal();
+            };
+
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+    </script>
+</body>
+
+</html>

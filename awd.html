@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWD-Mesh | Advanced IoT Irrigation</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        'agri-dark': '#0f172a',
+                        'agri-green': '#10b981',
+                        'agri-cyan': '#06b6d4',
+                        'neon-blue': '#3b82f6',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617; /* Very Dark Slate */
+            color: #e2e8f0;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* Tech Grid Background */
+        .grid-bg {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        /* Glassmorphism Cards */
+        .tech-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+        .tech-card:hover {
+            border-color: rgba(16, 185, 129, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -5px rgba(16, 185, 129, 0.15);
+        }
+
+        /* Neon Text */
+        .neon-text {
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #10b981; }
+
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(16, 185, 129, 0.3);
+            position: absolute;
+            z-index: 10;
+            animation: scan 3s linear infinite;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        @keyframes scan { 0% {top: 0%} 100% {top: 100%} }
+    </style>
+</head>
+<body class="grid-bg">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-slate-900/90 backdrop-blur border-b border-slate-700">
+        <div class="container mx-auto px-6 h-16 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <i class="fa-solid fa-network-wired text-agri-green text-xl"></i>
+                <span class="text-xl font-bold tracking-tight text-white">AWD<span class="text-agri-green">MESH</span></span>
+            </div>
+            
+            <div class="hidden lg:flex gap-8 text-xs font-mono text-slate-400 uppercase tracking-widest">
+                <a href="#dashboard" class="hover:text-agri-green transition">Monitor</a>
+                <a href="#schedule" class="hover:text-agri-green transition">Schedule</a>
+                <a href="#hardware" class="hover:text-agri-green transition">Hardware</a>
+                <a href="#firmware" class="hover:text-agri-green transition">Firmware</a>
+                <a href="#api" class="hover:text-agri-green transition">API</a>
+            </div>
+
+            <div class="flex gap-4">
+                <button class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-1.5 rounded text-xs font-mono border border-slate-600 transition">
+                    <i class="fa-brands fa-github mr-2"></i>v2.4.0
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-900/30 border border-green-500/30 text-green-400 text-xs font-mono mb-6">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-ping"></span>
+                        SYSTEM ACTIVE: 3 PILOT VILLAGES
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight text-white">
+                        Precision <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-400 neon-text">Rice Irrigation</span>
+                    </h1>
+                    <p class="text-slate-400 text-lg mb-8 max-w-lg leading-relaxed">
+                        An open-source IoT mesh network enabling Alternate Wetting and Drying (AWD). Reducing methane, saving water, and increasing yields through granular data.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#dashboard" class="px-8 py-4 bg-agri-green hover:bg-emerald-600 text-slate-900 font-bold rounded shadow-[0_0_20px_rgba(16,185,129,0.4)] transition flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line"></i> Live Dashboard
+                        </a>
+                        <a href="#hardware" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-bold rounded transition flex items-center gap-2">
+                            <i class="fa-solid fa-microchip"></i> Hardware Stack
+                        </a>
+                    </div>
+                </div>
+                <!-- Hero Visual -->
+                <div class="relative tech-card p-6 rounded-xl">
+                    <div class="absolute -top-4 -right-4 bg-slate-900 border border-slate-700 p-3 rounded shadow-xl z-20">
+                        <div class="text-xs text-slate-500 font-mono">CH4 REDUCTION</div>
+                        <div class="text-xl font-bold text-green-400">-48%</div>
+                    </div>
+                    <!-- Abstract Mesh Visual -->
+                    <div class="relative h-64 w-full bg-slate-900 rounded border border-slate-700 overflow-hidden flex items-center justify-center">
+                        <div class="scanline"></div>
+                        <div class="absolute inset-0 grid grid-cols-6 grid-rows-4 gap-1 opacity-20">
+                            <div class="bg-green-500/20 col-span-1 row-span-1"></div>
+                            <div class="bg-green-500/40 col-span-1 row-span-1 col-start-3 row-start-2"></div>
+                            <div class="bg-blue-500/40 col-span-2 row-span-2 col-start-5 row-start-3"></div>
+                        </div>
+                        <div class="z-10 text-center">
+                            <i class="fa-solid fa-tower-broadcast text-5xl text-slate-600"></i>
+                            <div class="mt-2 text-xs font-mono text-green-500">LORA MESH CONNECTED</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPREHENSIVE DASHBOARD -->
+    <section id="dashboard" class="py-20 bg-slate-900/50 border-t border-slate-800">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-white"><i class="fa-solid fa-desktop mr-3 text-cyan-400"></i>Mission Control</h2>
+                    <p class="text-slate-500 font-mono text-sm mt-1">NODE_ID: ESP32_FIELD_04 | GW_ID: GSM_ALPHA</p>
+                </div>
+                <div class="flex gap-2 text-xs font-mono">
+                    <div class="px-3 py-1 rounded bg-slate-800 border border-slate-600 text-green-400"><i class="fa-solid fa-wifi mr-1"></i> ONLINE</div>
+                    <div class="px-3 py-1 rounded bg-slate-800 border border-slate-600 text-blue-400"><i class="fa-solid fa-database mr-1"></i> LOGGING</div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                
+                <!-- 1. Water Level (Primary Metric) -->
+                <div class="tech-card p-5 rounded-lg border-l-4 border-blue-500 relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <div class="text-slate-400 text-xs font-mono uppercase">Water Level</div>
+                            <div class="text-3xl font-bold text-white mt-1">5.2 <span class="text-sm font-normal text-slate-500">cm</span></div>
+                        </div>
+                        <div class="w-10 h-10 rounded bg-blue-500/20 flex items-center justify-center text-blue-400"><i class="fa-solid fa-water"></i></div>
+                    </div>
+                    <div class="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-blue-500 h-full" style="width: 45%"></div>
+                    </div>
+                    <div class="flex justify-between text-xs mt-2 font-mono">
+                        <span class="text-slate-500">Sensor: Ultrasonic</span>
+                        <span class="text-green-400">Target: 5.0cm</span>
+                    </div>
+                </div>
+
+                <!-- 2. Soil Moisture -->
+                <div class="tech-card p-5 rounded-lg border-l-4 border-amber-500 relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <div class="text-slate-400 text-xs font-mono uppercase">Soil Moisture</div>
+                            <div class="text-3xl font-bold text-white mt-1">24 <span class="text-sm font-normal text-slate-500">%</span></div>
+                        </div>
+                        <div class="w-10 h-10 rounded bg-amber-500/20 flex items-center justify-center text-amber-400"><i class="fa-solid fa-seedling"></i></div>
+                    </div>
+                    <div class="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-amber-500 h-full" style="width: 24%"></div>
+                    </div>
+                    <div class="flex justify-between text-xs mt-2 font-mono">
+                        <span class="text-slate-500">Sensor: Capacitive</span>
+                        <span class="text-red-400 animate-pulse">CRITICAL LOW</span>
+                    </div>
+                </div>
+
+                <!-- 3. Atmosphere (DHT22) -->
+                <div class="tech-card p-5 rounded-lg border-l-4 border-purple-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="text-slate-400 text-xs font-mono uppercase">Micro-Climate</div>
+                        <div class="w-10 h-10 rounded bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="fa-solid fa-temperature-half"></i></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mt-2">
+                        <div>
+                            <div class="text-2xl font-bold text-white">32°C</div>
+                            <div class="text-xs text-slate-500">Temp</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-white">65%</div>
+                            <div class="text-xs text-slate-500">Humidity</div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-slate-500 mt-3 font-mono text-right">Sensor: DHT22</div>
+                </div>
+
+                <!-- 4. System Health -->
+                <div class="tech-card p-5 rounded-lg border-l-4 border-green-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="text-slate-400 text-xs font-mono uppercase">Node Health</div>
+                        <div class="w-10 h-10 rounded bg-green-500/20 flex items-center justify-center text-green-400"><i class="fa-solid fa-battery-three-quarters"></i></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 mt-2 text-sm">
+                        <div class="flex justify-between border-b border-slate-700 pb-1">
+                            <span class="text-slate-400">Battery</span>
+                            <span class="text-white font-mono">4.1V (LiPo)</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-700 pb-1">
+                            <span class="text-slate-400">Solar</span>
+                            <span class="text-yellow-400 font-mono">0.8A</span>
+                        </div>
+                        <div class="flex justify-between pt-1">
+                            <span class="text-slate-400">Signal</span>
+                            <span class="text-green-400 font-mono">-82dBm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Main Chart -->
+                <div class="lg:col-span-2 tech-card p-6 rounded-lg">
+                    <div class="flex justify-between mb-4">
+                        <h3 class="font-bold text-white">Water Level & Rainfall History</h3>
+                        <div class="flex gap-4 text-xs">
+                            <div class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>Level (cm)</div>
+                            <div class="flex items-center"><span class="w-3 h-3 bg-cyan-300 rounded-full mr-2"></span>Rain (mm)</div>
+                        </div>
+                    </div>
+                    <canvas id="waterRainChart" height="220"></canvas>
+                </div>
+
+                <!-- Pump Control & Alert Log -->
+                <div class="tech-card p-6 rounded-lg flex flex-col">
+                    <h3 class="font-bold text-white mb-4">Relay Control & Status</h3>
+                    
+                    <!-- Relay Status -->
+                    <div class="bg-slate-800 p-4 rounded mb-6 flex items-center justify-between border border-slate-600">
+                        <div>
+                            <div class="text-xs text-slate-400 font-mono">PUMP RELAY #1</div>
+                            <div class="text-red-400 font-bold">OFF</div>
+                        </div>
+                        <button class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-xs font-mono uppercase transition">
+                            Override
+                        </button>
+                    </div>
+
+                    <h4 class="text-xs font-bold text-slate-400 uppercase mb-3">Live Alert Feed</h4>
+                    <div class="flex-1 overflow-y-auto space-y-3 pr-2 max-h-48 custom-scrollbar">
+                        <div class="flex gap-3 text-xs bg-red-900/20 p-2 rounded border border-red-500/20">
+                            <i class="fa-solid fa-triangle-exclamation text-red-400 mt-1"></i>
+                            <div>
+                                <div class="font-bold text-red-400">Low Moisture Alert</div>
+                                <div class="text-slate-400">Field 04 reached 18% moisture.</div>
+                            </div>
+                            <div class="ml-auto text-slate-500 font-mono">10m</div>
+                        </div>
+                        <div class="flex gap-3 text-xs bg-blue-900/20 p-2 rounded border border-blue-500/20">
+                            <i class="fa-solid fa-cloud-rain text-blue-400 mt-1"></i>
+                            <div>
+                                <div class="font-bold text-blue-400">Rain Detected</div>
+                                <div class="text-slate-400">Irrigation postponed.</div>
+                            </div>
+                            <div class="ml-auto text-slate-500 font-mono">1h</div>
+                        </div>
+                        <div class="flex gap-3 text-xs bg-green-900/20 p-2 rounded border border-green-500/20">
+                            <i class="fa-solid fa-check text-green-400 mt-1"></i>
+                            <div>
+                                <div class="font-bold text-green-400">OTA Update</div>
+                                <div class="text-slate-400">Firmware v2.4.0 verified.</div>
+                            </div>
+                            <div class="ml-auto text-slate-500 font-mono">3h</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HARDWARE STACK (Detailed Grid) -->
+    <section id="hardware" class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white mb-2">Hardware Inventory</h2>
+                <p class="text-slate-400">Modular, Low-Cost, Ruggedized IP67 Components</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                
+                <!-- MCU -->
+                <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-solid fa-microchip text-3xl text-green-500 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">ESP32 DevKit</h4>
+                    <p class="text-xs text-slate-500 mt-1">Main Controller. Dual Core, WiFi/BT.</p>
+                </div>
+                <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-solid fa-memory text-3xl text-green-500 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">Arduino MKR 1310</h4>
+                    <p class="text-xs text-slate-500 mt-1">LoRa-native Alternative MCU.</p>
+                </div>
+
+                <!-- Sensors -->
+                <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-solid fa-ruler-vertical text-3xl text-cyan-400 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">Ultrasonic Sensor</h4>
+                    <p class="text-xs text-slate-500 mt-1">Non-contact water level (JSN-SR04T).</p>
+                </div>
+                <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-brands fa-pagelines text-3xl text-amber-500 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">Capacitive Soil</h4>
+                    <p class="text-xs text-slate-500 mt-1">Corrosion-resistant moisture probe.</p>
+                </div>
+                <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-solid fa-temperature-high text-3xl text-red-400 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">DHT22 / SHT30</h4>
+                    <p class="text-xs text-slate-500 mt-1">Air Temperature & Humidity.</p>
+                </div>
+                <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-solid fa-cloud-showers-heavy text-3xl text-blue-400 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">Rain Gauge</h4>
+                    <p class="text-xs text-slate-500 mt-1">Tipping bucket for rainfall volume.</p>
+                </div>
+
+                <!-- Comms -->
+                <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-solid fa-tower-cell text-3xl text-purple-500 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">SX1276 LoRa</h4>
+                    <p class="text-xs text-slate-500 mt-1">Long Range Transceiver (915/433MHz).</p>
+                </div>
+                <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-solid fa-shield-halved text-3xl text-purple-500 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">LoRa Shield</h4>
+                    <p class="text-xs text-slate-500 mt-1">Dragino shield for Arduino Uno.</p>
+                </div>
+                <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-solid fa-satellite-dish text-3xl text-purple-500 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">SIM800L GSM</h4>
+                    <p class="text-xs text-slate-500 mt-1">Cellular backhaul for Gateway.</p>
+                </div>
+
+                <!-- Power & Misc -->
+                <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-solid fa-solar-panel text-3xl text-yellow-500 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">Solar + TP4056</h4>
+                    <p class="text-xs text-slate-500 mt-1">Energy harvesting & LiPo charging.</p>
+                </div>
+                <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-solid fa-toggle-on text-3xl text-slate-300 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">Relay Module</h4>
+                    <p class="text-xs text-slate-500 mt-1">5V Relay for Pump/Valve actuation.</p>
+                </div>
+                <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-solid fa-box text-3xl text-slate-300 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">IP67 Enclosure</h4>
+                    <p class="text-xs text-slate-500 mt-1">Waterproof housing for paddy fields.</p>
+                </div>
+                <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-solid fa-sd-card text-3xl text-slate-300 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">MicroSD Module</h4>
+                    <p class="text-xs text-slate-500 mt-1">Offline SPI Data Logging.</p>
+                </div>
+                <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-solid fa-lightbulb text-3xl text-slate-300 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">LED / Buzzer</h4>
+                    <p class="text-xs text-slate-500 mt-1">Local visual/audio status alerts.</p>
+                </div>
+                 <div class="tech-card p-4 rounded hover:bg-slate-800">
+                    <i class="fa-solid fa-battery-full text-3xl text-yellow-500 mb-3"></i>
+                    <h4 class="text-sm font-bold text-white">18650 LiPo</h4>
+                    <p class="text-xs text-slate-500 mt-1">High capacity battery cells.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOFTWARE & FIRMWARE -->
+    <section id="firmware" class="py-20 bg-slate-900 border-y border-slate-800">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-white mb-10 text-center">Firmware Architecture</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Features List -->
+                <div class="space-y-6">
+                    <div class="flex gap-4 p-4 rounded border border-slate-700 bg-slate-800/50">
+                        <div class="text-green-400 text-xl"><i class="fa-solid fa-moon"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white">Deep Sleep Power Management</h4>
+                            <p class="text-sm text-slate-400">Micro-amp consumption. Wakes only for sampling.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 p-4 rounded border border-slate-700 bg-slate-800/50">
+                        <div class="text-purple-400 text-xl"><i class="fa-solid fa-circle-nodes"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white">LoRa Mesh Networking</h4>
+                            <p class="text-sm text-slate-400">Self-healing multi-hop network extends range.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 p-4 rounded border border-slate-700 bg-slate-800/50">
+                        <div class="text-blue-400 text-xl"><i class="fa-solid fa-lock"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white">AES-128 Encryption</h4>
+                            <p class="text-sm text-slate-400">Secure payload transmission prevents spoofing.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 p-4 rounded border border-slate-700 bg-slate-800/50">
+                        <div class="text-yellow-400 text-xl"><i class="fa-solid fa-floppy-disk"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white">SD Fallback Logging</h4>
+                            <p class="text-sm text-slate-400">Automatic local saving if Mesh/Gateway is down.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Code/Packet View -->
+                <div class="bg-black p-6 rounded-xl border border-slate-700 font-mono text-xs shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-2 right-2 flex gap-1">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    </div>
+                    <div class="text-slate-500 mb-4"># Firmware v2.4.0 - Telemetry Payload</div>
+                    
+                    <span class="text-purple-400">void</span> <span class="text-blue-400">sendTelemetry</span>() {
+                        <br>&nbsp;&nbsp;<span class="text-slate-300">StaticJsonDocument<200> doc;</span>
+                        <br>&nbsp;&nbsp;<span class="text-green-400">doc["id"]</span> = "node_a1";
+                        <br>&nbsp;&nbsp;<span class="text-green-400">doc["wl"]</span> = sensor.readWater();
+                        <br>&nbsp;&nbsp;<span class="text-green-400">doc["sm"]</span> = sensor.readSoil();
+                        <br>&nbsp;&nbsp;<span class="text-green-400">doc["batt"]</span> = 4.12;
+                        <br>&nbsp;&nbsp;
+                        <br>&nbsp;&nbsp;<span class="text-slate-500">// AES Encrypt & LoRa Send</span>
+                        <br>&nbsp;&nbsp;<span class="text-blue-400">Mesh.send</span>(encrypt(doc));
+                    <br>}
+                    
+                    <div class="mt-6 border-t border-slate-800 pt-4">
+                        <div class="text-slate-500 mb-1">> MQTT Output (JSON)</div>
+                        <div class="text-green-300 break-all">
+                            {"id":"node_a1", "wl":5.2, "sm":24, "env":{"t":32.1,"h":65}, "ts":1701234567}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- IRRIGATION SCHEDULE & COMMUNITY -->
+    <section id="schedule" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Calendar -->
+                <div>
+                    <h2 class="text-3xl font-bold text-white mb-6">Smart Scheduling</h2>
+                    <p class="text-slate-400 mb-6">Algorithmically generated windows based on AWD thresholds and Canal availability.</p>
+                    
+                    <div class="bg-slate-800 rounded-xl overflow-hidden border border-slate-700">
+                        <div class="p-4 bg-slate-900 border-b border-slate-700 flex justify-between">
+                            <span class="font-bold text-white">November 2025</span>
+                            <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">Zone: Alpha</span>
+                        </div>
+                        <div class="p-4 grid grid-cols-7 gap-2 text-center text-sm">
+                            <div class="text-slate-500 font-bold mb-2">S</div>
+                            <div class="text-slate-500 font-bold mb-2">M</div>
+                            <div class="text-slate-500 font-bold mb-2">T</div>
+                            <div class="text-slate-500 font-bold mb-2">W</div>
+                            <div class="text-slate-500 font-bold mb-2">T</div>
+                            <div class="text-slate-500 font-bold mb-2">F</div>
+                            <div class="text-slate-500 font-bold mb-2">S</div>
+
+                            <div class="p-3 rounded bg-slate-900/50 text-slate-600">28</div>
+                            <div class="p-3 rounded bg-slate-900/50 text-slate-600">29</div>
+                            <div class="p-3 rounded bg-slate-900/50 text-slate-600">30</div>
+                            <div class="p-3 rounded bg-blue-600/20 border border-blue-500 text-blue-400 relative">
+                                1
+                                <span class="absolute top-1 right-1 w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                            </div>
+                            <div class="p-3 rounded bg-amber-600/20 border border-amber-500 text-amber-400">2</div>
+                            <div class="p-3 rounded bg-amber-600/20 border border-amber-500 text-amber-400">3</div>
+                            <div class="p-3 rounded bg-slate-700 text-white">4</div>
+                            
+                            <!-- Legend -->
+                            <div class="col-span-7 flex gap-4 mt-4 text-xs justify-center">
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 bg-blue-500 rounded-full"></span> Irrigation Day</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 bg-amber-500 rounded-full"></span> Drying Phase</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community & PWA -->
+                <div>
+                    <h2 class="text-3xl font-bold text-white mb-6">Community & Mobile</h2>
+                    <div class="space-y-4">
+                        <div class="tech-card p-4 rounded flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-green-600 flex items-center justify-center text-white text-xl">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white">Farmer Group Chat</h4>
+                                <p class="text-xs text-slate-400">Coordinated pump sharing via SMS/App alerts.</p>
+                            </div>
+                        </div>
+
+                        <div class="tech-card p-4 rounded flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white text-xl">
+                                <i class="fa-solid fa-mobile-screen"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white">Offline-First PWA</h4>
+                                <p class="text-xs text-slate-400">Works on low-end Android phones without data.</p>
+                            </div>
+                        </div>
+
+                        <div class="tech-card p-4 rounded flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-purple-600 flex items-center justify-center text-white text-xl">
+                                <i class="fa-solid fa-file-contract"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white">Carbon Credit Reporting</h4>
+                                <p class="text-xs text-slate-400">Automated MRV reports (Verra VM0042).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEVELOPER API SECTION -->
+    <section id="api" class="py-20 bg-slate-900 border-t border-slate-800">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-white mb-8">REST API & Endpoints</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-black p-4 rounded border border-slate-700 font-mono text-sm">
+                    <div class="text-green-400 mb-2">GET /api/v1/devices/{id}/latest</div>
+                    <div class="text-slate-500">// Returns latest sensor readings</div>
+                </div>
+                <div class="bg-black p-4 rounded border border-slate-700 font-mono text-sm">
+                    <div class="text-blue-400 mb-2">GET /api/v1/fields/{id}/timeseries</div>
+                    <div class="text-slate-500">// Historical data for charts (Soil, Water)</div>
+                </div>
+                <div class="bg-black p-4 rounded border border-slate-700 font-mono text-sm">
+                    <div class="text-yellow-400 mb-2">POST /api/v1/alerts</div>
+                    <div class="text-slate-500">// Trigger manual alerts (Pump Failure, Intrusion)</div>
+                </div>
+                 <div class="bg-black p-4 rounded border border-slate-700 font-mono text-sm">
+                    <div class="text-purple-400 mb-2">POST /api/v1/ota/update</div>
+                    <div class="text-slate-500">// Push firmware binary to Gateway</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-12 border-t border-slate-800 text-slate-500 text-sm">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1 md:col-span-2">
+                <h3 class="text-white font-bold text-lg mb-4">AWD-Mesh Project</h3>
+                <p class="max-w-xs">Open-source climate tech for sustainable rice cultivation. Empowering farmers with data.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4">Stack</h4>
+                <ul class="space-y-2">
+                    <li>ESP32 / Arduino</li>
+                    <li>LoRaWAN / SX1276</li>
+                    <li>MQTT / Node.js</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4">Contact</h4>
+                <ul class="space-y-2">
+                    <li><i class="fa-brands fa-github"></i> GitHub Repo</li>
+                    <li><i class="fa-solid fa-envelope"></i> pilot@awdmesh.io</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Charts & Logic -->
+    <script>
+        // --- 1. Water Level & Rain Chart ---
+        const ctxWater = document.getElementById('waterRainChart').getContext('2d');
+        
+        // Gradient for Water
+        const gradientWater = ctxWater.createLinearGradient(0, 0, 0, 400);
+        gradientWater.addColorStop(0, 'rgba(59, 130, 246, 0.5)');
+        gradientWater.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
+
+        const waterRainChart = new Chart(ctxWater, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', 'Now'],
+                datasets: [
+                    {
+                        label: 'Water Level (cm)',
+                        data: [8, 7.5, 7, 6.2, 5.8, 5.4, 5.2],
+                        borderColor: '#3b82f6',
+                        backgroundColor: gradientWater,
+                        fill: true,
+                        tension: 0.4,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Rainfall (mm)',
+                        data: [0, 0, 0, 2, 5, 1, 0],
+                        type: 'bar',
+                        backgroundColor: '#22d3ee',
+                        yAxisID: 'y1',
+                        barThickness: 10
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { labels: { color: '#94a3b8' } }
+                },
+                scales: {
+                    x: { ticks: { color: '#64748b' }, grid: { color: '#1e293b' } },
+                    y: { 
+                        type: 'linear', display: true, position: 'left',
+                        ticks: { color: '#3b82f6' }, grid: { color: '#1e293b' },
+                        title: { display: true, text: 'Water Level (cm)' }
+                    },
+                    y1: { 
+                        type: 'linear', display: true, position: 'right',
+                        ticks: { color: '#22d3ee' }, grid: { drawOnChartArea: false },
+                        title: { display: true, text: 'Rain (mm)' }
+                    }
+                }
+            }
+        });
+
+        // --- Console Simulation ---
+        console.log("%c AWD-Mesh System v2.4.0", "color:#10b981; font-size:16px; font-weight:bold;");
+        console.log("Connecting to MQTT Broker... [OK]");
+        console.log("Subscribing to topic: awd/field/+/telemetry... [OK]");
+    </script>
+</body>
+</html>
