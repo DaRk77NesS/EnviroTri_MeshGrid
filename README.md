@@ -26,33 +26,32 @@
 **A community-coordinated irrigation system to reduce methane emissions in rice farming.**
 
 > **Problem:** Shared canals make "Alternate Wetting and Drying" (AWD) difficult, leading to water wastage and high methane emissions.  
->  **Solution:** A synchronized LoRa mesh network that coordinates irrigation schedules for entire villages[cite: 6, 21].
-
+>  **Solution:** A synchronized LoRa mesh network that coordinates irrigation schedules for entire villages
 <details>
 <summary><b>🔍 How It Works (Click to Expand)</b></summary>
 
 ### 1. Water-Level Sensors
-Low-cost float sensors measure water depth in paddies and canals.  These are connected to LoRa nodes that function even in rain, heat, and dust[cite: 7, 18].
+Low-cost float sensors measure water depth in paddies and canals.  These are connected to LoRa nodes that function even in rain, heat, and dust.
 
 ### 2. LoRa Communication Mesh
-A village-wide network broadcasts start/stop irrigation signals.  Farmers receive alerts via SMS or LoRa beacons to open/close inlets simultaneously[cite: 9, 10].
+A village-wide network broadcasts start/stop irrigation signals.  Farmers receive alerts via SMS or LoRa beacons to open/close inlets simultaneously
 
 ### 3. Satellite + Forecasting Intelligence
 The central dashboard integrates:
 * **Soil Moisture Data:** From SMAP and Sentinel-1 satellites.
 * **Weather:** Local rainfall forecasts.
-*  **Result:** The system predicts the optimal drying window to minimize water use without hurting yields[cite: 11].
+*  **Result:** The system predicts the optimal drying window to minimize water use without hurting yields.
 
 ### 4. Biochar Integration
- Locally produced rice-husk biochar is applied to soil to prevent methane spikes during re-flooding[cite: 12].
+ Locally produced rice-husk biochar is applied to soil to prevent methane spikes during re-flooding
 </details>
 
 <details>
 <summary><b>📊 Impact & MRV</b></summary>
 
-*  **Methane Reduction:** 30–50% reduction[cite: 15].
-*  **Water Savings:** 20–25% less pumped water[cite: 15].
-*  **Carbon Credits:** Generates MRV (Monitoring, Reporting, Verification) data compatible with standards like **Verra VM0042**[cite: 14].
+*  **Methane Reduction:** 30–50% reduction
+*  **Water Savings:** 20–25% less pumped water
+*  **Carbon Credits:** Generates MRV (Monitoring, Reporting, Verification) data compatible with standards like **Verra VM0042**.
 </details>
 
 ---
@@ -62,31 +61,30 @@ The central dashboard integrates:
 **A low-cost, magnetic wastewater treatment system for SME dyeing factories.**
 
 > **Problem:** Small factories cannot afford biological ETPs, leading to toxic river pollution.  
->  **Solution:** Reusable chitosan-magnetite beads that capture dye and are recovered using magnets[cite: 22, 23].
-
+>  **Solution:** Reusable chitosan-magnetite beads that capture dye and are recovered using magnets
 <details>
 <summary><b>⚙️ Technology Stack (Click to Expand)</b></summary>
 
 ### The Core: Magnetic Beads
 Derived from shrimp shells (Chitosan) mixed with magnetite.
 * **Function:** Adsorbs dye molecules from water.
-*  **Recovery:** Magnetic separation means no sludge filtration is needed[cite: 26].
+*  **Recovery:** Magnetic separation means no sludge filtration is needed
 
 ### Automation Loop
 1.  **Sensing:** Color sensors monitor effluent in real-time.
-2.   **Control:** Microcontroller adjusts flow rate and contact time to ensure discharge is **≤ 200 ADMI** (DOE Standard)[cite: 28].
+2.   **Control:** Microcontroller adjusts flow rate and contact time to ensure discharge is **≤ 200 ADMI** (DOE Standard).
 3.  **Regeneration:** Beads are washed with mild acid to release dye, then reused.
 
 ### Pigment Recovery
- The concentrated dye sludge is treated via **Electrocoagulation (EC)** to create a solid pigment cake usable in craft paints or inks[cite: 30, 31].
+ The concentrated dye sludge is treated via **Electrocoagulation (EC)** to create a solid pigment cake usable in craft paints or inks.
 </details>
 
 <details>
 <summary><b>💰 Cost vs. Benefit</b></summary>
 
-*  **OpEx:** $0.30–0.40 per m³ (vs $1.00 for chemical ETPs)[cite: 36].
-*  **Sludge:** 70% reduction in hazardous sludge generation[cite: 33].
-*  **Efficiency:** ≥ 80% dye removal and 50–60% COD reduction[cite: 33].
+*  **OpEx:** $0.30–0.40 per m³ (vs $1.00 for chemical ETPs).
+*  **Sludge:** 70% reduction in hazardous sludge generation.
+*  **Efficiency:** ≥ 80% dye removal and 50–60% COD reduction.
 </details>
 
 ---
@@ -96,20 +94,20 @@ Derived from shrimp shells (Chitosan) mixed with magnetite.
 **A table-top machine that "un-manufactures" electronics to save components.**
 
 > **Problem:** Traditional recycling shreds devices, destroying valuable chips.  
->  **Solution:** An AI-powered vision system that surgically removes and tests components for reuse[cite: 37, 38].
+>  **Solution:** An AI-powered vision system that surgically removes and tests components for reuse.
 
 <details>
 <summary><b>🛠️ System Architecture (Click to Expand)</b></summary>
 
 ### 1. Vision & AI
-A camera scans waste PCBs.  Computer vision algorithms (YOLO/OpenCV) identify ICs, MOSFETs, and microcontrollers[cite: 41, 42].
+A camera scans waste PCBs.  Computer vision algorithms (YOLO/OpenCV) identify ICs, MOSFETs, and microcontrollers.
 
 ### 2. Precision Depopulation
 * **Heating:** Infrared or hot-air modules heat specific areas to loosen solder.
-*  **Robotics:** A pick-and-place arm removes the part without thermal damage[cite: 43].
+*  **Robotics:** A pick-and-place arm removes the part without thermal damage.
 
 ### 3. Testing & Sorting
-Components undergo basic continuity/power tests.  Working parts are sorted into trays and automatically listed on a digital marketplace for repair shops or hobbyists[cite: 44, 45].
+Components undergo basic continuity/power tests.  Working parts are sorted into trays and automatically listed on a digital marketplace for repair shops or hobbyists.
 </details>
 
 <details>
@@ -117,7 +115,7 @@ Components undergo basic continuity/power tests.  Working parts are sorted into 
 
 * **Circular Economy:** Keeps microcontrollers and sensors in use.
 * **Safe:** No acid baths or open burning.
-*  **Economic:** Estimated processing cost of $0.50 – $1.00 per kg[cite: 56].
+*  **Economic:** Estimated processing cost of $0.50 – $1.00 per kg.
 </details>
 
 ---
@@ -127,20 +125,20 @@ Components undergo basic continuity/power tests.  Working parts are sorted into 
 **Retrofit IoT filtration system for household washing machines.**
 
 > **Problem:** Laundry consumes massive amounts of potable water.  
->  **Solution:** Captures, filters, and disinfects up to 90% of wastewater for reuse (toilet flushing, irrigation)[cite: 58].
+>  **Solution:** Captures, filters, and disinfects up to 90% of wastewater for reuse (toilet flushing, irrigation).
 
 <details>
 <summary><b>💧 Filtration & Logic (Click to Expand)</b></summary>
 
 ### The 4-Stage Process
-1.   **Ultrafiltration (UF):** PVDF Hollow Fiber membranes (0.01µm) remove microplastics, bacteria, and dirt[cite: 60, 61].
-2.   **Activated Carbon:** Removes detergents, dyes, and odors[cite: 65].
-3.   **UV Disinfection:** UV-C light neutralizes DNA of pathogens for immediate sterilization[cite: 98].
-4.   **Chlorination:** Dosing pump adds residual chlorine to prevent re-contamination in the storage tank[cite: 105].
+1.   **Ultrafiltration (UF):** PVDF Hollow Fiber membranes (0.01µm) remove microplastics, bacteria, and dirt.
+2.   **Activated Carbon:** Removes detergents, dyes, and odors.
+3.   **UV Disinfection:** UV-C light neutralizes DNA of pathogens for immediate sterilization.
+4.   **Chlorination:** Dosing pump adds residual chlorine to prevent re-contamination in the storage tank.
 
 ### IoT Integration
 * **Sensors:** Turbidity, pH, and Conductivity sensors monitor water quality 24/7.
-*  **Alerts:** Mobile app notifies users when to backwash filters or refill chlorine[cite: 85, 89].
+*  **Alerts:** Mobile app notifies users when to backwash filters or refill chlorine.
 </details>
 
 ---
