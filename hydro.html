@@ -1,0 +1,506 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HydroLoop Hybrid | Advanced Water Reclamation</title>
+    <link rel="icon" type="image/png" href="favicon-hydro.png">
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="hydro.css">
+</head>
+
+<body>
+
+    <!-- ANIMATED BACKGROUND -->
+    <div class="ocean-bg">
+        <!-- Bubbles -->
+        <div class="ocean-bubble" style="left: 10%; width: 20px; height: 20px; animation-duration: 8s;"></div>
+        <div class="ocean-bubble" style="left: 30%; width: 40px; height: 40px; animation-duration: 12s;"></div>
+        <div class="ocean-bubble" style="left: 70%; width: 15px; height: 15px; animation-duration: 7s;"></div>
+        <div class="ocean-bubble" style="left: 85%; width: 30px; height: 30px; animation-duration: 10s;"></div>
+        <div class="ocean-bubble" style="left: 50%; width: 25px; height: 25px; animation-duration: 15s;"></div>
+
+        <!-- Glowing Icons (New Phase 7) -->
+        <i class="fa-solid fa-droplet bg-icon"
+            style="left: 15%; top: 80%; animation-duration: 14s; font-size: 1.5rem;"></i>
+        <i class="fa-solid fa-atom bg-icon" style="left: 65%; top: 90%; animation-duration: 18s; font-size: 2rem;"></i>
+        <i class="fa-solid fa-water bg-icon"
+            style="left: 80%; top: 70%; animation-duration: 12s; font-size: 1.2rem;"></i>
+        <i class="fa-solid fa-snowflake bg-icon"
+            style="left: 25%; top: 85%; animation-duration: 16s; font-size: 1.8rem;"></i>
+        <i class="fa-solid fa-droplet bg-icon"
+            style="left: 55%; top: 95%; animation-duration: 20s; font-size: 1rem; opacity: 0.3;"></i>
+        <i class="fa-solid fa-biohazard bg-icon"
+            style="left: 90%; top: 75%; animation-duration: 22s; font-size: 2.5rem; color: var(--danger) !important; opacity: 0.1;"></i>
+        <i class="fa-solid fa-microchip bg-icon"
+            style="left: 5%; top: 60%; animation-duration: 25s; font-size: 3rem; opacity: 0.2;"></i>
+    </div>
+
+    <!-- MAIN HYDROLOOP SIDEBAR -->
+    <aside class="main-nav" id="mainSidebar">
+        <div class="brand">
+            <i class="fa-solid fa-droplet"></i>
+            <span class="brand-text">HydroLoop</span>
+            <button class="toggle-btn" onclick="toggleMainSidebar()" style="margin-left: auto;"><i
+                    class="fa-solid fa-bars"></i></button>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item"
+                style="border: 1px solid rgba(6, 182, 212, 0.3); margin-bottom: 20px; color: var(--primary); background: rgba(6, 182, 212, 0.1); justify-content: center; box-shadow: 0 0 10px rgba(6, 182, 212, 0.1);"><i
+                    class="fa-solid fa-arrow-left"></i> <span class="nav-text">Back to Grid</span></a>
+            <a href="#hero" class="nav-item active"><i class="fa-solid fa-house"></i> <span
+                    class="nav-text">Overview</span></a>
+            <a href="#problem" class="nav-item"><i class="fa-solid fa-triangle-exclamation"></i> <span
+                    class="nav-text">The Crisis</span></a>
+            <a href="#technology" class="nav-item"><i class="fa-solid fa-microchip"></i> <span class="nav-text">System
+                    Specs</span></a>
+            <a href="#dashboard-section" class="nav-item"><i class="fa-solid fa-desktop"></i> <span
+                    class="nav-text">Dashboard</span></a>
+            <a href="#impact" class="nav-item"><i class="fa-solid fa-earth-asia"></i> <span
+                    class="nav-text">Impact</span></a>
+        </nav>
+
+        <div class="system-status-mini">
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px;">Pilot Connectivity</div>
+            <div style="color: var(--success); font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                <div
+                    style="width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success);">
+                </div>
+                Data Live
+            </div>
+        </div>
+    </aside>
+
+    <main class="page-content" id="mainContent">
+
+        <!-- HERO -->
+        <section id="hero">
+            <!-- Mobile Back Button -->
+            <a href="index.html"
+                style="position: absolute; top: 20px; left: 20px; z-index: 1000; width: 40px; height: 40px; background: rgba(0,0,0,0.5); border: 1px solid rgba(6,182,212,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); backdrop-filter: blur(5px);">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+
+            <div class="hero-content">
+                <div class="hero-badge"><i class="fa-solid fa-leaf"></i> Sustainable Innovation</div>
+                <h1 class="hero-title">Wastewater to <br><span class="text-gradient-anim">Potable Water</span></h1>
+                <p class="lead">
+                    A hybrid recycling revolution utilizing Mag-Chito loops, IoT-driven filtration, and smart automation
+                    to recover 85% of industrial effluent.
+                </p>
+                <div style="display:flex; gap:1rem; margin-top:2rem;">
+                    <a href="#dashboard-section" class="btn btn-primary"><i class="fa-solid fa-play"></i> Launch
+                        AquaPure Interface</a>
+                    <a href="#technology" class="btn btn-outline">View Specs</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROBLEM (REDESIGNED) -->
+        <section id="problem" class="reveal">
+            <h2>The Silent Crisis</h2>
+            <p class="lead" style="margin-bottom:3rem;">Industrial discharge and groundwater contamination are creating
+                an irreversible ecological disaster.</p>
+
+            <div class="crisis-grid">
+                <!-- Card 1 -->
+                <div class="crisis-card reveal" style="transition-delay: 0.1s;">
+                    <div class="crisis-icon"><i class="fa-solid fa-skull-crossbones"></i></div>
+                    <h3 style="color:#f87171;">Toxic Dye Runoff</h3>
+                    <div class="crisis-stat">20%</div>
+                    <div class="crisis-desc">Of global industrial water pollution comes from textile dyeing. Over
+                        200,000 tons of carcinogenic dyes are dumped into rivers annually.</div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="crisis-card reveal" style="border-color: rgba(245, 158, 11, 0.2); transition-delay: 0.2s;">
+                    <div class="crisis-icon" style="color:var(--warning); background: rgba(245, 158, 11, 0.1);"><i
+                            class="fa-solid fa-vial"></i></div>
+                    <h3 style="color:#fbbf24;">The Invisible Killer</h3>
+                    <div class="crisis-stat">72+</div>
+                    <div class="crisis-desc">Toxic chemicals identified in untreated effluent, including Arsenic, Lead,
+                        and Mercury, which bio-accumulate in food chains causing irreversible damage.</div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="crisis-card reveal" style="border-color: rgba(168, 85, 247, 0.2); transition-delay: 0.3s;">
+                    <div class="crisis-icon" style="color:var(--secondary); background: rgba(168, 85, 247, 0.1);"><i
+                            class="fa-solid fa-droplet-slash"></i></div>
+                    <h3 style="color:#c084fc;">Aquifer Depletion</h3>
+                    <div class="crisis-stat">2,700 L</div>
+                    <div class="crisis-desc">Water required to produce just ONE cotton shirt—enough for a person to
+                        drink for 2.5 years. Groundwater levels are collapsing.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TECHNOLOGY -->
+        <section id="technology" class="reveal">
+            <h2>System Architecture</h2>
+            <p class="lead">A complete breakdown of our 3-stage filtration hardware and IoT intelligence layer.</p>
+
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem 0;">1. Core Treatment Hardware</h3>
+            <div class="tech-grid">
+                <!-- Mag-Chito -->
+                <div class="tech-card">
+                    <div class="tech-header">
+                        <i class="fa-solid fa-magnet tech-icon"></i>
+                        <span class="tech-title">Mag-Chito Loop</span>
+                    </div>
+                    <ul class="tech-list">
+                        <li>Raw wastewater collection tank</li>
+                        <li>Magnetic chitosan bead column</li>
+                        <li>Electrocoagulation reactor (Iron/Al plates)</li>
+                        <li>DC Power Supply / Rectifier</li>
+                        <li>Recirculation & Sludge pumps</li>
+                    </ul>
+                </div>
+
+                <!-- DetergentLoop -->
+                <div class="tech-card">
+                    <div class="tech-header">
+                        <i class="fa-solid fa-soap tech-icon"></i>
+                        <span class="tech-title">DetergentLoop</span>
+                    </div>
+                    <ul class="tech-list">
+                        <li>Ultrafiltration (UF) Module</li>
+                        <li>Activated Carbon Column</li>
+                        <li>UV-C Disinfection Chamber (254nm)</li>
+                        <li>Peristaltic Chlorine Dosing Pump</li>
+                        <li>Permeate Collection Tank</li>
+                    </ul>
+                </div>
+
+                <!-- Arsenic Filter -->
+                <div class="tech-card">
+                    <div class="tech-header">
+                        <i class="fa-solid fa-filter tech-icon"></i>
+                        <span class="tech-title">Arsenic Polishing</span>
+                    </div>
+                    <ul class="tech-list">
+                        <li>Composite Iron Matrix (CIM) Layer</li>
+                        <li>Fine Sand & Brick Chip Media</li>
+                        <li>Potable Water Storage Tank</li>
+                        <li>Gravity-fed Flow Control</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 style="color: var(--secondary); margin: 2rem 0 1rem 0;">2. IoT Sensor & Control Layer</h3>
+            <div class="iot-grid">
+                <div class="tech-card">
+                    <div class="tech-header">
+                        <i class="fa-solid fa-wifi tech-icon"></i>
+                        <span class="tech-title">Sensors & Telemetry</span>
+                    </div>
+                    <div class="inner-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <ul class="tech-list">
+                            <li><strong>Water Quality:</strong> pH Probes, Turbidity Sensors, TDS/Conductivity Modules,
+                                ORP/Chlorine Sensors.</li>
+                            <li><strong>Flow & Level:</strong> Hall-effect Flow Meters (YF-S201), Ultrasonic Level
+                                Sensors, Pressure Transducers (ΔP).</li>
+                        </ul>
+                        <ul class="tech-list">
+                            <li><strong>System Health:</strong> Current Sensors (Energy), UV Intensity Monitor, DS18B20
+                                Temp Sensors.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-header">
+                        <i class="fa-solid fa-gears tech-icon"></i>
+                        <span class="tech-title">Actuators</span>
+                    </div>
+                    <ul class="tech-list">
+                        <li>Solenoid Valves (Flow routing)</li>
+                        <li>DC Pumps (Feed/Regen)</li>
+                        <li>UV Relay / SSR Control</li>
+                        <li>Dosing Pump MOSFET Drivers</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 style="color: var(--success); margin: 2rem 0 1rem 0;">3. Digital Stack</h3>
+            <div class="tech-card" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+                <div><strong>Controllers:</strong> ESP32 / NodeMCU (Wi-Fi), Raspberry Pi Edge Gateway</div>
+                <div><strong>Protocol:</strong> MQTT (Telemetry), HTTP REST (Commands)</div>
+                <div><strong>Backend:</strong> Node-RED / InfluxDB</div>
+            </div>
+        </section>
+
+        <!-- AQUAPURE INTEGRATION -->
+        <section id="dashboard-section">
+            <div>
+                <h2>AquaPure Pilot Interface</h2>
+                <p style="color: var(--text-muted);">Real-time monitoring and control of Treatment Unit.</p>
+            </div>
+
+            <div class="aquapure-container holo-container">
+                <div class="scanlines"></div>
+                <!-- Sidebar (Refined for collapse) -->
+                <!-- Sidebar (Refined for collapse) -->
+                <div class="scanlines"></div>
+                <!-- Sidebar (Refined for collapse) -->
+                <!-- Sidebar content removed as requested -->
+
+                <!-- Content -->
+
+                <!-- Content -->
+                <div class="ap-main">
+                    <header class="ap-header">
+                        <!-- Left Group: Title, Status, UV Button -->
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            <h3>Unit Monitor</h3>
+                            <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap;">
+                                <!-- System Status -->
+                                <div class="status-badge">
+                                    <div class="dot breathing" id="apDot"></div>
+                                    <span id="apStatus" style="font-size:0.85rem; color:var(--text-main);">System
+                                        Healthy</span>
+                                </div>
+
+                                <!-- UV Control (Right of Status) -->
+                                <button class="header-uv-btn" id="uvBtn" onclick="toggleUV()">
+                                    <i class="fa-solid fa-lightbulb"></i>
+                                    <span id="uvState">UV: OFF</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right Group: Notifications, settings -->
+                        <div style="display:flex;gap:10px; align-items: flex-start;">
+                            <button class="toggle-btn" onclick="showToast('Notifications empty','normal')"><i
+                                    class="fa-solid fa-bell"></i></button>
+                            <button class="toggle-btn" onclick="showToast('Settings Locked','warning')"><i
+                                    class="fa-solid fa-gear"></i></button>
+                        </div>
+                    </header>
+
+                    <div class="ap-scroll">
+                        <div class="ap-grid">
+
+                            <div class="ap-card span-2" onclick="showDrill('Adsorption Efficiency','mag')">
+                                <div class="ap-head">
+                                    <span>Mag-Chito Intelligence</span>
+                                    <div style="display:flex; gap:10px; align-items:center;">
+                                        <button class="regen-btn" id="btnForceRegen"
+                                            onclick="event.stopPropagation(); forceRegen()"
+                                            title="Force Regeneration Cycle">
+                                            <i class="fa-solid fa-bolt"></i>
+                                        </button>
+                                        <i class="fa-solid fa-magnet" style="color:var(--primary)"></i>
+                                    </div>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <div>
+                                        <div class="ap-unit">Adsorption Efficiency</div>
+                                        <div class="mag-chito-status">
+                                            <div class="gauge-circle" id="magGauge">
+                                                <span class="gauge-val" id="magEff">94%</span>
+                                            </div>
+                                            <div>
+                                                <div style="font-size:1.5rem; font-weight:700; color:white;">Cycle #84
+                                                </div>
+                                                <div id="regenStatus" class="regen-badge active">Status: Active</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="text-align:right;">
+                                        <div class="ap-unit">Next Regen In</div>
+                                        <div class="ap-val" style="font-size:1.4rem;">04h 12m</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Flow -->
+                            <div class="ap-card span-2" onclick="showDrill('Flow Analysis','flow')">
+                                <div class="ap-head"><span>Flow Rate</span> <span
+                                        style="color:var(--success)">Stable</span></div>
+                                <div style="display:flex; gap:2rem;">
+                                    <div>
+                                        <div class="ap-val" id="d-fin" style="color:#06b6d4">52.4</div>
+                                        <div class="ap-unit">Inlet (L/min)</div>
+                                    </div>
+                                    <div style="border-left:1px solid var(--border-glass); padding-left:2rem;">
+                                        <div class="ap-val" id="d-fout" style="color:#10b981">49.8</div>
+                                        <div class="ap-unit">Outlet (L/min)</div>
+                                    </div>
+                                </div>
+                                <div style="height:80px; width:100%; margin-top:1rem;"><canvas id="cFlow"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Total -->
+                            <div class="ap-card" onclick="showDrill('Total Yield','total')">
+                                <div class="ap-head"><span>Total Yield</span></div>
+                                <div class="ap-val" id="d-total">12,450</div>
+                                <div class="ap-unit">Liters Purified</div>
+                                <div style="height:40px; margin-top:auto;"><canvas id="cSpark"></canvas></div>
+                            </div>
+
+                            <!-- Recyclable -->
+                            <div class="ap-card" onclick="showDrill('Capacity','recyclable')">
+                                <div class="ap-head"><span>Capacity</span></div>
+                                <div class="ap-val">2,840</div>
+                                <div class="ap-unit">m³ / Month</div>
+                                <div style="margin-top:auto; font-size:0.8rem; color:var(--text-muted);">Projection: On
+                                    Target</div>
+                            </div>
+
+                            <!-- Arsenic -->
+                            <div class="ap-card" id="cardArs" onclick="showDrill('Arsenic','arsenic')">
+                                <div class="ap-head"><span>Arsenic</span></div>
+                                <div class="ap-val" id="d-ars">0.004</div>
+                                <div class="ap-unit">mg/L (Max 0.01)</div>
+                                <div
+                                    style="width:100%; height:6px; background:rgba(255,255,255,0.1); border-radius:3px; margin-top:15px;">
+                                    <div id="barArs"
+                                        style="width:40%; height:100%; background:var(--success); border-radius:3px; transition:0.3s;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Turbidity -->
+                            <div class="ap-card" onclick="showDrill('Turbidity','turbidity')">
+                                <div class="ap-head"><span>Turbidity</span></div>
+                                <div class="ap-val">1.2</div>
+                                <div class="ap-unit">NTU</div>
+                            </div>
+
+                            <!-- pH -->
+                            <div class="ap-card" onclick="showDrill('pH Level','ph')">
+                                <div class="ap-head"><span>pH Level</span></div>
+                                <div class="ap-val" id="d-ph">7.4</div>
+                                <div class="ap-unit">Optimal</div>
+                                <div
+                                    style="width:100%; height:6px; background:linear-gradient(90deg, #ef4444, #10b981, #ef4444); margin-top:15px; position:relative; border-radius:3px;">
+                                    <div id="markPh"
+                                        style="position:absolute; left:50%; top:-4px; width:4px; height:14px; background:#fff; border-radius:2px; box-shadow:0 0 5px #fff; transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Minerals -->
+                            <div class="ap-card span-2" onclick="showDrill('Minerals','minerals')">
+                                <div class="ap-head"><span>Mineral Dosing</span></div>
+                                <div style="height:100px; width:100%;"><canvas id="cMin"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> <!-- End ap-main -->
+
+                <!-- FAB (Moved Outside Main to stay visible) -->
+                <div class="fab-cont">
+                    <button class="fab stop" id="fabMain" onclick="handleFab()">
+                        <i class="fa-solid fa-power-off"></i>
+                    </button>
+                </div>
+
+                <!-- Toasts -->
+                <div class="toast-area" id="toastArea"></div>
+            </div>
+        </section>
+
+        <!-- IMPACT (REDESIGNED) -->
+        <section id="impact">
+            <h2>Global Impact</h2>
+            <p class="lead">Transforming the water landscape through measurable, data-driven outcomes.</p>
+
+            <div class="impact-showcase">
+                <div class="impact-list">
+                    <div class="impact-item">
+                        <div class="impact-val">85%</div>
+                        <div class="impact-label">Water Recovery</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-val">Zero</div>
+                        <div class="impact-label">Chemical Sludge</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-val">-60%</div>
+                        <div class="impact-label">Operational Cost</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-val">99.9%</div>
+                        <div class="impact-label">Arsenic Removal</div>
+                    </div>
+                </div>
+
+                <div class="impact-visual">
+                    <div style="position:absolute; top:20px; right:20px; color:var(--primary); font-size:2rem;"><i
+                            class="fa-solid fa-earth-americas"></i></div>
+                    <h3 style="margin-bottom:1rem; color:white;">Ecosystem Restoration</h3>
+                    <p style="color:var(--text-muted); margin-bottom:1.5rem; line-height:1.6;">
+                        By closing the loop on industrial water usage, HydroLoop significantly reduces the strain on
+                        freshwater aquifers. Our hybrid Mag-Chito system prevents toxic dyes and heavy metals from
+                        entering local river systems, allowing aquatic life to regenerate.
+                    </p>
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <div
+                            style="flex:1; height:8px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden;">
+                            <div
+                                style="width:75%; height:100%; background:linear-gradient(90deg, var(--primary), var(--secondary));">
+                            </div>
+                        </div>
+                        <span style="font-weight:700; color:white;">75% Goal Reached</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div
+                style="text-align:center; padding:3rem; border-top:1px solid var(--border-glass); color:var(--text-muted);">
+                &copy; 2025 HydroLoop | Advanced Water Intelligence
+            </div>
+        </footer>
+    </main>
+
+    <!-- MODALS -->
+    <!-- Drill -->
+    <div class="modal-overlay" id="modalDrill">
+        <div class="modal-box">
+            <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                <h3 id="drillTitle">Analysis</h3>
+                <button onclick="closeModals()"
+                    style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <div style="height:300px; width:100%;"><canvas id="cDrill"></canvas></div>
+        </div>
+    </div>
+    <!-- Stop -->
+    <div class="modal-overlay" id="modalStop">
+        <div class="modal-box" style="border-color:var(--danger); box-shadow:0 0 30px rgba(239,68,68,0.2);">
+            <h2 style="color:var(--danger);">EMERGENCY STOP</h2>
+            <p style="margin:1rem 0;">Are you sure you want to halt the process? Pumps will stop immediately.</p>
+            <div style="display:flex; justify-content:flex-end; gap:10px;">
+                <button onclick="closeModals()" class="btn btn-outline">Cancel</button>
+                <button onclick="confirmStop()" class="btn btn-primary"
+                    style="background:var(--danger); border:none;">STOP SYSTEM</button>
+            </div>
+        </div>
+    </div>
+    <!-- Restart -->
+    <div class="modal-overlay" id="modalRestart">
+        <div class="modal-box" style="border-color:var(--success); box-shadow:0 0 30px rgba(16,185,129,0.2);">
+            <h2 style="color:var(--success);">SYSTEM RESTART</h2>
+            <p style="margin:1rem 0;">Re-initialize sensors and start feed pumps?</p>
+            <div style="display:flex; justify-content:flex-end; gap:10px;">
+                <button onclick="closeModals()" class="btn btn-outline">Cancel</button>
+                <button onclick="confirmRestart()" class="btn btn-primary"
+                    style="background:var(--success); border:none; color:white;">RESTART</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="hydro.js"></script>
+</body>
+
+</html>

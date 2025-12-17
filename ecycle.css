@@ -1,0 +1,300 @@
+        /* Custom scrollbar for tech feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f1729;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00d2aa;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00ffce;
+        }
+
+        .hero-pattern {
+            background-image: radial-gradient(#334155 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Animations */
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.5s ease-out forwards;
+        }
+
+        .glass-panel {
+            background: rgba(16, 24, 39, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 210, 170, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tech Grid Background */
+        .tech-grid-bg {
+            background-size: 50px 50px;
+            background-image:
+                linear-gradient(to right, rgba(0, 210, 170, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 210, 170, 0.05) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(12deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(15deg);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                filter: blur(40px);
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                filter: blur(60px);
+                transform: scale(1.1);
+            }
+        }
+
+        .animate-pulse-glow {
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+
+        /* Particle Effects */
+        .chip-particle {
+            position: absolute;
+            /* color set in JS for brightness control */
+            pointer-events: none;
+            will-change: transform, opacity;
+            animation: floating-particle linear infinite;
+            z-index: 10;
+            /* Ensure they sit ABOVE the background gradients/grid inside the #global-bg container */
+        }
+
+        @keyframes floating-particle {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.2;
+                /* Drastically reduced from 0.7 for subtle tech feel */
+            }
+
+            90% {
+                opacity: 0.2;
+                /* Drastically reduced from 0.7 */
+            }
+
+            100% {
+                transform: translate(var(--tx), var(--ty)) rotate(var(--r));
+                opacity: 0;
+            }
+        }
+
+        /* --- New Premium Animations --- */
+
+        /* Staggered Card Entry */
+        @keyframes enter-card {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .animate-enter-card {
+            opacity: 0;
+            /* Start hidden */
+            animation: enter-card 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Smooth Scroll Reveal */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hover Effects */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0, 210, 170, 0.3);
+        }
+
+        /* === VIRTUAL RECOVERY LAB ANIMATIONS === */
+
+        /* 1. PCB Slide In */
+        @keyframes slideInPCB {
+            0% {
+                left: -200px;
+                transform: rotate(-5deg);
+            }
+
+            100% {
+                left: 50%;
+                transform: translateX(-50%) rotate(0deg);
+            }
+        }
+
+        .anim-slide-in {
+            animation: slideInPCB 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        /* 2. Arm Operation Sequence */
+        @keyframes armScan {
+            0% {
+                transform: translateX(-50%) translateY(-150px);
+            }
+
+            20% {
+                transform: translateX(-50%) translateY(-20px);
+                /* Move Down */
+            }
+
+            30% {
+                transform: translateX(-50%) translateY(-20px);
+                /* Hold */
+            }
+
+            40% {
+                transform: translateX(-60%) translateY(-20px);
+                /* Scan Left */
+            }
+
+            50% {
+                transform: translateX(-40%) translateY(-20px);
+                /* Scan Right */
+            }
+
+            60% {
+                transform: translateX(-50%) translateY(-20px);
+                /* Center */
+            }
+
+            80% {
+                transform: translateX(-50%) translateY(-100px);
+                /* Move Up with part */
+            }
+
+            100% {
+                transform: translateX(-50%) translateY(-150px);
+                /* Reset/Park */
+            }
+        }
+
+        .anim-operate {
+            animation: armScan 3s ease-in-out forwards;
+        }
+
+        /* 3. Laser Beam Effect */
+        @keyframes laserPulse {
+
+            0%,
+            100% {
+                height: 0;
+                opacity: 0;
+            }
+
+            20%,
+            80% {
+                height: 100px;
+                opacity: 0.8;
+            }
+        }
+
+        .anim-laser-fire {
+            animation: laserPulse 1.5s ease-in-out forwards;
+            animation-delay: 0.8s;
+            /* Sync with arm down */
+        }
+
+        /* 4. Recovered Part Float Out */
+        @keyframes floatOutPart {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) translateY(0);
+                left: 50%;
+                top: 60%;
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2) translateY(-50px);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1) translateY(-100px) translateX(100px);
+                left: 60%;
+                top: 20%;
+            }
+        }
+
+        .anim-extract {
+            animation: floatOutPart 1.5s ease-out forwards;
+            animation-delay: 2s;
+            /* Sync with arm lift */
+        }
+
+        /* Result Card Animation */
+        @keyframes popIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .result-card-pop {
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }

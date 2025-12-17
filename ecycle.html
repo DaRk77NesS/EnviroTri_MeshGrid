@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eCycle Micro-Factory Components</title>
+    <link rel="icon" type="image/png" href="favicon-ecycle.png">
+
+    <!-- Tailwind CSS for rapid, modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Config for Tailwind Colors/Fonts -->
+    <script src="ecycle.config.js"></script>
+
+    <link rel="stylesheet" href="ecycle.css">
+</head>
+
+<body class="bg-brand-dark text-brand-text font-sans antialiased">
+
+    <!-- === GLOBAL BACKGROUND (Fixed) === -->
+    <div id="global-bg" class="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-brand-dark">
+        <!-- Background Gradient Base -->
+        <div class="absolute inset-0 bg-gradient-to-br from-brand-deep via-brand-dark to-[#001015]"></div>
+
+        <!-- Animated Tech Grid Overlay -->
+        <div class="absolute inset-0 tech-grid-bg opacity-30 pointer-events-none"></div>
+
+        <!-- Decorative Glow Orbs -->
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[800px] h-[800px] bg-brand-accent/5 rounded-full blur-[150px] animate-pulse-glow">
+        </div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[800px] h-[800px] bg-brand-secondary/10 rounded-full blur-[150px] animate-pulse-glow"
+            style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- ================= NAVIGATION ================= -->
+    <nav class="fixed w-full z-50 bg-brand-dark/95 backdrop-blur border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Left Side: Back Button & Logo -->
+                <div class="flex items-center gap-6">
+                    <a href="index.html"
+                        class="flex md:flex items-center justify-center w-8 h-8 rounded-full border border-brand-accent/50 text-brand-accent hover:bg-brand-accent/20 hover:shadow-[0_0_10px_rgba(0,216,255,0.4)] transition"
+                        title="Back to Main Grid">
+                        <i class="fa-solid fa-arrow-left text-sm"></i>
+                    </a>
+
+                    <!-- Logo -->
+                    <div class="flex-shrink-0 cursor-pointer" onclick="navigate('home')">
+                        <span class="font-tech text-xl text-brand-accent tracking-wider">
+                            <i class="fa-solid fa-microchip"></i> eCycle <span class="text-white">Micro-Factory</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" onclick="navigate('home')"
+                            class="hover:text-brand-accent px-3 py-2 rounded-md font-medium transition">Home</a>
+                        <a href="#shop" onclick="navigate('shop')"
+                            class="hover:text-brand-accent px-3 py-2 rounded-md font-medium transition">Shop
+                            Components</a>
+                        <a href="#about" onclick="navigate('about')"
+                            class="hover:text-brand-accent px-3 py-2 rounded-md font-medium transition">The
+                            Technology</a>
+                        <a href="#contact" onclick="navigate('contact')"
+                            class="hover:text-brand-accent px-3 py-2 rounded-md font-medium transition">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Cart Button -->
+                <div class="relative cursor-pointer hover:text-brand-accent transition" onclick="toggleCart()">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="cart-count"
+                        class="absolute -top-2 -right-2 bg-brand-accent text-brand-dark text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden ml-4">
+                    <button onclick="toggleMobileMenu()" class="text-gray-400 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer (Hidden by default) -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-brand-dark/95 backdrop-blur border-b border-gray-800 absolute w-full top-16 left-0 animate-fade-in shadow-2xl">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#home" onclick="navigate('home'); toggleMobileMenu()"
+                    class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-brand-accent/10 hover:border-l-4 hover:border-brand-accent transition-all">Home</a>
+                <a href="#shop" onclick="navigate('shop'); toggleMobileMenu()"
+                    class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-brand-accent/10 hover:border-l-4 hover:border-brand-accent transition-all">Shop
+                    Components</a>
+                <a href="#about" onclick="navigate('about'); toggleMobileMenu()"
+                    class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-brand-accent/10 hover:border-l-4 hover:border-brand-accent transition-all">The
+                    Technology</a>
+                <a href="#contact" onclick="navigate('contact'); toggleMobileMenu()"
+                    class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-brand-accent/10 hover:border-l-4 hover:border-brand-accent transition-all">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <!-- ================= MAIN CONTENT ================= -->
+    <main id="main-content" class="pt-16 min-h-screen relative z-10">
+
+        <!-- === HOME SECTION === -->
+        <section id="home-section" class="block">
+            <!-- Updated Background: Deep Tech Gradient + animated Grid -->
+            <div class="relative overflow-hidden min-h-screen flex items-center">
+
+                <!-- Background layers removed to reveal Global Background with particles -->
+
+                <div class="max-w-7xl mx-auto w-full relative z-10 px-4 sm:px-6 lg:px-8 py-20 lg:py-0">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+                        <!-- Left Content -->
+                        <div class="text-center lg:text-left animate-fade-in relative">
+                            <!-- Status Badge -->
+                            <div
+                                class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-brand-surfaceHighlight/50 border border-brand-accent/30 text-brand-accent text-xs font-mono mb-8 backdrop-blur-md shadow-[0_0_15px_rgba(0,210,170,0.2)] hover:border-brand-accent/60 transition-colors cursor-default group">
+                                <span class="relative flex h-2 w-2">
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-accent"></span>
+                                </span>
+                                <span
+                                    class="tracking-widest font-semibold group-hover:text-white transition-colors">AI-RECOVERY
+                                    ONLINE</span>
+                            </div>
+
+                            <h1 class="text-5xl sm:text-7xl font-tech font-extrabold text-white leading-tight mb-6">
+                                <span class="block drop-shadow-xl">Tested <br> Components</span>
+                                <span
+                                    class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent via-teal-200 to-brand-secondary">Recovered
+                                    by AI</span>
+                            </h1>
+
+                            <p
+                                class="mt-6 text-lg text-brand-muted max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
+                                The <strong class="text-brand-text font-semibold">eCycle Micro-Factory</strong> combines
+                                computer vision and precision robotics to harvest high-value chips from e-waste. <span
+                                    class="text-brand-accent">Sustainable hardware</span> for your next breakthrough.
+                            </p>
+
+                            <!-- CTA Buttons -->
+                            <div class="mt-10 flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
+                                <button onclick="navigate('shop')"
+                                    class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-brand-dark bg-brand-accent rounded-xl overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(0,210,170,0.5)]">
+                                    <span
+                                        class="absolute w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></span>
+                                    <i class="fa-solid fa-microchip mr-2"></i> Shop Components
+                                </button>
+
+                                <button onclick="navigate('about')"
+                                    class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-brand-text border border-brand-surfaceHighlight bg-brand-surfaceHighlight/30 rounded-xl hover:bg-brand-surfaceHighlight/60 hover:border-brand-accent/50 transition-all backdrop-blur-sm">
+                                    <i class="fa-solid fa-circle-info mr-2"></i> How It Works
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right Visual (Floating Chip) -->
+                        <div
+                            class="relative flex justify-center lg:justify-end pointer-events-none lg:pointer-events-auto">
+                            <div class="relative w-[300px] h-[300px] sm:w-[500px] sm:h-[500px]">
+                                <!-- Glowing Aura -->
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-tr from-brand-accent/20 to-brand-secondary/20 rounded-full blur-[60px] animate-pulse-glow">
+                                </div>
+
+                                <!-- Floating Chip Icon -->
+                                <div class="relative z-10 animate-float">
+                                    <i class="fa-solid fa-microchip text-[15rem] sm:text-[25rem] text-transparent bg-clip-text bg-gradient-to-br from-brand-accent to-brand-secondary/50 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+                                        style="filter: drop-shadow(0 0 30px rgba(0, 210, 170, 0.3));"></i>
+
+                                    <!-- Floating Elements/Particles (Simple CSS rep) -->
+                                    <div class="absolute top-0 right-10 p-3 bg-brand-dark/80 backdrop-blur border border-brand-accent rounded-lg shadow-lg animate-bounce"
+                                        style="animation-duration: 3s;">
+                                        <i class="fa-solid fa-check text-brand-accent"></i>
+                                    </div>
+                                    <div class="absolute bottom-10 left-0 p-3 bg-brand-dark/80 backdrop-blur border border-brand-secondary rounded-lg shadow-lg animate-bounce"
+                                        style="animation-duration: 4s; animation-delay: 1s;">
+                                        <i class="fa-solid fa-bolt text-brand-secondary"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="py-16 bg-transparent relative">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        <div
+                            class="group p-8 bg-brand-surface/50 backdrop-blur rounded-2xl border border-brand-accent/10 hover:border-brand-accent/50 hover:bg-brand-surface/80 transition-all duration-300 hover:-translate-y-2">
+                            <div
+                                class="w-16 h-16 mx-auto mb-6 bg-brand-accent/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <i class="fa-solid fa-recycle text-3xl text-brand-accent"></i>
+                            </div>
+                            <h3
+                                class="text-xl font-bold mb-3 text-white font-tech tracking-wide group-hover:text-brand-accent transition-colors">
+                                Circular Economy</h3>
+                            <p class="text-gray-400 leading-relaxed font-light">Stopping e-waste from entering landfills
+                                by giving functional chips a second life in new projects.</p>
+                        </div>
+
+                        <div
+                            class="group p-8 bg-brand-surface/30 backdrop-blur rounded-2xl border border-brand-accent/10 hover:border-brand-accent/50 hover:bg-brand-surface/60 transition-all duration-300 hover:-translate-y-2">
+                            <div
+                                class="w-16 h-16 mx-auto mb-6 bg-blue-500/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <i class="fa-solid fa-robot text-3xl text-blue-400"></i>
+                            </div>
+                            <h3
+                                class="text-xl font-bold mb-3 text-white font-tech tracking-wide group-hover:text-blue-400 transition-colors">
+                                AI Recovered</h3>
+                            <p class="text-gray-400 leading-relaxed font-light">Our compact factory uses computer vision
+                                to inspect and precision robotics to harvest parts safely.</p>
+                        </div>
+
+                        <div
+                            class="group p-8 bg-brand-surface/30 backdrop-blur rounded-2xl border border-brand-accent/10 hover:border-brand-accent/50 hover:bg-brand-surface/60 transition-all duration-300 hover:-translate-y-2">
+                            <div
+                                class="w-16 h-16 mx-auto mb-6 bg-purple-500/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <i class="fa-solid fa-check-circle text-3xl text-purple-400"></i>
+                            </div>
+                            <h3
+                                class="text-xl font-bold mb-3 text-white font-tech tracking-wide group-hover:text-purple-400 transition-colors">
+                                Tested & Guaranteed</h3>
+                            <p class="text-gray-400 leading-relaxed font-light">Every component is electrically tested
+                                before listing. Quality benchmarks you can rely on.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- === SHOP SECTION === -->
+        <section id="shop-section" class="hidden py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-8 text-center">
+                <h2 class="text-3xl font-tech font-bold text-white">Component Catalog</h2>
+                <p class="text-brand-muted mt-2">Genuine recycled parts. Tested. Stock varies daily.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Sidebar Filters -->
+                <aside
+                    class="w-full md:w-1/4 bg-brand-surface/30 backdrop-blur-md p-4 rounded-lg border border-brand-accent/10 h-fit">
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Search</label>
+                        <input type="text" id="search-input" placeholder="Part # (e.g., LM358)"
+                            class="w-full bg-brand-dark border border-gray-600 rounded p-2 text-white focus:outline-none focus:border-brand-accent">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Sort By</label>
+                        <select id="sort-select"
+                            class="w-full bg-brand-dark border border-gray-600 rounded p-2 text-white focus:outline-none">
+                            <option value="default">Default</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="name">Name (A-Z)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Category</label>
+                        <ul id="category-list" class="space-y-2">
+                            <!-- Categories injected by JS -->
+                        </ul>
+                    </div>
+                </aside>
+
+                <!-- Product Grid -->
+                <div class="w-full md:w-3/4">
+                    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Products injected by JS -->
+                    </div>
+                    <div id="no-results" class="hidden text-center py-10 text-gray-400">
+                        <i class="fa-solid fa-search text-4xl mb-3"></i>
+                        <p>No components found matching your criteria.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- === ABOUT SECTION === -->
+        <section id="about-section" class="hidden py-12 bg-transparent">
+            <div class="max-w-4xl mx-auto px-4">
+                <h2 class="text-3xl font-tech font-bold mb-6 text-brand-accent">Inside The Micro-Factory</h2>
+
+                <div class="space-y-6 text-gray-300 text-lg leading-relaxed">
+                    <p>
+                        The <strong>eCycle Micro-Factory</strong> is a revolutionary, containerized system designed to
+                        tackle the global e-waste crisis. Instead of shredding circuit boards for raw metals—a process
+                        that destroys high-value engineered components—our system carefully disassembles them.
+                    </p>
+                    <div
+                        class="my-8 rounded-lg overflow-hidden border border-gray-700 bg-brand-dark/50 h-64 flex items-center justify-center relative">
+                        <!-- Placeholder for schematic/video -->
+                        <div class="text-center">
+                            <i class="fa-solid fa-microscope text-6xl text-brand-muted opacity-50 mb-2"></i>
+                            <p class="text-sm text-gray-500">AI Visual Scanning & Desoldering Process</p>
+                        </div>
+                    </div>
+                    <p>
+                        <strong>How it works:</strong>
+                    <ol class="list-decimal pl-6 space-y-2 mt-2">
+                        <li><span class="text-white font-bold">Scan:</span> Computer vision identifies valuable chips on
+                            scrap PCBs.</li>
+                        <li><span class="text-white font-bold">Desolder:</span> Precision localized heating removes the
+                            part without thermal damage.</li>
+                        <li><span class="text-white font-bold">Clean:</span> Pins are cleaned and re-tinned
+                            automatically.</li>
+                        <li><span class="text-white font-bold">Test:</span> The component is placed in a test jig to
+                            verify voltage, capacitance, or logic functions.</li>
+                    </ol>
+                    </p>
+                    <p>
+                        By buying from us, you support a future where electronics are designed for longevity and reuse,
+                        not obsolescence.
+                    </p>
+                </div>
+            </div>
+            <!-- === START NEW TECHNICAL SPECS SECTION === -->
+            <div class="mt-16 pt-10 border-t border-gray-700 animate-fade-in">
+
+                <h3 class="text-3xl font-tech font-bold text-white mb-8 text-center">
+                    Technical <span class="text-brand-accent">Specifications</span>
+                </h3>
+
+                <!-- Tech Specs Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+
+                    <!-- Hardware Column -->
+                    <div
+                        class="bg-brand-dark/50 backdrop-blur-md p-6 rounded-xl border border-gray-700 shadow-lg hover:border-brand-accent transition duration-300 reveal-on-scroll">
+                        <div class="flex items-center mb-6">
+                            <div class="p-3 bg-brand-surface rounded-lg text-brand-accent mr-4">
+                                <i class="fa-solid fa-server text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white font-tech">Hardware Components</h4>
+                        </div>
+
+                        <ul class="space-y-6">
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-eye text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Vision
+                                        System</strong>
+                                    <span class="text-gray-400 text-sm">High-resolution camera (e.g., 12MP USB camera)
+                                        with LED lighting for scanning PCBs up to 30cm x 30cm.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-fire-burner text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Heating
+                                        Module</strong>
+                                    <span class="text-gray-400 text-sm">Infrared or hot-air station (controlled to
+                                        150-250°C) to melt solder without damaging parts.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-robot text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Robotic
+                                        Arm</strong>
+                                    <span class="text-gray-400 text-sm">Affordable 4-6 DOF arm (e.g., based on Arduino
+                                        or Raspberry Pi) with vacuum/suction grippers for gentle removal.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-filter text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Sorting
+                                        System</strong>
+                                    <span class="text-gray-400 text-sm">Conveyor or vibrating trays with sensors (e.g.,
+                                        weight, size) to categorize parts into 10-20 bins.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-bolt text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Testing
+                                        Station</strong>
+                                    <span class="text-gray-400 text-sm">Multimeter integration for basic checks
+                                        (continuity, voltage); optional add-ons for JTAG or functional testing.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-box text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Enclosure</strong>
+                                    <span class="text-gray-400 text-sm">Ventilated safety case with fume extraction to
+                                        handle minor emissions.</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Software Column -->
+                    <div class="bg-brand-dark/50 backdrop-blur-md p-6 rounded-xl border border-gray-700 shadow-lg hover:border-brand-accent transition duration-300 h-fit reveal-on-scroll"
+                        style="transition-delay: 200ms;">
+                        <div class="flex items-center mb-6">
+                            <div class="p-3 bg-brand-surface rounded-lg text-brand-accent mr-4">
+                                <i class="fa-solid fa-code text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white font-tech">Software Stack</h4>
+                        </div>
+
+                        <ul class="space-y-6">
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-brain text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong class="text-brand-accent block text-sm font-tech uppercase tracking-wide">AI
+                                        Model</strong>
+                                    <span class="text-gray-400 text-sm">Pre-trained on datasets like OpenCV for
+                                        component detection; user-trainable for custom PCBs.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-terminal text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Control
+                                        Software</strong>
+                                    <span class="text-gray-400 text-sm">Python-based GUI on a Raspberry Pi or mini-PC,
+                                        handling workflow from scan to marketplace upload.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-store text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Marketplace
+                                        Backend</strong>
+                                    <span class="text-gray-400 text-sm">Web app (e.g., using Flask/Django) with API for
+                                        listings, payments, and shipping integration.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-shield-halved text-brand-muted mt-1 mr-3 text-xs"></i>
+                                <div>
+                                    <strong
+                                        class="text-brand-accent block text-sm font-tech uppercase tracking-wide">Data
+                                        Security</strong>
+                                    <span class="text-gray-400 text-sm">Encrypted uploads; optional NFT-style
+                                        certification for part authenticity.</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <!-- Decorative Element -->
+                        <div
+                            class="mt-8 p-4 bg-gray-900 rounded border border-gray-800 flex justify-between items-center opacity-75">
+                            <div class="text-xs text-gray-500 font-mono">
+                                > SYSTEM STATUS: <span class="text-green-500">ONLINE</span><br>
+                                > AI CONFIDENCE: <span class="text-green-500">98.4%</span>
+                            </div>
+                            <i class="fa-solid fa-wifi text-brand-muted"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workflow Section -->
+                <div class="relative">
+                    <h3 class="text-3xl font-tech font-bold text-white mb-10 text-center">
+                        Operational <span class="text-brand-accent">Workflow</span>
+                    </h3>
+
+                    <!-- Timeline Container -->
+                    <div class="border-l-2 border-brand-accent/30 ml-4 md:ml-10 space-y-10 pl-6 md:pl-10 pb-4">
+
+                        <!-- Step 1 -->
+                        <div class="relative reveal-on-scroll">
+                            <span
+                                class="absolute -left-[3rem] md:-left-[3.6rem] bg-brand-dark border-2 border-brand-accent text-brand-accent w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">1</span>
+                            <h5 class="text-white font-bold text-lg mb-1">Input</h5>
+                            <p class="text-gray-400 text-sm">User loads PCB into the machine fixture.</p>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="relative reveal-on-scroll" style="transition-delay: 100ms;">
+                            <span
+                                class="absolute -left-[3rem] md:-left-[3.6rem] bg-brand-dark border-2 border-brand-accent text-brand-accent w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">2</span>
+                            <h5 class="text-white font-bold text-lg mb-1">Scanning</h5>
+                            <p class="text-gray-400 text-sm">AI identifies components (e.g., ICs, capacitors) and maps
+                                their positions via coordinate system.</p>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="relative reveal-on-scroll" style="transition-delay: 200ms;">
+                            <span
+                                class="absolute -left-[3rem] md:-left-[3.6rem] bg-brand-dark border-2 border-brand-accent text-brand-accent w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">3</span>
+                            <h5 class="text-white font-bold text-lg mb-1">Depopulation</h5>
+                            <p class="text-gray-400 text-sm">Targeted heating loosens solder; robotic arm removes parts
+                                sequentially without thermal stress.</p>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="relative reveal-on-scroll" style="transition-delay: 300ms;">
+                            <span
+                                class="absolute -left-[3rem] md:-left-[3.6rem] bg-brand-dark border-2 border-brand-accent text-brand-accent w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">4</span>
+                            <h5 class="text-white font-bold text-lg mb-1">Sorting</h5>
+                            <p class="text-gray-400 text-sm">Parts drop into categorized trays (bins 1-20) based on
+                                real-time AI classification.</p>
+                        </div>
+
+                        <!-- Step 5 -->
+                        <div class="relative">
+                            <span
+                                class="absolute -left-[3rem] md:-left-[3.6rem] bg-brand-dark border-2 border-brand-accent text-brand-accent w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">5</span>
+                            <h5 class="text-white font-bold text-lg mb-1">Testing</h5>
+                            <p class="text-gray-400 text-sm">Quick electrical tests performed; failed parts routed to
+                                metal recovery bin, valid parts certified.</p>
+                        </div>
+
+                        <!-- Step 6 -->
+                        <div class="relative">
+                            <span
+                                class="absolute -left-[3rem] md:-left-[3.6rem] bg-brand-dark border-2 border-brand-accent text-brand-accent w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">6</span>
+                            <h5 class="text-white font-bold text-lg mb-1">Cataloging & Upload</h5>
+                            <p class="text-gray-400 text-sm">Photos, specs, and test results auto-generated; QR label
+                                printed. Parts listed to marketplace with dynamic pricing (50-70% off MSRP).</p>
+                        </div>
+
+                        <!-- Step 7 -->
+                        <div class="relative">
+                            <span
+                                class="absolute -left-[3rem] md:-left-[3.6rem] bg-brand-surface border-2 border-gray-600 text-gray-500 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm"><i
+                                    class="fa-solid fa-check"></i></span>
+                            <h5 class="text-white font-bold text-lg mb-1">Output</h5>
+                            <p class="text-gray-400 text-sm">Bare PCB ejected for optional copper/gold extraction.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- === END NEW SECTION === -->
+
+            <!-- === VIRTUAL RECOVERY LAB (NEW INTERACTIVE SECTION) === -->
+            <div id="recovery-demo" class="mt-24 pt-10 border-t border-gray-700 animate-fade-in">
+                <div class="max-w-6xl mx-auto px-4">
+                    <div class="text-center mb-12">
+                        <span class="text-brand-accent font-mono text-sm tracking-widest uppercase">Experience the
+                            Process</span>
+                        <h2 class="text-4xl font-tech font-bold text-white mt-2">Virtual <span
+                                class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-blue-500">Recovery
+                                Lab</span></h2>
+                        <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Select a donor PCB below to initialize the AI
+                            recovery sequence.</p>
+                    </div>
+
+                    <!-- 1. SELECTOR GRID -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                        <!-- Card 1: GPU -->
+                        <div onclick="startRecovery('gpu')"
+                            class="pcb-card group relative bg-brand-surface/20 border border-brand-accent/20 rounded-xl p-6 cursor-pointer hover:bg-brand-surface/40 hover:border-brand-accent transition-all duration-300 hover:-translate-y-2 overflow-hidden">
+                            <div
+                                class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-30 transition-opacity">
+                                <i class="fa-solid fa-gamepad text-6xl text-brand-accent"></i>
+                            </div>
+                            <div class="relative z-10">
+                                <div class="w-12 h-12 rounded-lg bg-green-500/10 flex items-center justify-center mb-4">
+                                    <i class="fa-solid fa-microchip text-green-400 text-xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-white mb-2">Gaming GPU</h4>
+                                <p class="text-sm text-gray-400">High-yield gold fingers, MLCC capacitors, and massive
+                                    silicon die.</p>
+                                <div class="mt-4 flex gap-2 text-[10px] uppercase font-bold text-brand-accent">
+                                    <span class="bg-brand-accent/10 px-2 py-1 rounded">Gold</span>
+                                    <span class="bg-brand-accent/10 px-2 py-1 rounded">Copper</span>
+                                </div>
+                            </div>
+                            <!-- Selection glow -->
+                            <div
+                                class="absolute inset-0 border-2 border-brand-accent opacity-0 group-hover:opacity-100 rounded-xl transition-opacity">
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Server -->
+                        <div onclick="startRecovery('server')"
+                            class="pcb-card group relative bg-brand-surface/20 border border-brand-accent/20 rounded-xl p-6 cursor-pointer hover:bg-brand-surface/40 hover:border-brand-accent transition-all duration-300 hover:-translate-y-2 overflow-hidden">
+                            <div
+                                class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-30 transition-opacity">
+                                <i class="fa-solid fa-server text-6xl text-blue-400"></i>
+                            </div>
+                            <div class="relative z-10">
+                                <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center mb-4">
+                                    <i class="fa-solid fa-network-wired text-blue-400 text-xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-white mb-2">Enterprise Server</h4>
+                                <p class="text-sm text-gray-400">Rare earth magnets, high-grade tantalum caps, and
+                                    Xeon-class geometry.</p>
+                                <div class="mt-4 flex gap-2 text-[10px] uppercase font-bold text-blue-400">
+                                    <span class="bg-blue-400/10 px-2 py-1 rounded">Tantalum</span>
+                                    <span class="bg-blue-400/10 px-2 py-1 rounded">Palladium</span>
+                                </div>
+                            </div>
+                            <div
+                                class="absolute inset-0 border-2 border-brand-accent opacity-0 group-hover:opacity-100 rounded-xl transition-opacity">
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Phone -->
+                        <div onclick="startRecovery('phone')"
+                            class="pcb-card group relative bg-brand-surface/20 border border-brand-accent/20 rounded-xl p-6 cursor-pointer hover:bg-brand-surface/40 hover:border-brand-accent transition-all duration-300 hover:-translate-y-2 overflow-hidden">
+                            <div
+                                class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-30 transition-opacity">
+                                <i class="fa-solid fa-mobile-screen text-6xl text-purple-400"></i>
+                            </div>
+                            <div class="relative z-10">
+                                <div
+                                    class="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center mb-4">
+                                    <i class="fa-solid fa-memory text-purple-400 text-xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-white mb-2">Smartphone Logic</h4>
+                                <p class="text-sm text-gray-400">Dense precious metals in a tiny footprint. Sensors and
+                                    SoC recovery.</p>
+                                <div class="mt-4 flex gap-2 text-[10px] uppercase font-bold text-purple-400">
+                                    <span class="bg-purple-400/10 px-2 py-1 rounded">Platinum</span>
+                                    <span class="bg-purple-400/10 px-2 py-1 rounded">Sensors</span>
+                                </div>
+                            </div>
+                            <div
+                                class="absolute inset-0 border-2 border-brand-accent opacity-0 group-hover:opacity-100 rounded-xl transition-opacity">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. ANIMATION STAGE (THE MACHINE) -->
+                    <div id="machine-stage"
+                        class="relative w-full h-[400px] bg-black/80 rounded-2xl border border-gray-700 overflow-hidden shadow-2xl flex items-center justify-center hidden opacity-0 transition-opacity duration-500">
+                        <!-- Machine Background Grid -->
+                        <div class="absolute inset-0 opacity-20"
+                            style="background-image: linear-gradient(0deg, transparent 24%, rgba(0, 255, 170, .3) 25%, rgba(0, 255, 170, .3) 26%, transparent 27%, transparent 74%, rgba(0, 255, 170, .3) 75%, rgba(0, 255, 170, .3) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 255, 170, .3) 25%, rgba(0, 255, 170, .3) 26%, transparent 27%, transparent 74%, rgba(0, 255, 170, .3) 75%, rgba(0, 255, 170, .3) 76%, transparent 77%, transparent); background-size: 50px 50px;">
+                        </div>
+
+                        <!-- Status Overlay -->
+                        <div class="absolute top-4 left-6 z-20 font-mono text-xs">
+                            <div class="text-brand-accent">STATUS: <span id="machine-status"
+                                    class="text-white">IDLE</span>
+                            </div>
+                            <div class="text-brand-accent mt-1">MODULE: <span id="machine-module"
+                                    class="text-white">--</span></div>
+                        </div>
+
+                        <!-- Conveyor Belt Line -->
+                        <div class="absolute bottom-10 left-0 right-0 h-2 bg-gray-800 border-t border-gray-600"></div>
+
+                        <!-- THE PCB ELEMENT (Animated) -->
+                        <div id="anim-pcb"
+                            class="absolute left-[-200px] bottom-[50px] w-48 h-32 bg-green-900/80 border border-green-500 rounded flex items-center justify-center shadow-[0_0_15px_rgba(34,197,94,0.3)] z-10">
+                            <div class="grid grid-cols-4 gap-1 opacity-50 w-full h-full p-2">
+                                <!-- PCB detail visuals -->
+                                <div class="bg-yellow-500/30 col-span-1 h-8"></div>
+                                <div class="bg-black/40 col-span-3 h-8"></div>
+                                <div class="bg-black/40 col-span-2 h-16"></div>
+                                <div class="bg-slate-300/30 col-span-2 h-16 rounded-full"></div>
+                            </div>
+                            <span id="pcb-label"
+                                class="absolute font-mono text-[10px] text-green-300 font-bold bg-black/60 px-1">PCB</span>
+                        </div>
+
+                        <!-- THE ROBOT ARM (Animated) -->
+                        <div id="anim-arm"
+                            class="absolute top-[-20px] left-1/2 -translate-x-1/2 w-16 h-48 bg-gray-800 border-x border-b border-gray-600 rounded-b-lg flex flex-col items-center z-20 origin-top shadow-xl transition-all duration-500"
+                            style="transform: translateX(-50%) translateY(-150px);">
+                            <!-- Arm Body -->
+                            <div class="w-2 h-full bg-gray-600/50"></div>
+                            <!-- Head -->
+                            <div
+                                class="absolute bottom-0 w-20 h-12 bg-gray-900 border border-brand-accent rounded-md flex items-center justify-center shadow-[0_0_20px_rgba(0,210,170,0.4)]">
+                                <i class="fa-solid fa-eye text-brand-accent animate-pulse"></i>
+                                <!-- Laser Beam (Hidden default) -->
+                                <div id="anim-laser"
+                                    class="absolute top-full left-1/2 -translate-x-1/2 w-0.5 h-0 bg-red-500 shadow-[0_0_10px_red] transition-all opacity-0">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RECOVERED PART (Floats out) -->
+                        <div id="anim-part"
+                            class="absolute left-1/2 top-1/2 w-12 h-12 bg-brand-accent text-brand-dark rounded-full flex items-center justify-center z-30 opacity-0 shadow-[0_0_20px_rgba(0,210,170,0.8)] font-bold">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+
+                    <!-- 3. RESULTS PANEL -->
+                    <div id="results-panel" class="hidden mt-8 text-center animate-fade-in">
+                        <h3 class="text-2xl font-bold text-white mb-6">Recovery Successful!</h3>
+                        <div id="results-grid" class="flex flex-wrap justify-center gap-4">
+                            <!-- Injected by JS -->
+                        </div>
+                        <button onclick="resetMachine()"
+                            class="mt-8 text-brand-muted hover:text-white underline decoration-brand-accent underline-offset-4">Process
+                            Another Board</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- === CONTACT SECTION === -->
+        <section id="contact-section" class="hidden py-12 bg-transparent">
+            <div class="max-w-3xl mx-auto px-4">
+                <h2 class="text-3xl font-tech font-bold mb-8 text-center">Contact Us</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-brand-surface/30 backdrop-blur-md p-6 rounded-lg border border-brand-accent/10">
+                        <h3 class="text-xl font-bold mb-4 text-brand-accent">Get in Touch</h3>
+                        <p class="text-gray-400 mb-4">Have bulk e-waste to donate or need specific parts?</p>
+                        <ul class="space-y-3 text-gray-300">
+                            <li><i class="fa-solid fa-envelope mr-2"></i> hello@ecyclemicrofactory.com</li>
+                            <li><i class="fa-solid fa-location-dot mr-2"></i> Tech Hub, Eco District, BD</li>
+                            <li><i class="fa-solid fa-phone mr-2"></i> +1 (555) 012-3456</li>
+                        </ul>
+                    </div>
+                    <form onsubmit="event.preventDefault(); alert('Message sent! We will reply shortly.');"
+                        class="space-y-4">
+                        <input type="text" placeholder="Your Name"
+                            class="w-full bg-brand-surface border border-gray-600 p-3 rounded text-white focus:border-brand-accent outline-none"
+                            required>
+                        <input type="email" placeholder="Your Email"
+                            class="w-full bg-brand-surface border border-gray-600 p-3 rounded text-white focus:border-brand-accent outline-none"
+                            required>
+                        <textarea rows="4" placeholder="Message"
+                            class="w-full bg-brand-surface border border-gray-600 p-3 rounded text-white focus:border-brand-accent outline-none"
+                            required></textarea>
+                        <button type="submit"
+                            class="w-full bg-brand-accent text-brand-dark font-bold py-3 rounded hover:bg-brand-accentHover transition">Send
+                            Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-brand-surface/30 backdrop-blur-md border-t border-brand-accent/10 py-8 mt-12 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0 text-center md:text-left">
+                <span class="font-tech text-lg text-brand-accent">eCycle Micro-Factory</span>
+                <p class="text-gray-500 text-sm mt-1">Recovering the future, one chip at a time.</p>
+            </div>
+            <div class="flex space-x-6 text-gray-400">
+                <a href="#" class="hover:text-white"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="hover:text-white"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="hover:text-white"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+        <div class="text-center text-gray-600 text-xs mt-8">
+            &copy; 2025 eCycle Micro-Factory. All Rights Reserved. <br>
+            <span class="text-brand-accent/50">Project for Sustainability & Innovation.</span>
+        </div>
+    </footer>
+
+    <!-- ================= MODALS & OVERLAYS ================= -->
+
+    <!-- Product Detail Modal -->
+    <div id="product-modal" class="fixed inset-0 z-[60] hidden overflow-y-auto" aria-labelledby="modal-title"
+        role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background Overlay -->
+            <div class="fixed inset-0 bg-black bg-opacity-75 transition-opacity" aria-hidden="true"
+                onclick="closeModal()"></div>
+
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div
+                class="relative inline-block align-bottom bg-brand-surface rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-gray-700">
+                <div class="bg-brand-surface px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div
+                            class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-brand-dark sm:mx-0 sm:h-10 sm:w-10 text-brand-accent border border-brand-accent">
+                            <i class="fa-solid fa-microchip"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-white font-tech" id="modal-title">Product Name
+                            </h3>
+                            <div class="mt-1">
+                                <span id="modal-category"
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-700 text-gray-300">Category</span>
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-accent/20 text-brand-accent border border-brand-accent/50 ml-2">Recovered
+                                    & Tested</span>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-sm text-gray-400" id="modal-desc">Description goes here.</p>
+                                <div class="mt-4 bg-brand-dark p-3 rounded border border-gray-700">
+                                    <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wide">Technical Specs
+                                    </h4>
+                                    <ul id="modal-specs" class="mt-2 text-sm text-gray-400 list-disc list-inside">
+                                        <!-- Specs populated by JS -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="bg-brand-dark/50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse justify-between items-center border-t border-gray-700">
+                    <div class="flex items-center space-x-4 mb-3 sm:mb-0">
+                        <span id="modal-price" class="text-xl font-bold text-white">$0.00</span>
+                        <button type="button" id="modal-add-btn"
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brand-accent text-base font-medium text-brand-dark hover:bg-brand-accentHover focus:outline-none sm:w-auto sm:text-sm">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <button type="button" onclick="closeModal()"
+                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-600 shadow-sm px-4 py-2 bg-transparent text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar/Modal -->
+    <div id="cart-overlay" class="fixed inset-0 overflow-hidden z-[70] hidden">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute inset-0 bg-gray-900 bg-opacity-75 transition-opacity" onclick="toggleCart()"></div>
+            <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex">
+                <div class="w-screen max-w-md">
+                    <div class="h-full flex flex-col bg-brand-surface shadow-xl border-l border-gray-700">
+                        <div class="flex-1 py-6 overflow-y-auto px-4 sm:px-6">
+                            <div class="flex items-start justify-between">
+                                <h2 class="text-lg font-medium text-white font-tech">Your Cart</h2>
+                                <div class="ml-3 h-7 flex items-center">
+                                    <button type="button" class="-m-2 p-2 text-gray-400 hover:text-white"
+                                        onclick="toggleCart()">
+                                        <span class="sr-only">Close panel</span>
+                                        <i class="fa-solid fa-xmark text-xl"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mt-8">
+                                <div class="flow-root">
+                                    <ul id="cart-items" role="list" class="-my-6 divide-y divide-gray-700">
+                                        <!-- Cart items injected here -->
+                                    </ul>
+                                    <div id="empty-cart-msg" class="py-6 text-center text-gray-500">
+                                        Your cart is empty.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-gray-700 py-6 px-4 sm:px-6 bg-brand-dark">
+                            <div class="flex justify-between text-base font-medium text-white">
+                                <p>Subtotal</p>
+                                <p id="cart-total">$0.00</p>
+                            </div>
+                            <p class="mt-0.5 text-sm text-gray-400">Shipping calculated at checkout.</p>
+                            <div class="mt-6">
+                                <a href="#" onclick="checkout()"
+                                    class="flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-brand-dark bg-brand-accent hover:bg-brand-accentHover">Checkout</a>
+                            </div>
+                            <div class="mt-6 flex justify-center text-sm text-center text-gray-400">
+                                <p>
+                                    or <button type="button"
+                                        class="text-brand-accent font-medium hover:text-brand-accentHover"
+                                        onclick="toggleCart()">Continue Shopping<span aria-hidden="true">
+                                            &rarr;</span></button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script src="ecycle.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnviroTri MeshGrid | Connected Climate Infrastructure</title>
+    <link rel="icon" type="image/png" href="favicon-main.png">
+
+    <!-- Fonts: Space Grotesk (Headings) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Rajdhani:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="index.css">
+
+
+</head>
+
+<body>
+
+    <!-- 0. Global Background Effects -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="aurora-blob blob-1"></div>
+        <div class="aurora-blob blob-2"></div>
+        <div class="aurora-blob blob-3"></div>
+        <div class="noise-overlay"></div>
+    </div>
+
+    <!-- 1. Navigation Bar -->
+    <nav>
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-circle-nodes"></i>
+                <span>EnviroTri MeshGrid</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <div class="nav-links hidden-mobile">
+                <a href="#hero">Overview</a>
+                <a href="#pillars">The Three Pillars</a>
+                <a href="#connectivity">Connected</a>
+                <a href="#impact">Impact</a>
+                <a href="#engage">Get Involved</a>
+            </div>
+
+            <div class="module-pills hidden-mobile">
+                <a href="awd.html" class="pill-btn awd">
+                    <i class="fa-solid fa-wheat-awn"></i> AWD
+                </a>
+                <a href="ecycle.html" class="pill-btn ecycle">
+                    <i class="fa-solid fa-microchip"></i> eCycle
+                </a>
+                <a href="hydro.html" class="pill-btn hydro">
+                    <i class="fa-solid fa-droplet"></i> Hydro
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-toggle" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-menu" class="mobile-drawer">
+            <a href="#hero" onclick="toggleMobileMenu()">Overview</a>
+            <a href="#pillars" onclick="toggleMobileMenu()">The Three Pillars</a>
+            <a href="#connectivity" onclick="toggleMobileMenu()">Connected</a>
+            <a href="#impact" onclick="toggleMobileMenu()">Impact</a>
+            <a href="#engage" onclick="toggleMobileMenu()">Get Involved</a>
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">
+            <a href="awd.html" class="drawer-pill"><i class="fa-solid fa-wheat-awn"></i> AWD Module</a>
+            <a href="ecycle.html" class="drawer-pill"><i class="fa-solid fa-microchip"></i> eCycle Module</a>
+            <a href="hydro.html" class="drawer-pill"><i class="fa-solid fa-droplet"></i> Hydro Module</a>
+        </div>
+    </nav>
+
+    <!-- 2. Hero Section -->
+    <section id="hero" class="container">
+        <div class="hero-grid">
+            <div class="hero-text reveal">
+                <!-- Floating Icons for Depth -->
+                <div class="float-icon fi-1"><i class="fa-solid fa-droplet"></i></div>
+                <div class="float-icon fi-2"><i class="fa-solid fa-microchip"></i></div>
+                <div class="float-icon fi-3"><i class="fa-solid fa-wheat-awn"></i></div>
+
+                <div class="hero-label">SYSTEM OF SYSTEMS • WATER • E-WASTE • RICE FIELDS</div>
+                <h1>
+                    <span class="text-gradient">Connected Climate Infrastructure</span><br>
+                    for Water, E-Waste & Rice Farming
+                </h1>
+                <p class="hero-sub">
+                    EnviroTri MeshGrid is a unified IoT network that tackles three crises at once: polluted industrial
+                    water, unsafe electronic waste, and high-emission rice farming.
+                    Instead of treating them as separate problems, EnviroTri MeshGrid links them into one circular,
+                    data-driven system.
+                </p>
+                <div class="cta-wrapper">
+                    <div class="btn-group">
+                        <a href="#pillars" class="btn-main">Explore the Three Systems</a>
+                    </div>
+                    <div class="quick-links-group">
+                        <span class="quick-label">Go to Live Modules:</span>
+                        <a href="awd.html" class="pill-btn awd" title="AWD System"><i
+                                class="fa-solid fa-wheat-awn"></i></a>
+                        <a href="ecycle.html" class="pill-btn ecycle" title="eCycle Factory"><i
+                                class="fa-solid fa-microchip"></i></a>
+                        <a href="hydro.html" class="pill-btn hydro" title="HydroLoop"><i
+                                class="fa-solid fa-droplet"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-card reveal" style="transition-delay: 0.2s;">
+                <div class="status-card">
+                    <div class="stat-grid">
+                        <div class="stat-block">
+                            <i class="fa-solid fa-network-wired"></i>
+                            <h3>3</h3>
+                            <p>Integrated Systems</p>
+                        </div>
+                        <div class="stat-block" style="text-align: right;">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <h3>IoT</h3>
+                            <p>Water • E-Waste • Rice</p>
+                        </div>
+                    </div>
+                    <div class="stat-grid" style="border: none; padding: 0; margin: 0; align-items: center;">
+                        <div class="stat-block">
+                            <p style="color: var(--text-main); margin-bottom: 5px;">System Status</p>
+                            <div class="system-live">
+                                <div class="pulse-dot"></div>
+                                Online & Logging Data
+                            </div>
+                        </div>
+                        <div class="stat-block" style="text-align: right;">
+                            <p style="text-transform: none; color: var(--text-muted); font-size: 0.75rem;">
+                                <i class="fa-solid fa-location-dot" style="font-size: 0.8rem; margin-right: 5px;"></i>
+                                Built for Bangladesh, Ready for the World
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. The Three Pillars (Clickable Cards) -->
+    <section id="pillars" class="section-padding">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>The Three Pillars of EnviroTri MeshGrid</h2>
+                <p>Three specialized subsystems working in harmony to solve distinct environmental challenges.</p>
+            </div>
+
+            <div class="pillars-grid">
+
+                <!-- Card 1: AWD (Now a full Anchor tag) -->
+                <a href="awd.html" class="pillar-card awd reveal spotlight" style="transition-delay: 0.1s;">
+                    <div class="pillar-head spotlight-content">
+                        <span class="chip">PILLAR 01</span>
+                        <i class="fa-solid fa-wheat-awn pillar-icon"></i>
+                    </div>
+                    <div class="spotlight-content">
+                        <h3>AWD: Precision Rice Irrigation</h3>
+                        <p>AWD-Mesh is a smart irrigation network for rice paddies. It uses water-level sensors, LoRa
+                            communication, and weather data to schedule Alternate Wetting and Drying (AWD), cutting
+                            methane
+                            emissions and saving water while protecting yields.</p>
+                        <ul class="features-list">
+                            <li><i class="fa-solid fa-check"></i> LoRa-connected field and canal sensors</li>
+                            <li><i class="fa-solid fa-check"></i> Village-wide shared irrigation schedules</li>
+                            <li><i class="fa-solid fa-check"></i> Reduces water use and methane emissions</li>
+                        </ul>
+                        <!-- Visual Button (span) -->
+                        <span class="card-btn-visual">
+                            Open AWD Module <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Card 2: eCycle (Now a full Anchor tag) -->
+                <a href="ecycle.html" class="pillar-card ecycle reveal spotlight" style="transition-delay: 0.2s;">
+                    <div class="pillar-head spotlight-content">
+                        <span class="chip">PILLAR 02</span>
+                        <i class="fa-solid fa-microchip pillar-icon"></i>
+                    </div>
+                    <div class="spotlight-content">
+                        <h3>eCycle Micro-Factory</h3>
+                        <p>The eCycle Micro-Factory recovers usable components from e-waste PCBs. AI vision, controlled
+                            heating, and gentle robotics depopulate boards, test parts, and feed them back into local
+                            repair
+                            and IoT projects instead of landfills and smelters.</p>
+                        <ul class="features-list">
+                            <li><i class="fa-solid fa-check"></i> AI identifies chips and components</li>
+                            <li><i class="fa-solid fa-check"></i> Robotic depopulation and sorting</li>
+                            <li><i class="fa-solid fa-check"></i> Supplies parts for sensors and controllers</li>
+                        </ul>
+                        <span class="card-btn-visual">
+                            Open eCycle Module <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Card 3: Hydro (Now a full Anchor tag) -->
+                <a href="hydro.html" class="pillar-card hydro reveal spotlight" style="transition-delay: 0.3s;">
+                    <div class="pillar-head spotlight-content">
+                        <span class="chip">PILLAR 03</span>
+                        <i class="fa-solid fa-droplet pillar-icon"></i>
+                    </div>
+                    <div class="spotlight-content">
+                        <h3>HydroLoop: Wastewater to Potable Water</h3>
+                        <p>HydroLoop combines Mag-Chito dye removal, smart filtration, and arsenic polishing to turn
+                            textile
+                            wastewater into safe drinking water. Sensors track color, turbidity, pH, and more to keep
+                            every
+                            litre accountable.</p>
+                        <ul class="features-list">
+                            <li><i class="fa-solid fa-check"></i> Mag-Chito adsorption for dyes and organics</li>
+                            <li><i class="fa-solid fa-check"></i> Membrane filtration + UV + light chlorination</li>
+                            <li><i class="fa-solid fa-check"></i> Arsenic filter for safe, drinkable output</li>
+                        </ul>
+                        <span class="card-btn-visual">
+                            Open Hydro Module <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Why These Three Are Connected -->
+    <section id="connectivity" class="section-padding" style="background: rgba(0,0,0,0.2);">
+        <div class="container conn-layout">
+            <div class="conn-text reveal">
+                <h2 class="text-gradient">Why These Three Are Connected</h2>
+                <p>
+                    <strong>Water Crisis:</strong> textile factories pollute rivers and over-pump groundwater;
+                    communities face arsenic and scarcity.
+                </p>
+                <p>
+                    <strong>E-Waste Crisis:</strong> discarded electronics from those same regions leak heavy metals and
+                    destroy reusable parts.
+                </p>
+                <p>
+                    <strong>Agriculture & Climate Crisis:</strong> rice paddies emit methane and consume huge volumes of
+                    irrigation water.
+                </p>
+                <p style="margin-top: 30px; border-left: 3px solid var(--accent-primary); padding-left: 20px;">
+                    EnviroTri MeshGrid links them: Treated water from <strong>HydroLoop</strong> can support communities
+                    and farms. Recovered components from <strong>eCycle</strong> can power the sensors and controllers
+                    of AWD and HydroLoop. Smarter irrigation through <strong>AWD</strong> reduces withdrawals from the
+                    same stressed aquifers and canals affected by factories.
+                </p>
+            </div>
+
+            <div class="conn-visual reveal" style="transition-delay: 0.2s;">
+                <div class="mesh-diagram">
+                    <div class="link-line l1"></div>
+                    <div class="link-line l2-fix"></div>
+                    <div class="link-line l3"></div>
+                    <div class="center-label">DATA & RESOURCES</div>
+                    <div class="node n-water"><i class="fa-solid fa-droplet"></i></div>
+                    <div class="node n-ewaste"><i class="fa-solid fa-microchip"></i></div>
+                    <div class="node n-agri"><i class="fa-solid fa-wheat-awn"></i></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Impact Dashboard -->
+    <section id="impact" class="section-padding">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>From Data to Impact</h2>
+                <p>EnviroTri MeshGrid is designed to track environmental gains in real time, turning every sensor
+                    reading into proof of progress.</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="metric-card reveal spotlight">
+                    <div class="spotlight-content">
+                        <i class="fa-solid fa-droplet metric-icon"></i>
+                        <span class="metric-val" data-target="85000">0</span>
+                        <span class="metric-label">Water Recycled (L)</span>
+                    </div>
+                </div>
+                <div class="metric-card reveal spotlight" style="transition-delay: 0.1s;">
+                    <div class="spotlight-content">
+                        <i class="fa-solid fa-circuit-board metric-icon"></i>
+                        <span class="metric-val" data-target="1250">0</span>
+                        <span class="metric-label">E-Waste PCBs Processed</span>
+                    </div>
+                </div>
+                <div class="metric-card reveal spotlight" style="transition-delay: 0.2s;">
+                    <div class="spotlight-content">
+                        <i class="fa-solid fa-map-location-dot metric-icon"></i>
+                        <span class="metric-val" data-target="3">0</span>
+                        <span class="metric-label">Rice Fields Using AWD-Mesh (Villages)</span>
+                    </div>
+                </div>
+                <div class="metric-card reveal spotlight" style="transition-delay: 0.3s;">
+                    <div class="spotlight-content">
+                        <i class="fa-solid fa-arrow-trend-down metric-icon"></i>
+                        <span class="metric-val">-48%</span>
+                        <span class="metric-label">Estimated Methane Reduction</span>
+                    </div>
+                </div>
+                <div class="metric-card reveal spotlight" style="transition-delay: 0.4s;">
+                    <div class="spotlight-content">
+                        <i class="fa-solid fa-shield-halved metric-icon"></i>
+                        <span class="metric-val" data-target="12000">0</span>
+                        <span class="metric-label">Arsenic-Safe Litres Delivered</span>
+                    </div>
+                </div>
+                <div class="metric-card reveal spotlight" style="transition-delay: 0.5s;">
+                    <div class="spotlight-content">
+                        <i class="fa-solid fa-recycle metric-icon"></i>
+                        <span class="metric-val" data-target="840">0</span>
+                        <span class="metric-label">Components Reused in IoT Nodes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Engage Section -->
+    <section id="engage" class="section-padding" style="background: rgba(11, 18, 29, 0.5);">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Built for Real Communities, Ready for Real Deployment</h2>
+            </div>
+            <div class="engage-grid">
+                <div class="engage-card reveal">
+                    <div class="engage-head">
+                        <i class="fa-solid fa-users"></i>
+                        <h3>For Communities & Farmers</h3>
+                    </div>
+                    <ul class="engage-list">
+                        <li><i class="fa-solid fa-caret-right"></i> Cleaner water and healthier fields</li>
+                        <li><i class="fa-solid fa-caret-right"></i> Simple SMS and dashboard interfaces</li>
+                    </ul>
+                </div>
+                <div class="engage-card reveal" style="transition-delay: 0.1s;">
+                    <div class="engage-head">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <h3>For Schools & Universities</h3>
+                    </div>
+                    <ul class="engage-list">
+                        <li><i class="fa-solid fa-caret-right"></i> Hands-on IoT, AI, and environmental science</li>
+                        <li><i class="fa-solid fa-caret-right"></i> Modular hardware and open documentation</li>
+                    </ul>
+                </div>
+                <div class="engage-card reveal" style="transition-delay: 0.2s;">
+                    <div class="engage-head">
+                        <i class="fa-solid fa-landmark"></i>
+                        <h3>For Policy Makers & NGOs</h3>
+                    </div>
+                    <ul class="engage-list">
+                        <li><i class="fa-solid fa-caret-right"></i> Data to support water and climate programs</li>
+                        <li><i class="fa-solid fa-caret-right"></i> Scalable pilots for entire industrial-agricultural
+                            belts</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="center-cta reveal">
+                <a href="#pillars" class="btn-main" style="margin-right: 20px;">View System Details</a>
+                <a href="mailto:contact@envirotri.com" class="btn-outline">Contact / Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Footer -->
+    <footer>
+        <div class="container foot-content">
+            <div class="foot-brand">
+                <div class="logo">
+                    <i class="fa-solid fa-circle-nodes"></i>
+                    EnviroTri MeshGrid
+                </div>
+                <p style="margin-top: 10px;">EnviroTri MeshGrid • A connected mesh for water, e-waste, and rice futures.
+                </p>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-github"></i></a>
+                    <a href="#"><i class="fa-solid fa-book"></i></a>
+                    <a href="#"><i class="fa-solid fa-globe"></i></a>
+                </div>
+            </div>
+            <div class="foot-links">
+                <a href="#">Home</a>
+                <a href="awd.html">AWD System</a>
+                <a href="ecycle.html">eCycle Factory</a>
+                <a href="hydro.html">Hydro Loop</a>
+                <a href="#">GitHub / Docs</a>
+            </div>
+        </div>
+        <div class="copy">
+            &copy; 2025 EnviroTri MeshGrid Project.
+        </div>
+    </footer>
+
+    <!-- JavaScript for Animations -->
+    <script src="index.js"></script>
+</body>
+
+</html>

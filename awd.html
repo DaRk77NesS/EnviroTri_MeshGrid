@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWD-Mesh | Advanced IoT Irrigation</title>
+    <link rel="icon" type="image/png" href="favicon-awd.png">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'agri-green': '#10b981',
+                        'deep-space': '#020617',
+                        'glass-surface': 'rgba(30, 41, 59, 0.4)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
+
+    <script src="awd.config.js"></script>
+
+    <link rel="stylesheet" href="awd.css">
+</head>
+
+<body class="grid-bg min-h-screen text-white antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
+
+    <!-- Navbar: Floating Glass Pill -->
+    <nav class="fixed top-0 left-0 w-full z-50 pt-6 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="tech-card rounded-2xl px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center gap-6">
+                    <!-- Back Button -->
+                    <a href="index.html"
+                        class="flex items-center justify-center w-8 h-8 rounded-full border border-slate-400 text-white hover:text-white hover:border-emerald-500 hover:bg-emerald-500/10 transition shadow-[0_0_10px_rgba(255,255,255,0.1)]"
+                        title="Back to Main Grid">
+                        <i class="fa-solid fa-arrow-left text-sm"></i>
+                    </a>
+
+                    <div class="flex items-center gap-3 border-l border-slate-700 pl-6">
+                        <div class="relative flex h-3 w-3">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                        </div>
+                        <span class="text-lg font-bold tracking-tight text-white font-mono text-glow-super">AWD<span
+                                class="text-emerald-300 text-glow-emerald">_MESH</span></span>
+                    </div>
+                </div>
+
+                <div class="hidden lg:flex gap-8 text-xs font-mono text-white font-semibold uppercase tracking-widest">
+                    <a href="#dashboard"
+                        class="hover:text-emerald-300 hover:shadow-[0_0_10px_rgba(52,211,153,0.4)] transition duration-300 text-white text-glow-white font-bold">Monitor</a>
+                    <a href="#schedule"
+                        class="hover:text-emerald-300 transition duration-300 text-white text-glow-white font-bold">Schedule</a>
+                    <a href="#hardware"
+                        class="hover:text-emerald-300 transition duration-300 text-white text-glow-white font-bold">Hardware</a>
+                    <a href="#firmware"
+                        class="hover:text-emerald-300 transition duration-300 text-white text-glow-white font-bold">Code</a>
+                </div>
+
+                <div class="flex gap-4">
+                    <button
+                        class="px-4 py-1.5 rounded-full bg-slate-800/50 border border-slate-700 text-xs font-mono text-emerald-400 flex items-center gap-2 hover:bg-slate-700 transition">
+                        <i class="fa-solid fa-code-branch"></i> v2.4.0
+                    </button>
+                    <!-- Mobile Menu Button (Optional, can be added if needed, keeping simple for now) -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-40 pb-24 overflow-hidden">
+        <div class="container max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <!-- Status Badge -->
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-400/50 text-emerald-200 text-[10px] font-mono mb-8 uppercase tracking-widest shadow-[0_0_10px_rgba(52,211,153,0.3)]">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Active Deployment: 3 Villages
+                    </div>
+
+                    <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight text-white tracking-tight text-glow-super"
+                        style="color: #ffffff;">
+                        Precision
+                        <span class="block text-gradient-super neon-text">Rice Irrigation</span>
+                    </h1>
+
+                    <p class="text-white text-xl mb-10 max-w-xl leading-relaxed font-bold text-glow-white">
+                        Deploy open-source IoT mesh networks to implement Alternate Wetting and Drying (AWD).
+                        Reduce methane emissions by <span
+                            class="text-emerald-300 font-extrabold border-b-2 border-emerald-400 text-glow-emerald">48%</span>
+                        while
+                        increasing
+                        yield stability.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#dashboard"
+                            class="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-emerald-500/50 transition-all transform hover:-translate-y-1 flex items-center gap-3 border border-emerald-400/30">
+                            <i class="fa-solid fa-chart-line"></i> Live Dashboard
+                        </a>
+                        <a href="#hardware"
+                            class="px-8 py-4 bg-slate-800/80 hover:bg-slate-700 text-white border border-slate-600 hover:border-slate-400 font-semibold rounded-lg transition-all flex items-center gap-3 shadow-[0_0_10px_rgba(255,255,255,0.05)]">
+                            <i class="fa-solid fa-microchip text-emerald-300"></i> Hardware Stack
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Visual: The Mesh -->
+                <div class="relative tech-card p-1 rounded-2xl animate-float">
+                    <!-- Decor: Screws/Rivets -->
+                    <div class="absolute top-4 left-4 w-1.5 h-1.5 rounded-full bg-slate-600"></div>
+                    <div class="absolute top-4 right-4 w-1.5 h-1.5 rounded-full bg-slate-600"></div>
+                    <div class="absolute bottom-4 left-4 w-1.5 h-1.5 rounded-full bg-slate-600"></div>
+                    <div class="absolute bottom-4 right-4 w-1.5 h-1.5 rounded-full bg-slate-600"></div>
+
+                    <!-- Floating Stat Tile -->
+                    <div class="absolute top-6 right-6 bg-slate-900/90 border border-emerald-500/30 p-4 rounded-xl shadow-2xl z-20 backdrop-blur-md animate-float"
+                        style="animation-delay: 1s;">
+                        <div class="flex items-center gap-3 mb-1">
+                            <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                            <div class="text-[10px] text-slate-200 font-bold font-mono uppercase tracking-widest">CH4
+                                Reduction
+                            </div>
+                        </div>
+                        <div class="text-3xl font-bold text-white">-48<span class="text-emerald-400">%</span></div>
+                    </div>
+
+                    <div
+                        class="relative h-80 w-full bg-slate-900/80 rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center">
+                        <div class="scanline"></div>
+
+                        <!-- Grid Overlay -->
+                        <div
+                            class="absolute inset-0 grid grid-cols-6 grid-rows-6 gap-0.5 opacity-10 pointer-events-none">
+                            <div class="bg-emerald-500 col-span-1 row-span-1"></div>
+                            <!-- ... randomized heavy grid for aesthetic ... -->
+                        </div>
+
+                        <div class="z-10 text-center relative">
+                            <div
+                                class="w-32 h-32 rounded-full border-2 border-emerald-500/30 flex items-center justify-center mb-4 mx-auto relative">
+                                <i
+                                    class="fa-solid fa-tower-broadcast text-5xl text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]"></i>
+                                <div class="absolute inset-0 rounded-full border border-dashed border-emerald-500/20 animate-spin-slow"
+                                    style="animation-duration: 10s;"></div>
+                            </div>
+                            <div
+                                class="mt-4 font-mono text-emerald-500 bg-emerald-950/30 px-3 py-1 rounded border border-emerald-900 text-xs">
+                                LORA_MESH_CONNECTED
+                            </div>
+                        </div>
+
+                        <!-- Abstract Data Lines -->
+                        <div
+                            class="absolute bottom-10 left-0 right-0 h-20 bg-gradient-to-t from-emerald-500/10 to-transparent">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DASHBOARD: Bento Grid Layout -->
+    <section id="dashboard" class="py-24 relative">
+        <div class="container max-w-7xl mx-auto px-6">
+
+            <!-- Dashboard Header -->
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+                        <span class="w-2 h-8 bg-emerald-500 rounded-sm block"></span>
+                        Mission Control
+                    </h2>
+                    <p class="text-slate-200 font-mono text-xs text-glow-white">NODE_ID: <span
+                            class="text-emerald-400 text-glow-emerald">ESP32_FIELD_04</span> | GW_ID: GSM_ALPHA</p>
+                </div>
+                <div class="flex gap-3 text-[10px] font-mono uppercase tracking-widest">
+                    <div
+                        class="px-3 py-1.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center gap-2">
+                        <span class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        Online
+                    </div>
+                    <div
+                        class="px-3 py-1.5 rounded bg-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center gap-2">
+                        <i class="fa-solid fa-server"></i> Logging
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bento Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-8">
+
+                <!-- 1. Water Level (Primary Large Card) - Spans 2 cols on LG -->
+                <div class="tech-card p-6 rounded-2xl md:col-span-2 lg:col-span-2 relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 right-0 p-6 opacity-20 text-6xl text-emerald-500 rotate-12 transition-transform group-hover:rotate-0 group-hover:scale-110 duration-500 font-mono">
+                        <i class="fa-solid fa-water"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="text-slate-100 text-xs font-mono uppercase tracking-wider mb-2 text-glow-white">Water
+                            Level</h3>
+                        <div class="text-5xl font-bold text-white mb-4 text-glow-white">5.2 <span
+                                class="text-xl text-slate-200 font-normal">cm</span></div>
+
+                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-3">
+                            <div
+                                class="bg-gradient-to-r from-blue-600 to-emerald-500 h-full w-[45%] shadow-[0_0_10px_rgba(16,185,129,0.4)]">
+                            </div>
+                        </div>
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-white">Target: 5.0cm</span>
+                            <span class="text-emerald-400">Optimal Range</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Soil Moisture & Temp (Tall Stack) -->
+                <div class="md:col-span-2 lg:col-span-2 grid grid-rows-2 gap-6">
+                    <!-- Soil -->
+                    <div class="tech-card p-5 rounded-2xl flex items-center justify-between">
+                        <div>
+                            <div class="text-slate-100 text-[10px] font-mono uppercase text-glow-white">Soil Moisture
+                            </div>
+                            <div class="text-2xl font-bold text-white text-glow-white">24%</div>
+                        </div>
+                        <div
+                            class="h-10 w-10 bg-amber-500/20 rounded-lg flex items-center justify-center text-amber-500">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                    </div>
+                    <!-- Temp -->
+                    <div class="tech-card p-5 rounded-2xl flex items-center justify-between">
+                        <div>
+                            <div class="text-slate-100 text-[10px] font-mono uppercase text-glow-white">Air Temp</div>
+                            <div class="text-2xl font-bold text-white text-glow-white">19°C</div>
+                        </div>
+                        <div
+                            class="h-10 w-10 bg-purple-500/20 rounded-lg flex items-center justify-center text-purple-500">
+                            <i class="fa-solid fa-temperature-half"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Battery & Solar (Compact) -->
+                <div class="tech-card p-6 rounded-2xl md:col-span-2 lg:col-span-2 flex flex-col justify-center">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="text-xs font-mono text-slate-300">POWER_STATUS</div>
+                        <i class="fa-solid fa-battery-three-quarters text-green-400 text-xl"></i>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="text-center p-3 bg-white/5 rounded-lg border border-white/10 shadow-[0_0_10px_rgba(255,255,255,0.05)]">
+                            <div class="text-xs text-slate-200">Battery</div>
+                            <div class="text-lg font-bold text-white text-glow-white">4.1V</div>
+                        </div>
+                        <div
+                            class="text-center p-3 bg-white/5 rounded-lg border border-white/10 shadow-[0_0_10px_rgba(255,255,255,0.05)]">
+                            <div class="text-xs text-slate-200">Solar</div>
+                            <div class="text-lg font-bold text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]">
+                                0.8A</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts & Logs Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Large Chart -->
+                <div class="lg:col-span-2 tech-card p-6 rounded-2xl">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-bold text-white text-sm text-glow-white">Real-time Telemetry</h3>
+                        <!-- Chart Legend -->
+                        <div class="flex gap-4 text-[10px] uppercase font-mono">
+                            <div class="flex items-center gap-1.5"><span
+                                    class="w-2 h-2 rounded-full bg-blue-500"></span> Water Level</div>
+                            <div class="flex items-center gap-1.5"><span
+                                    class="w-2 h-2 rounded-full bg-cyan-400"></span> Rainfall</div>
+                        </div>
+                    </div>
+                    <div class="relative h-64 w-full">
+                        <canvas id="waterRainChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Activity Log -->
+                <div class="tech-card p-6 rounded-2xl flex flex-col h-full max-h-[400px]">
+                    <h3 class="font-bold text-white text-sm mb-4 border-b border-slate-700/50 pb-2 text-glow-white">
+                        System Events</h3>
+
+                    <div class="space-y-3 overflow-y-auto pr-2 custom-scrollbar">
+                        <!-- Alert Item -->
+                        <div class="relative pl-4 border-l-2 border-red-500/50 pb-1">
+                            <div class="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-red-500"></div>
+                            <div
+                                class="text-[10px] text-red-400 font-mono mb-0.5 drop-shadow-[0_0_5px_rgba(248,113,113,0.5)]">
+                                10:42 AM - CRITICAL</div>
+                            <div class="text-xs text-slate-100">Moisture below critical threshold (18%). Pump activation
+                                queued.</div>
+                        </div>
+
+                        <div class="relative pl-4 border-l-2 border-blue-500/50 pb-1">
+                            <div class="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-blue-500"></div>
+                            <div
+                                class="text-[10px] text-blue-400 font-mono mb-0.5 drop-shadow-[0_0_5px_rgba(96,165,250,0.5)]">
+                                09:15 AM - INFO</div>
+                            <div class="text-xs text-slate-100">Rainfall confirmed (>2mm). Irrigation postponed.</div>
+                        </div>
+
+                        <div class="relative pl-4 border-l-2 border-emerald-500/50 pb-1">
+                            <div class="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-emerald-500"></div>
+                            <div
+                                class="text-[10px] text-emerald-400 font-mono mb-0.5 drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]">
+                                06:00 AM - SYSTEM</div>
+                            <div class="text-xs text-slate-100">Daily mesh health check passed. Signal -82dBm.</div>
+                        </div>
+                    </div>
+
+                    <!-- Control Actions -->
+                    <div class="mt-auto pt-4 flex gap-2">
+                        <button id="btn-emergency-stop"
+                            class="anim-emergency flex-1 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-500 text-xs py-2 rounded transition">
+                            EMERGENCY STOP
+                        </button>
+                        <button id="btn-force-pump"
+                            class="anim-pump flex-1 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-500 text-xs py-2 rounded transition">
+                            FORCE PUMP
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HARDWARE SECTION -->
+    <section id="hardware" class="py-24 relative bg-black/20">
+        <div class="container max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-white mb-4 text-glow-white">Hardware Inventory</h2>
+                <p class="text-slate-100 text-glow-white">Modular, low-cost components designed for rugged deployment in
+                    paddy fields.
+                    Fully IP67 compliant.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <!-- MCU -->
+                <div class="tech-card p-4 rounded-xl text-center group">
+                    <div
+                        class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-emerald-500/20 transition-colors">
+                        <i class="fa-solid fa-microchip text-xl text-emerald-500"></i>
+                    </div>
+                    <h4 class="text-sm font-bold text-white text-glow-white">ESP32</h4>
+                    <span class="text-[10px] text-slate-200 uppercase tracking-wide">Controller</span>
+                </div>
+
+                <div class="tech-card p-4 rounded-xl text-center group">
+                    <div
+                        class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-blue-500/20 transition-colors">
+                        <i class="fa-solid fa-ruler-vertical text-xl text-blue-500"></i>
+                    </div>
+                    <h4 class="text-sm font-bold text-white text-glow-white">JSN-SR04T</h4>
+                    <span class="text-[10px] text-slate-200 uppercase tracking-wide">Ultrasonic</span>
+                </div>
+
+                <div class="tech-card p-4 rounded-xl text-center group">
+                    <div
+                        class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-amber-500/20 transition-colors">
+                        <i class="fa-solid fa-seedling text-xl text-amber-500"></i>
+                    </div>
+                    <h4 class="text-sm font-bold text-white text-glow-white">Capacitive</h4>
+                    <span class="text-[10px] text-slate-200 uppercase tracking-wide">Soil Probe</span>
+                </div>
+
+                <div class="tech-card p-4 rounded-xl text-center group">
+                    <div
+                        class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-purple-500/20 transition-colors">
+                        <i class="fa-solid fa-tower-cell text-xl text-purple-500"></i>
+                    </div>
+                    <h4 class="text-sm font-bold text-white text-glow-white">SX1276</h4>
+                    <span class="text-[10px] text-slate-200 uppercase tracking-wide">LoRa 915MHz</span>
+                </div>
+
+                <div class="tech-card p-4 rounded-xl text-center group">
+                    <div
+                        class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-yellow-500/20 transition-colors">
+                        <i class="fa-solid fa-solar-panel text-xl text-yellow-500"></i>
+                    </div>
+                    <h4 class="text-sm font-bold text-white text-glow-white">Solar Kit</h4>
+                    <span class="text-[10px] text-slate-200 uppercase tracking-wide">Energy</span>
+                </div>
+            </div>
+
+            <!-- Specs Tableish thing -->
+            <div class="mt-12 bg-slate-900/50 rounded-2xl border border-slate-800 p-8">
+                <div
+                    class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-slate-800">
+                    <div>
+                        <div class="text-4xl font-bold text-white mb-2 text-glow-white">15km+</div>
+                        <div class="text-sm text-slate-200 uppercase tracking-widest text-glow-white">LoRa Range</div>
+                    </div>
+                    <div class="pt-8 md:pt-0">
+                        <div class="text-4xl font-bold text-white mb-2 text-glow-white">6 Months</div>
+                        <div class="text-sm text-slate-200 uppercase tracking-widest text-glow-white">Battery Life</div>
+                    </div>
+                    <div class="pt-8 md:pt-0">
+                        <div class="text-4xl font-bold text-white mb-2 text-glow-white">3000 Taka</div>
+                        <div class="text-sm text-slate-200 uppercase tracking-widest text-glow-white">Per Node Cost
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Highlight Section -->
+    <section id="firmware" class="py-24">
+        <div class="container max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-3xl font-bold text-white mb-6 text-glow-white">Open Source Firmware</h2>
+                <p class="text-slate-100 mb-6 text-glow-white">
+                    Built on PlatformIO with direct C++ logic for reliable, real-time operation.
+                    Features deep-sleep optimization, mesh self-healing, and AES-128 payload encryption.
+                </p>
+                <a href="#"
+                    class="inline-flex items-center text-emerald-400 hover:text-emerald-300 font-bold decoration-emerald-500/30 underline underline-offset-4">
+                    View Repository <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
+                </a>
+            </div>
+
+            <div
+                class="tech-card p-0 rounded-xl overflow-hidden bg-black/60 border border-slate-700/50 font-mono text-xs">
+                <div class="bg-slate-800/80 px-4 py-2 border-b border-slate-700/50 flex gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/50"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
+                    <div class="ml-auto text-slate-400">main.cpp</div>
+                </div>
+                <div class="p-6 text-slate-100 leading-relaxed font-semibold">
+                    <span class="text-purple-300 drop-shadow">void</span> <span
+                        class="text-blue-300 drop-shadow">loop</span>() {
+                    <br>&nbsp;&nbsp;<span class="text-slate-300 italic">// Check LoRa Mesh Messages</span>
+                    <br>&nbsp;&nbsp;mesh.update();
+                    <br>
+                    <br>&nbsp;&nbsp;<span class="text-purple-400">if</span> (millis() - lastLog > LOG_INTERVAL) {
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-400">float</span> wl = sensor.readWaterLevel();
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-400">if</span> (wl < CRITICAL_LEVEL) { <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">triggerPump</span>(REGION_A);
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;}
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-blue-400">sendTelemetry</span>(wl,
+                        battery_voltage);
+                        <br>&nbsp;&nbsp;}
+                        <br>}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-deep-space border-t border-slate-800/50 pt-16 pb-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8 text-center md:text-left">
+                <div>
+                    <div class="text-white font-bold text-xl mb-1">AWD-Mesh</div>
+                    <p class="text-slate-300 text-sm">Empowering Micro-Irrigation Communities</p>
+                </div>
+                <div class="flex gap-6">
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 hover:bg-emerald-500 hover:text-white transition">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 hover:bg-blue-500 hover:text-white transition">
+                        <i class="fa-brands fa-twitter"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-slate-800/50 pt-8 text-center text-slate-400 text-sm">
+                &copy; 2025 AWD-Mesh Project. Open Source MIT License.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logic -->
+    <script src="awd.js"></script>
+</body>
+
+</html>
