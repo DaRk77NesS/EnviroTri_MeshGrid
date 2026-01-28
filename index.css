@@ -1217,3 +1217,172 @@
                 opacity: 1;
             }
         }
+
+        /* --- ADDED: Live Links & Floating Button --- */
+
+        /* Live Links Section */
+        #live-links {
+            padding-top: 0;
+            padding-bottom: 60px;
+        }
+
+        .live-buttons-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn-glass {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            font-family: var(--font-head);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .btn-glass i {
+            font-size: 1.2rem;
+        }
+
+        .btn-glass:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .glow-awd:hover {
+            box-shadow: 0 0 25px rgba(0, 245, 160, 0.4), inset 0 0 10px rgba(0, 245, 160, 0.2);
+            color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .glow-hydro:hover {
+            box-shadow: 0 0 25px rgba(94, 129, 255, 0.4), inset 0 0 10px rgba(94, 129, 255, 0.2);
+            color: var(--accent-tertiary);
+            border-color: var(--accent-tertiary);
+        }
+
+        /* Floating AI Button */
+        .floating-ai-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background: rgba(11, 18, 29, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            z-index: 9999;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: floatBtn 4s ease-in-out infinite;
+        }
+
+        .floating-ai-btn:hover {
+            transform: scale(1.1);
+            background: var(--accent-secondary);
+            color: var(--bg-dark);
+            box-shadow: 0 0 30px var(--accent-secondary);
+        }
+
+        /* Breathing Glow Animation */
+        .ai-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--accent-secondary);
+            opacity: 0.5;
+            filter: blur(15px);
+            z-index: -1;
+            animation: breathe 3s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.4);
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes floatBtn {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Tooltip */
+        .floating-ai-btn .tooltip {
+            position: absolute;
+            left: 70px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            white-space: nowrap;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .floating-ai-btn:hover .tooltip {
+            opacity: 1;
+            left: 80px;
+        }
+
+        /* Mobile Adjustment */
+        @media (max-width: 768px) {
+            .live-buttons-wrapper {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn-glass {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .floating-ai-btn {
+                bottom: 20px;
+                left: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
